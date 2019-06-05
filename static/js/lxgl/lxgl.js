@@ -30,7 +30,6 @@ window.onload = function () {
                     },
                     server:server
                 }).then((res) => {
-                    console.log(res.data.Body)
                     np.luxian = res.data.Body.list
                     np.all = res.data.Body.pager.pages
                     np.total = res.data.Body.pager.total
@@ -73,12 +72,10 @@ window.onload = function () {
             },
             // 编辑跳转链接
             btn_link:function (e) {
-                console.log(e)
                 window.location.href = '/lxbianji?id='+e
             },
             // 删除导游
             del: function (e) {
-                console.log("e",e)
                 np.Id = e
                 np.tan_show = true
                 
@@ -106,12 +103,10 @@ window.onload = function () {
              // 批量删除
              delete:function (e) {
                 var that = this
-                console.log("e",e)
                 axios.post(host + '/route/v1/api/route/del', {
                     id: parseInt(e),
                     server: server
                 }).then((res) => {
-                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })
