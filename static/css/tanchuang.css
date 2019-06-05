@@ -1,0 +1,80 @@
+.tanchuang{
+    z-index: 100;
+    position: fixed;
+    top: 50%;
+    transform: translateX(-50%);
+    left: 29%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 250px;
+    background-color: rgba(148, 146, 146,.9);
+    color: black;
+    border-radius: 12px 12px;
+    overflow: hidden;
+}
+
+.tanMsgs {
+    width: 70%;
+    height: 60px;
+    margin-left: 15%;
+    line-height: 60px;
+    text-align: center;
+    font-size: 1.3em;
+    margin-top: 50px;
+    color: white;
+
+}
+
+.tanBtns {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    bottom: 0px;
+    /* border: 1px solid rgb(0, 0, 0); */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    overflow: hidden;
+}
+
+.Cancel, .Confirms {
+    width: 50%;
+    background-color: rgb(218, 218, 218);
+    cursor: pointer;
+    line-height: 60px;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.Cancel {
+    border-right: 1px solid black;
+}
+
+.Confirms {
+    color: rgb(236, 145, 8);
+}
+
+.fanhui {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 50px;
+    font-size: 1.2em;
+}
+
+.chooses {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    height: 60px;
+    margin-left: 40%;
+    margin-bottom: 25px;
+    font-size: 1.4em;
+    /* font-weight: bold; */
+    line-height: 60px;
+}
+
+

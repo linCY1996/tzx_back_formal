@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
+    <link rel="stylesheet" href="../../static/css/POIgl/poi_add1.css">
+    <link rel="stylesheet" href="../../static/css/POIgl/poi_add2.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script>
+    <script src="../../static/utf8-jsp/ueditor.parse.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../../static/froala/css/themes/dark.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../static/froala/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../static/froala/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+    <script src="../../static/js/POIgl/poi_add2.js"></script>
+</head>
+
+<body>
+    <div id="tall">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+        <div class="chooses">
+            <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
+            <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
+        </div>
+        <!-- 编辑 -->
+        <div class="Names" v-if="bianji_show">第二步 编辑POI故事</div>
+        <div class="all_Msgs" v-if="bianji_show">
+
+            <table class="layui-table">
+                <thead>
+                    <tr>
+
+                        <th style="min-width:40px;">类目</th>
+                        <th>填写</th>
+                        <th>示例</th>
+                        <th>备注</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POI故事标题</td>
+                        <td><textarea name="daoname" v-model="b_cardtitle" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>故事卡片-未获得</td>
+                        <td><textarea name="daoname" v-model="b_cardImg1" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>故事卡片-已获得</td>
+                        <td><textarea name="daoname" v-model="b_cardImg2" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>音频链接</td>
+                        <td><textarea name="daoname" v-model="b_cardMusic" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>音频时长</td>
+                        <td><textarea name="daoname" v-model="b_cardMusicLen" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+            <div class="fuWenBen">
+                <!-- <UE></UE> -->
+                <script id="editor" type="text/plain" style="max-height:400px;overflow-y: scroll;"></script>
+            </div>
+            <!-- <script type="text/javascript">
+                var ue = UE.getEditor('editor');</script> -->
+            <div class="btn_All">
+                <div class="btn_Left" id="btn_L" v-on:click="chongzhi()">重置</div>
+                <div class="btn_Right" id="btn_R" style="width:100px;"  @click="saves()">保存并继续</div>
+            </div>
+        </div>
+
+        <!-- 添加 -->
+        <div class="Names" v-if="add_show">第二步 添加POI故事</div>
+        <div class="all_Msgs" v-if="add_show">
+
+            <table class="layui-table">
+                <thead>
+                    <tr>
+
+                        <th style="min-width:40px;">类目</th>
+                        <th>填写</th>
+                        <th>示例</th>
+                        <th>备注</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POI故事标题</td>
+                        <td><textarea name="daoname" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>故事卡片-未获得</td>
+                        <td><textarea name="daoname" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>故事卡片-已获得</td>
+                        <td><textarea name="daoname" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>音频名称</td>
+                        <td><textarea name="daoname" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>音频时常</td>
+                        <td><textarea name="daoname" id="daoname" cols="30" rows="4"></textarea></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+            <div class="fuWenBen">
+                <script id="editor1" type="text/plain" style="max-height:400px;overflow-y: scroll;"></script>
+            </div>
+            <div class="btn_All">
+                    <div class="btn_Left" id="btn_L" @click="chongzhi()">重置</div>
+                    <div class="btn_Right" id="btn_R" style="width:100px;"  @click="posts()">保存并继续</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

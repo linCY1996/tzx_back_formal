@@ -1,0 +1,202 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+#tall {
+    width: 100%;
+    height: 1800px;
+    min-width: 1200px;
+    /* border: 1px solid black; */
+}
+
+.Name {
+    width: 50%;
+    height: 50px;
+    margin-left: 25%;
+    text-align: center;
+    line-height: 50px;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+.first_Page {
+    position: relative;
+    width: 80%;
+    height: 450px;
+    /* border: 1px solid black; */
+    margin-left: 10%;
+    margin-top: 50px;
+}
+
+.shouName {
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.shou_AllImgs {
+    display: flex;
+    justify-content: space-between;
+    overflow-x: scroll;
+    width: 80%;
+    height: 400px;
+    /* border: 1px solid black; */
+
+}
+
+.shou_Imgs {
+    position: relative;
+    width: 215px;
+    height: 350px;
+    margin-left: 18px;
+    /* border: 1px solid black; */
+}
+
+.Imgss {
+    width: auto;
+    height: auto;
+    min-width: 215px;
+    min-height: 224px;
+    border: .1px dashed rgb(110, 110, 110);
+}
+
+.Imgss img {
+    width: 100%;
+    height: 100%;
+    /* background-size: contain; */
+}
+
+.Choose {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    display: flex;
+    justify-content: space-between;
+    width: 40px;
+    height: 20px;
+    /* border: 1px solid black; */
+    
+}
+
+.Imgs_Bian {
+    width: 20px;
+    height:20px ;
+    text-align: center;
+    line-height: 23px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.Imgs_Bian img {
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.delete {
+    width: 20px;
+    height:20px;
+    /* font-size: 1.7em; */
+    font-weight: bolder;
+    text-align: center;
+    line-height: 20px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.delete img {
+    width: 100%;
+    height: 100%;
+    color: white;
+}
+
+.Imgss img {
+    width: 100%;
+    height: 100%;
+}
+
+.Imgs_link {
+    width: 215px;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+    font-size: .8em;
+    border-bottom: 1px dashed black;
+}
+
+.Fir_Imgs_add {
+    position: absolute;
+    bottom: 5px;
+    right: 70px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;    
+    font-size: 3.6em;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 100px;
+    cursor: pointer;
+}
+
+.Fir_Imgs_add1 {
+    position: absolute;
+    bottom: -50px;
+    right: -20px;
+    width: 100px;
+    height: 100px;
+    border: 1px solid black;    
+    font-size: 3.6em;
+    font-weight: bolder;
+    text-align: center;
+    line-height: 100px;
+    cursor: pointer;
+    margin-right: 100px;
+    margin-bottom: 60px;
+}
+
+.fanhui {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 50px;
+    font-size: 1.2em;
+}
+
+.leibie {
+    margin-top: 20px;
+    display: flex;
+    margin-left: 50px;
+    justify-content: space-between;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+
+}
+
+.Bianji,.Add {
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    margin-top: 5px;
+    line-height: 30px;
+    text-align: center;
+    background-color: rgb(247, 165, 12);
+    border-radius: 10px 10px;
+    color: rgb(255, 255, 255);
+    font-size: 1.2em;
+}
+
+.bianji,.add {
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    margin-top: 5px;
+    line-height: 30px;
+    text-align: center;
+    background-color: rgb(122, 122, 122);
+    border-radius: 10px 10px;
+    color: rgb(0, 0, 0);
+    font-size: 1.2em;
+}

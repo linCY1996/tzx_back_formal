@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/firstPage/xiangqing.css">
+    <link rel="stylesheet" href="../../static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="../static/css/font.css">
+    <link rel="stylesheet" href="../static/css/xadmin.css">
+    <script src="../../static/lib/layui/layui.js"></script>
+    <!-- <script src="../../static/lib/layui/layui.all.js"></script> -->
+    <!-- <script type="text/javascript" src="../../static/js/xadmin.js"></script> -->
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="../../static/js/firstPage/xiangqing.js"></script>
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+</head>
+
+
+<body>
+    <div id="tall">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+
+        <!-- <div class="Name" v-if="yaduo">亚朵&nbsp;&nbsp;首页和详情页</div> -->
+        <div class="Name" v-if="guanfang">官方&nbsp;&nbsp;首页和详情页</div>
+        <div class="Name" v-if="daishen">审核&nbsp;&nbsp;首页和详情页</div>
+        <div class="leibie">
+            <div :class="first_page_show?'Bianji':'bianji'" @click="shou_show()">首页</div>
+            <div :class="xiangqing_page_show?'Add':'add'" @click="detail_show()">详情页</div>
+            <!-- <div class="first_Pages" @click="shou">首页</div>
+                <div class="xiangqing_Pages">详情页</div> -->
+        </div>
+        <!-- banner -->
+        <div class="first_Page" v-if="first_page_show">
+            <div class="shouName">&nbsp;&nbsp;- banner</div>
+            <div class="shou_AllImgs">
+                <div class="shou_Imgs" v-for="sb in shouBanner">
+                    <div class="Imgss">
+                        <div class="Choose">
+                            <div class="Imgs_Bian" @click="ImgsBian(sb.id,sb.type)"><img src="../../static/images/bianji.png" alt=""></div>
+                            <div class="delete" @click="del(sb.id)"><img src="../../static/images/delete.png" alt=""></div>
+                        </div>
+                        <a :href="sb.img_url" target="_blank"><img :src="sb.img_url" alt=""></a>
+                    </div>
+                    <div class="Imgs_link">{{sb.jump_url}}</div>
+                </div>
+            </div>
+            <div class="Fir_Imgs_add" @click="addshouBanner()">+</div>
+        </div>
+        <!-- 说明页 -->
+        <div class="first_Page" v-if="first_page_show">
+            <div class="shouName">&nbsp;&nbsp;- 说明页</div>
+            <div class="shou_AllImgs">
+                <div class="shou_Imgs" v-for="si in shouimgarr">
+                    <div class="Imgss">
+                        <div class="Choose">
+                            <div class="Imgs_Bian" @click="shouImgsBian(si.id,si.type)"><img src="../../static/images/bianji.png" alt=""></div>
+                            <div class="delete" @click="del(si.id)"><img src="../../static/images/delete.png" alt=""></div>
+                        </div>
+                        <a :href="si.img_url" target="_blank"><img :src="si.img_url" alt=""></a>
+                    </div>
+                    <div class="Imgs_link">{{si.jump_url}}</div>
+                </div>
+            </div>
+            <div class="Fir_Imgs_add" @click="addshouImgArr()">+</div>
+        </div>
+
+
+        <!-- 详情页 -->
+        <div class="first_Page" v-if="xiangqing_page_show">
+            <!-- <div class="shouName">&nbsp;&nbsp;详情页</div> -->
+            <div class="layui-collapse">
+                <div class="layui-colla-item" v-for="(item,index) in detailimgarr" :key="index">
+                    <h2 class="layui-colla-title" style="color:rgb(243, 142, 26);">{{item.RouteId}}-{{item.route_name}}</h2>
+                    <div class="shouName">- banner</div>
+                    <div class="layui-colla-content layui-show" style="position: relative;color:black;">
+                        <div class="shou_AllImgs">
+                            <div class="shou_Imgs" v-for="(ite,ind) in item.banner"  :key="ind">
+                                <div class="Imgss">
+                                    <div class="Choose">
+                                        <div class="Imgs_Bian" @click="ImgsxiangBannerBian(item.RouteId)"><img src="../../static/images/bianji.png" alt=""></div>
+                                        <!-- <div class="delete" @click="del(item.id)"><i class="layui-icon"></i></div> -->
+                                    </div>
+                                    <a :href="ite" target="_blank"><img :src="ite" alt=""></a>
+                                </div>
+                                <div class="Imgs_link">{{ite}}</div>
+                            </div>
+                        </div>
+                        <div class="Fir_Imgs_add1" @click="ImgsxiangBannerBian(item.RouteId)">+</div>
+                    </div>
+                    <div class="shouName">- 说明页</div>
+                    <div class="layui-colla-content layui-show" style="position: relative;color:black;">
+                        <div class="shou_AllImgs">
+                            <div class="shou_Imgs" v-for="(items,indexs) in item.Data" :key="indexs">
+                                <div class="Imgss">
+                                    <div class="Choose">
+                                        <div class="Imgs_Bian" @click="Imgsxiangshuo(items.id,items.type,item.RouteId)"><img src="../../static/images/bianji.png" alt=""></div>
+                                        <div class="delete" @click="del(items.id)"><img src="../../static/images/delete.png" alt=""></div>
+                                    </div>
+                                    <a :href="items.img_url" target="_blank"><img :src="items.img_url" alt=""></a>
+                                </div>
+                                <div class="Imgs_link">{{items.jump_url}}</div>
+                            </div>
+
+                        </div>
+                        <div class="Fir_Imgs_add1" @click="addxiangqingDetail(item.RouteId)">+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tanchuang" v-if="tan_show == true">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+                <div class="Cancel" @click="Cancels()">取消</div>
+                <div class="Confirms" @click="Confirms()">确定</div>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //注意：折叠面板 依赖 element 模块，否则无法进行功能性操作
+    layui.use('element', function () {
+        var element = layui.element;
+
+        //…
+    });
+</script>
+
+</html>

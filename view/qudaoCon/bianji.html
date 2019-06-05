@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/qudaoCon/bianji.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <!-- <link rel="stylesheet" href="../../static/css/tanchuang.css"> -->
+    <script src="../../static/js/qudaoCon/bianji.js"></script>
+</head>
+
+<body>
+    <div id="tall">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+        <!-- <div class="chooses">
+            <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
+            <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
+        </div> -->
+        <!-- 编辑 -->
+        <div class="all_Msgs">
+
+            <div class="msgs_Alls">
+                <!-- <div class="shouye_Img">
+                    渠道id&nbsp;&nbsp;<input type="text" v-model="b_jingqu_id" name="imgs" id="shou_Imgs">
+                </div> -->
+                <div class="shouye_Img">
+                    渠道名称&nbsp;&nbsp;<input type="text" v-model="b_jingqu_name" name="names" id="names">
+                </div>
+
+            </div>
+
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="saves()">保存</div>
+            </div>
+        </div>
+        
+    </div>
+</body>
+
+</html>

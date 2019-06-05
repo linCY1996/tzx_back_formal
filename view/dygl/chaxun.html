@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/lib/layui/css/layui.css">
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <link rel="stylesheet" href="../../static/css/dygl/dygl.css">
+    <link rel="stylesheet" href="../../static/css/fenye.css">
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script src="../../static/js/dygl/chaxun.js"></script>
+</head>
+
+<body>
+        
+    <div class="x-nav">
+        </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+            href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body" id="tall" style="overflow-y:scroll;" >
+        <!-- <div class="chaxun">
+
+            导游名&nbsp;&nbsp;<input type="text" name="dname" v-model="dname" id="dname"> <i v-on:click="looks()"
+                class="iconfont" style=" margin-left:20px; cursor: pointer;">&#xe6ac;</i>
+        </div> -->
+        <div class="fanhui" style="position: absolute;;top:20px;left:25px;z-index: 100;width: 80px;margin-top:20px;"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+        <xblock  style="margin-top:60px;">
+            <button class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
+            <!-- <button class="layui-btn" onclick="x_admin_show('添加用户','/dygladd')"><i class="layui-icon"></i>添加</button> -->
+            <span class="x-right" style="line-height:40px">共有数据： {{total}}条</span>
+        </xblock>
+        <table class="layui-table" style="min-width:1000px;">
+            <thead>
+                <tr>
+                    <th>
+                            选择
+                        <!-- <input type="checkbox" class="checks"> -->
+                    </th>
+                    <th style="width:100px;">操作</th>
+                    <th style="width:40px;">id</th>
+                    <th style="width:60px;">导游名字(name)</th>
+                    <th>导游头像(img)</th>
+                    <!-- <th>导游欢迎语(Start)</th>
+                    <th>导游结束语(End)</th> -->
+                </tr>
+            </thead>
+            <tbody id="tbodys">
+                <tr v-for="n in chaxun">
+                    <td>
+                        <input type="checkbox" :value="n.Id" class="checks" v-model="checkId">
+                    </td>
+                    <td class="td-manage">
+                        <a title="编辑/添加" v-on:click='btn_link(n.Id)'>
+                            <i class="layui-icon">&#xe63c;</i>
+                        </a>
+                        <a title="删除" v-on:click="del(n.Id)" href="javascript:;">
+                            <i class="layui-icon">&#xe640;</i>
+                        </a>
+                        <a title="复制到" href="javascript:;">
+                            <i class="layui-icon">&#xe744;</i>
+                        </a>
+                    </td>
+                    <td>{{n.Id}}</td>
+                    <td>{{n.Name}}</td>
+                    <td>{{n.Img}}</td>
+                    <!-- <td>{{n.Start}}</td>
+                    <td>{{n.End}}</td> -->
+                </tr>
+            </tbody>
+        </table>
+        <!-- <div class="page-bar">
+            <ul>
+                <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+                <li v-if="cur==1"><a class="banclick">上一页</a></li>
+                <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+                    <a v-on:click="btnClick(index)">{{ index }}</a>
+                </li>
+                <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+                <li v-if="cur == all"><a class="banclick">下一页</a></li>
+                <li><a>共<i>{{all}}</i>页</a></li>
+               
+            </ul>
+
+        </div> -->
+
+        <div class="tanchuang" v-if="tan_show">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+                <div class="Cancel" v-on:click="Cancels()">取消</div>
+                <div class="Confirms" v-on:click="Confirms()">确定</div>
+            </div>
+        </div>
+        <div class="tanchuang" v-if="tan_show_list == true">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+              <div class="Cancel" v-on:click="Refuse()">取消</div>
+              <div class="Confirms" v-on:click="Delete()">确定</div>
+            </div>
+          </div>
+    </div>
+</body>
+
+</html>

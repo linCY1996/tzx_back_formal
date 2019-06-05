@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
+    <link rel="stylesheet" href="../../static/css/POIgl/poi_add1.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script src="../../static/js/POIgl/poi_add3.js"></script>
+</head>
+
+<body>
+    <div id="tall" style="overflow-y:scroll;">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-2)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+        <!-- <div class="chooses">
+            <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
+            <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
+        </div> -->
+        <!-- 编辑 -->
+        <div class="Names">第三步 编辑POI任务</div>
+        <div class="all_Msgs" style="min-width:1300px;">
+            <xblock>
+                <button class="layui-btn layui-btn-danger" v-on:click="delAll()"><i
+                        class="layui-icon"></i>批量删除</button>
+                <button class="layui-btn" @click="add()"><i class="layui-icon"></i>添加</button>
+                <span class="x-right" style="line-height:40px">共有数据： {{work.length}}条</span>
+            </xblock>
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <!-- <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
+                                    class="layui-icon">&#xe605;</i>
+                            </div> -->
+                        </th>
+                        <th>操作</th>
+                        <th>任务id</th>
+                        <th>任务类型</th>
+                        <th>任务排序</th>
+                        <th>任务内容</th>
+                        <th>任务配图</th>
+                        <th>任务按钮文字</th>
+                        <th>任务语音</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="w in work">
+                        <td>
+                            <input type="checkbox" class="checks" :value="w.Id" style="width:18px;height:18px;" v-model="checkId">
+                        </td>
+                        <td class="td-manage">
+                            <a title="编辑任务" @click="bian_link(w.Id)">
+                                <i class="layui-icon">&#xe63c;</i>
+                            </a>
+                            <a title="删除" @click="del(w.Id)">
+                                <i class="layui-icon">&#xe640;</i>
+                            </a>
+                        </td>
+                        <td>{{w.Id}}</td>
+                        <td>{{w.Class}}</td>
+                        <td>{{w.Sort}}</td>
+                        <td>{{w.TaskCopyStruct[0].text[0].content}}</td>
+                        <td>{{w.ImgArr}}</td>
+                        <td>{{w.ButtonCopy}}</td>
+                        <td>{{w.TaskCopyStruct[0].audio}}</td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+        <!-- 添加 -->
+
+        <div class="tanchuang" v-if="tan_show == true">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+                <div class="Cancel" v-on:click="Cancels()">取消</div>
+                <div class="Confirms" v-on:click="Confirms()">确定</div>
+            </div>
+        </div>
+        <div class="tanchuang" v-if="tan_show_list == true">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+                <div class="Cancel" v-on:click="Refuse()">取消</div>
+                <div class="Confirms" v-on:click="Delete()">确定</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

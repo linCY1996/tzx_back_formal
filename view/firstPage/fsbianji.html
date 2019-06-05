@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/firstPage/first_add.css">
+    <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
+    <!-- <script type="text/javascript" src="../../static/js/xadmin.js"></script> -->
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script src="../../static/js/firstPage/bianji.js"></script>
+</head>
+
+<body>
+    <div id="talls">
+        <div class="fanhui"><a href="javascript:history.go(-1)"
+                style="color: rgb(241, 134, 11);text-decoration: none;">返回</a>
+        </div>
+        <!-- <div class="chooses">
+            <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
+            <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
+        </div> -->
+        <!-- 编辑 -->
+        <div class="select_Msgs">
+            <!-- <div class="Name">编辑图片</div> -->
+            <div class="msgs">图片链接&nbsp;&nbsp;<input type="text" v-model="img_url" name="Imgs" id="Imgs"></div>
+            <div class="msgs">排序&nbsp;&nbsp;<input type="text" v-model="sort" name="sort" id="sort"></div>
+            <div class="msgs">跳转类型&nbsp;&nbsp;<select name="jumps" v-model="jump_type" id="jumps">
+                    <option value="-1">不跳转</option>    
+                    <option value="0">跳转目录，不需要登录</option>
+                    <option value="1">跳转链接</option>
+                    <option value="2">跳转目录，需要登录</option>
+                </select>
+            </div>
+            <div class="msgs1"  v-show="jump_type == 0 || jump_type == 2">跳转&nbsp;&nbsp;
+                <div class="jump_Msgs">
+                    <select name="jump1" id="jump1" v-model="yj_choose" style="width: 150px;">
+                        <option value="0" v-show="jump_type == 0">详情页</option>
+                        <option value="1" v-show="jump_type == 0">反馈建议</option>
+                        <option value="2" v-show="jump_type == 2">指定个人卡包</option>
+                        <option value="3" v-show="jump_type == 0">指定线路卡包</option>
+                        <option value="4" v-show="jump_type == 2">个人全部行程页</option>
+                        <option value="5" v-show="jump_type == 2">指定线路的个人行程浏览列表</option>
+                        <option value="6" v-show="jump_type == 0">指定线路的浏览列表</option>
+                        <option value="7" v-show="jump_type == 2">所有独家回忆</option>
+                        <option value="8" v-show="jump_type == 2">指定独家回忆视频</option>
+                        <option value="9" v-show="jump_type == 0">指定个人行程的POI详情页</option>
+                        <option value="10" v-show="jump_type == 0">指定线路地图预览页</option>
+                    </select>
+                    <!-- </div> -->
+                    <!-- <div class="jump_Msg_Ch" style="width: 200px;height: 40px;"> -->
+                    <select name="jump2" id="jump2" v-model="route_id" style="width:150px;" v-show="yj_choose == 0 || yj_choose == 2 || yj_choose == 3 || yj_choose == 5 || yj_choose == 6 || yj_choose == 8 || yj_choose == 9 || yj_choose == 10" >
+                        <option v-for="rn in routeName" :value="rn.Id">{{rn.Id}}-{{rn.Name}}</option>
+                    </select>
+                    <select name="jump2" id="jump2" v-model="Poi_choose" style="width:150px;" v-show="yj_choose == 2 || yj_choose == 3 || yj_choose == 9">
+                        <option v-for="pls in Poilist" :value="pls.poi_id">{{pls.poi_id}}-{{pls.poi_name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="msgs1" v-show="jump_type == 1">跳转链接&nbsp;&nbsp;<input style="width: 657.7px;height:40px;font-size:1.2em;color:rgb(92, 92, 92);background-color: white;border: 1px solid rgb(105, 105, 105);position: absolute;right: 10px;top: 0px;" type="text" name="jump_link" id="jump_link">
+            </div>
+            <div class="btn_All" style="width: 50%; margin-left: 25%;">
+                <div class="btn_Left" id="btn_L" @click="chongzhi()">重置</div>
+                <div class="btn_Right" id="btn_R" style="width:100px;" @click="saves()">保存</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

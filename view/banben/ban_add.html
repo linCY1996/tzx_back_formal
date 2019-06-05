@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/banben/ban_add.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="../../static/js/banben/ban_add.js"></script>
+</head>
+<body>
+    <div id="tall">
+            <div class="fanhui"><a href="javascript:history.go(-1)">返回</a></div>
+        <div class="Msg1">&nbsp;&nbsp;版本号
+            <input type="text" name="banben" id="banben" v-model="b_Num">
+        </div>
+        <div class="Msg1">&nbsp;&nbsp; 当前状态
+            <input type="text" name="status" id="status" v-model="b_Status">
+        </div>
+        <div class="btns">
+            <div class="btn_Left" @click="chongzhi()">重置</div>
+            <div class="btn_Right" @click="posts()">保存</div>
+        </div>
+    </div>
+</body>
+</html>

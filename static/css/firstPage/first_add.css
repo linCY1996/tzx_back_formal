@@ -1,0 +1,108 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+#talls {
+   
+    width: 100%;
+    min-height: 600px;
+    /* margin-left: 15%; */
+    /* margin-top: 100px; */
+    /* border: 1px solid black; */
+}
+
+.select_Msgs {
+    width: 70%;
+    height: 300px;
+    margin-left: 15%;
+    /* border: 1px solid black; */
+   
+}
+
+.Name {
+    width: 50%;
+    height: 50px;
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    line-height: 50px;
+    margin-left: 25%;
+
+}
+
+.msgs {
+    position: relative;
+    width: 80%;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 10%;
+    line-height: 40px;
+}
+
+.msgs1{
+    position: relative;
+    width: 80%;
+    height: 40px;
+    margin-top: 20px;
+    margin-left: 10%;
+    line-height: 40px;
+}
+
+.jump_Msgs {
+    position: absolute;
+    top: 0px;
+    width: 70%;
+    right: 10px;
+}
+
+.msgs input {
+    position: absolute;
+    right: 10px;
+    width: 70%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.4em;
+    border: 1px solid rgb(97, 97, 97);
+}
+
+.msgs select {
+    position: absolute;
+    right: 10px;
+    width: 70%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.4em;
+    border: 1px solid rgb(97, 97, 97);
+}
+
+#jump1,#jump2  {
+    height: 30px;
+    margin-top: 5px;
+    border: 1px solid rgb(95, 95, 95);
+    line-height: 30px;
+    font-size: 1.1em;
+
+}
+
+.bianji,.add{
+    width: 48%;
+    border-radius: 10px 10px;
+    border: 1px solid rgb(241, 241, 241);
+    background-color: rgba(192, 192, 192, 0.5);
+    color: #e08e0b;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Bianji,.Add{
+    width: 48%;
+    border-radius: 10px 10px;
+    border: 1px solid rgb(241, 241, 241);
+    background-color: rgba(47, 248, 98, 0.5);
+    color: #ffffff;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+}

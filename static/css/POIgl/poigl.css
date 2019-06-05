@@ -1,0 +1,24 @@
+.chaxun {
+    width: 600px;
+    height: 60px;
+    /* border: 1px solid black; */
+    font-size: .8em;
+    line-height: 60px;
+}
+
+.chaxun input {
+    width: 170px;
+    margin-top: 15px;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid rgb(134, 134, 134);
+    font-size: 1.4em; 
+}
+
+.chaxun select {
+    margin-top: 15px;
+    width: 82px;
+    height: 30px;
+    border: 1px solid rgb(134, 134, 134);
+    color: black;
+}

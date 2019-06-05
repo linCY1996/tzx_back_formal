@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
+    <link rel="stylesheet" href="../../static/css/POIgl/poi_add1.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script>
+    <script src="../../static/utf8-jsp/ueditor.parse.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script src="../../static/js/POIgl/poi_add_now.js"></script>
+</head>
+
+<body>
+    <div id="tall">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
+                    style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+
+        <!-- 添加 -->
+        <div class="Names">第一步 添加POI</div>
+        <div class="all_Msgs">
+
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th style="min-width:40px;">类目</th>
+                        <th style="width: 700px;">填写</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POI名字</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Name" cols="30" rows="4"></textarea></td>
+                        <td style="color: red;">不超过8个字</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI类型</td>
+                        <td><select style="color:black;width:500px;" v-model="a_Type" name="daoname" id="daoname">
+                                <option value="0">0&nbsp;景</option>
+                                <option value="1">1&nbsp;人</option>
+                                <option value="2">2&nbsp;文</option>
+                                <option value="3">3&nbsp;吃</option>
+                                <option value="4">4&nbsp;历</option>
+                                <option value="5">5&nbsp;购</option>
+                                <option value="6">6&nbsp;娱</option>
+                            </select></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>默认对话</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Dubbing_content" cols="30"
+                                rows="4"></textarea></td>
+                                <td><span style="color: red;">不超过20个字</span>（含标点符号）</td>
+
+                    </tr>
+                    <tr>
+                        <td>默认对话语音</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Dubbing_video" cols="30"
+                                rows="4"></textarea></td>
+                                <td>请输入音频链接</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI头像</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Image" cols="30" rows="4"></textarea></td>
+                        <td>请输入头像图片链接，<span style="color: red;">图片尺寸：120*120px</span></td>
+
+                    </tr>
+                    <tr>
+                        <td>POI介绍图</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Imgs" cols="30" rows="4"></textarea></td>
+                        <td>请输入图片链接，<span style="color:red;">图片尺寸：650*350</span>。填写内容全部是英文字符，必须按照如下格式填写("","","")
+                            <br>例如："http://imgs1.tuzuu.com/tuzhuxingzhe.png","http://imgs1.tuzuu.com/tuzhuxingzhe.png"</td>
+
+                    </tr>
+                    <tr>
+                        <td>详情页简介</td>
+                        <td>
+                            <script id="editor2" type="text/plain"
+                                style="max-width: 503px;max-height:400px;overflow-y: scroll;"></script>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>POI标签</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Label" cols="30" rows="4"></textarea></td>
+                        <td style="color: red;">10个字以内</td>
+
+                    </tr>
+                    <tr>
+                        <td>纬度</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Lat" cols="30" rows="4"></textarea></td>
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span style="color: red;">一定要精确</span></td>
+                    </tr>
+                    <tr>
+                        <td>经度</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Lon" cols="30" rows="4"></textarea></td>
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span style="color: red;">一定要精确</span></td>
+
+                    </tr>
+                    <tr>
+                        <td>建议游玩时间(分钟)</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_PlayTime" cols="30" rows="4"></textarea>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>费用</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Price" cols="30" rows="4"></textarea></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>任务触发范围(米)</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Region" cols="30" rows="4"></textarea></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>营业时间</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_ShopHours" cols="30" rows="4"></textarea>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>POI弹窗介绍</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_MultiIntro" cols="30" rows="4"></textarea>
+                            <br>
+                            <span>换行用\n</span>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>POI图标-未游玩</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Poi_One_link" cols="30"
+                                rows="4"></textarea></td>
+                                <td>输入图片链接</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI图标-未游玩尺寸(像素)</td>
+                        <td>
+                            <div class="chicun">宽&nbsp;<input type="number" v-model="a_Poi_One_width" name="num1"
+                                    id="num1">&nbsp;&nbsp;&nbsp;高&nbsp;<input type="number" v-model="a_Poi_One_height"
+                                    name="num2" id="num1"></div>
+                        </td>
+                        <td>在地图中展示的尺寸宽高</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI图标-未游玩位置(像素)</td>
+                        <td>
+                            <div class="chicun">左&nbsp;<input type="number" v-model="a_Poi_One_left" name="num1"
+                                    id="num1">&nbsp;&nbsp;&nbsp;上&nbsp;<input type="number" v-model="a_Poi_One_top"
+                                    name="num2" id="num1"></div>
+                        </td>
+                        <td>POI图标的中点距离地图的最左边和最上边距离</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI图标-已游玩</td>
+                        <td><textarea name="daoname" id="daoname" v-model="a_Poi_Two_link" cols="30"
+                                rows="4"></textarea></td>
+                                <td>输入图片链接</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI图标-已游玩尺寸(像素)</td>
+                        <td>
+                            <div class="chicun">宽&nbsp;<input type="number" v-model="a_Poi_Two_width" name="num1"
+                                    id="num1">&nbsp;&nbsp;&nbsp;高&nbsp;<input type="number" v-model="a_Poi_Two_height"
+                                    name="num2" id="num1"></div>
+                        </td>
+                        <td>在地图中展示的尺寸宽高</td>
+
+                    </tr>
+                    <tr>
+                        <td>POI图标-已游玩位置(像素)</td>
+                        <td>
+                            <div class="chicun">左&nbsp;<input type="number" v-model="a_Poi_Two_left" name="num1"
+                                    id="num1">&nbsp;&nbsp;&nbsp;上&nbsp;<input type="number" v-model="a_Poi_Two_top"
+                                    name="num2" id="num1"></div>
+                        </td>
+                        <td>POI图标的中点距离地图的最左边和最上边距离</td>
+
+                    </tr>
+                    <tr>
+                        <td>是否可手动触发</td>
+                        <td><select name="manual" id="daoname" v-model="a_manual">
+                                <option value="true">是</option>
+                                <option value="false">否</option>
+                            </select></textarea></td>
+                            <td>选是，表示用户可在未到达POI触发范围即可游玩POI；<br>选否，表示用户必须到达POI所在坐标的触发范围才可游玩</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- <div class="btn_All">
+                <div class="btn_Left" id="btn_L" @click="chongzhi()">重置</div>
+                <div class="btn_Right" id="btn_R" style="width:100px;" @click="posts()">保存并继续</div>
+            </div> -->
+        </div>
+        <div style="height:1900px;"></div>
+
+        <!-- 添加 -->
+        <div class="Names">第二步 添加POI故事</div>
+        <div class="all_Msgs">
+
+            <table class="layui-table">
+                <thead>
+                    <tr>
+
+                        <th style="min-width:40px;">类目</th>
+                        <th style="width: 700px;">填写</th>
+                        <th>备注</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>POI故事标题</td>
+                        <td><textarea name="daoname" v-model="a_cardtitle" id="daoname" cols="30" rows="4"></textarea>
+                        </td>
+                        <td style="color: red;">18个字以内</td>
+
+                    </tr>
+                    <tr>
+                        <td>故事卡片-未获得</td>
+                        <td><textarea name="daoname" v-model="a_cardImg1" id="daoname" cols="30" rows="4"></textarea>
+                        </td>
+                        <td>输入图片链接，建议图片加上灰色滤镜，<span style="color: red;">图片尺寸：580*544</span></td>
+
+                    </tr>
+                    <tr>
+                        <td>故事卡片-已获得</td>
+                        <td><textarea name="daoname" v-model="a_cardImg2" id="daoname" cols="30" rows="4"></textarea>
+                        </td>
+                        <td>输入图片链接，<span style="color: red;">图片尺寸：580*544</span></td>
+
+                    </tr>
+                    <tr>
+                        <td>音频链接</td>
+                        <td><textarea name="daoname" v-model="a_cardMusic" id="daoname" cols="30" rows="4"></textarea>
+                        </td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>音频时长(秒)</td>
+                        <td><textarea name="daoname" v-model="a_cardMusicLen" id="daoname" cols="30"
+                                rows="4"></textarea></td>
+                        <td></td>
+
+                    </tr>
+                    <tr>
+                        <td>故事详情</td>
+                        <td>
+                            <script id="editor1" type="text/plain"
+                                style="max-width: 503px;max-height:400px;overflow-y: scroll;"></script>
+                        </td>
+                        <td></td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+
+            <!-- <div class="fuWenBen">
+                <script id="editor1" type="text/plain" style="max-height:400px;overflow-y: scroll;"></script>
+            </div> -->
+            <div class="btn_All">
+                <div class="btn_Left" id="btn_L" @click="chongzhi()">重置</div>
+                <div class="btn_Right" id="btn_R" style="width:100px;" @click="posts()">保存并继续</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

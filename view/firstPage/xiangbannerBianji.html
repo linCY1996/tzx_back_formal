@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/firstPage/xiangbannerBianji.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="../../static/js/firstPage/xiangbannerBianji.js"></script>
+</head>
+<body>
+    <div id="tall">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+        <div class="Nac">
+            <b>修改：</b>&nbsp;&nbsp;
+            <br>
+            <br>
+            <textarea name="banner" id="banner" v-model="banner"></textarea>
+        </div>
+        <div class="btn">
+            <div class="btnLeft" @click="chongzhi()">重置</div>
+            <div class="btnRight" @click="saves()">保存</div>
+        </div>
+    </div>
+</body>
+</html>

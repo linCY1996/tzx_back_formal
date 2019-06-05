@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="../../static/css/POIgl/bianji.css"> -->
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <link rel="stylesheet" href="../../static/css/dygl/bianji.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script src="../../static/js/lxgl/lxdetail.js"></script>
+</head>
+
+<body>
+    <div id="tall">
+        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        </div>
+        <!-- 编辑 -->
+        <div class="all_Msgs">
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">类目</th>
+                        <th style="min-width:60px;">填写</th>
+                        <th>示例</th>
+                        <th>备注</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>渠道id</td>
+                        <td><select style="color:black;width:663.6px;" name="qudaoId" id="qudaoId" v-model="qudao_Id">
+                                <option v-for="qd in qudao" :value="qd.id">{{qd.id}}&nbsp;{{qd.name}}</option>
+
+                            </select></td>
+                        <td></td>
+                        <td></td>
+                        <td>字符串</td>
+                    </tr>
+                    <tr>
+                        <td>线路id</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Id" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>线路名称</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Name" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td>字符串</td>
+                    </tr>
+                    <tr>
+                        <td>城市</td>
+                        <td><textarea name="daoname" id="daoname" v-model="City" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>导游名字</td>
+                        <td><select name="dName" id="dName" v-model="dName" style="width:663.6px;color: black;">
+                                <option v-for="dm in daoyouname" :value="dm.Name">{{dm.Name}}</option>
+                            </select></td>
+                        <td></td>
+                        <td></td>
+                        <td>字符串</td>
+                    </tr>
+                    <tr>
+                        <td>线路POI</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="pl in Poilist">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="pl.Id" :value="pl.Id"
+                                        v-model="checkedNames">
+                                    <label :for="pl.Name">{{pl.Id}}-{{pl.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                            <div style="position:absolute;bottom:0px;left:15px;">选择Poi_id: {{ checkedNames }}</div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>价格(分)</td>
+                        <td><textarea name="daoname" id="daoname" v-model="Price" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>线路标签</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Label" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>详情页banner</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xiangq_Banner" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>支付页图片</td>
+                        <td><textarea name="daoname" id="daoname" v-model="zhifu_Img" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>详情页展示图</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xiangqing_ShowImg" cols="90"
+                                rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>线路盖章图</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Icon" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- <tr>
+                        <td>行程结束语</td>
+                        <td><textarea name="daoname" id="daoname" v-model="xingcheng_End" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr> -->
+                    <tr>
+                        <td>独家回忆入口图</td>
+                        <td><textarea name="daoname" id="daoname" v-model="dujia_InImg" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>独家回忆封面图</td>
+                        <td><textarea name="daoname" id="daoname" v-model="dujia_fengImg" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <!-- 新增 -->
+                    <tr>
+                        <td>独家回忆客服引导文案</td>
+                        <td><textarea name="daoname" v-model="dujia_word" id="daoname" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>独家回忆分享标题</td>
+                        <td><textarea name="daoname" v-model="dujia_showtitle" id="daoname" cols="90"
+                                rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>独家回忆分享图片</td>
+                        <td><textarea name="daoname" v-model="dujia_showPage" id="daoname" cols="90"
+                                rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>体验按钮文案</td>
+                        <td><textarea name="daoname" v-model="dujia_btnmsg" id="daoname" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>形成开始页配置</td>
+                        <td>
+                            <div class="road_end_msg">图片&nbsp;<input type="text" v-model="dujia_Go_imgs" id="road_end">
+                            </div>
+                            <div class="road_end_msg">音频&nbsp;<input type="text" v-model="dujia_Go_audio" id="road_end">
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>行程结束页配置</td>
+                        <td style="height: 270px;">
+                            <div class="road_end_msg">音频&nbsp;<input type="text" v-model="dujia_end_audio"
+                                    id="road_end"></div>
+                            <div class="road_end_msg">图片&nbsp;<input type="text" v-model="dujia_end_img" id="road_end">
+                            </div>
+                            <div class="road_end_msg">
+                                跳转类型 <select name="jump1" id="jump1" v-model="dujia_end_Class">
+                                    <option value="-1">不跳转</option>
+                                    <option value="0">跳转目录</option>
+                                    <option value="1">跳转链接</option>
+                                </select>
+                            </div>
+
+                            <div class="road_end_msg" v-show='dujia_end_Class == 1'>
+                                跳转链接&nbsp;<input type="text" v-model="dujia_end_link" id="road_end">
+                            </div>
+                            <div class="road_end_msg" v-show='dujia_end_Class == 0'>
+                                <!-- <div class="msgs">跳转类型&nbsp;&nbsp;<select name="jumps" id="jumps" v-model="jump_class">
+                                            <option value="0">小程序页面跳转</option>
+                                            <option value="1">不跳转</option>
+                                            <option value="2">跳转链接</option>
+                                        </select>
+                                    </div> -->
+                                <div class="msgs1" style="position: relative;">跳转&nbsp;&nbsp;
+                                    <div class="jump_Msgs"
+                                        style="position: absolute;  right: 0px; top:0px;display: flex; justify-content: space-between;width: 554px;height: 40px;">
+                                        <!-- <div class="jump_Msg_Ch" style="width: 200px;height: 40px;"> -->
+                                        <select name="jumps" id="jumps"
+                                            style="width: 275px; height: 40px;position: absolute;  left: 0px; top:0px;"
+                                            v-model="yj_choose">
+                                            <option value="0">详情页</option>
+                                            <option value="1">反馈建议</option>
+                                            <option value="2">指定个人卡包</option>
+                                            <option value="3">指定线路卡包</option>
+                                            <option value="4">个人全部行程页</option>
+                                            <option value="5">指定线路的个人行程浏览列表</option>
+                                            <option value="6">指定线路的浏览列表</option>
+                                            <option value="7">所有独家回忆</option>
+                                            <option value="8">指定独家回忆视频</option>
+                                            <option value="9">指定个人行程的POI详情页</option>
+                                            <option value="10">指定线路地图预览页</option>
+                                        </select>
+                                        <!-- </div> -->
+                                        <!-- <div class="jump_Msg_Ch" style="width: 200px;height: 40px;"> -->
+                                        <select name="jump2" id="jump2" style="width: 275px;"
+                                            v-show="yj_choose == 0 || yj_choose == 2 || yj_choose == 3 ||yj_choose == 5 || yj_choose == 6 || yj_choose == 8 || yj_choose == 9 || yj_choose == 10">
+                                            <option value="0">9-吃好才能玩好</option>
+                                            <option value="1">10-吃好才能玩好撒</option>
+                                        </select>
+                                        <!-- </div> -->
+                                    </div>
+                                </div>
+                                <div class="road_end_msg">
+                                    跳转链接&nbsp; <div class="dujia_end_link"
+                                        style="position:absolute;right:0px;top:0px;width:554px;top:5px;height:40px;border:1px solid rgb(90, 90, 90);background-color: white;font-size:1.2em;color:rgb(94, 94, 94);line-height: 40px;">
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>地图背景</td>
+                        <td><textarea name="daoname" v-model="dujia_Mapbg" id="daoname" cols="90" rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>推荐路线</td>
+                        <td><textarea name="daoname" v-model="dujia_niceroad" id="daoname" cols="90"
+                                rows="4"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>地图坐标</td>
+                        <td>
+                            <div class="road_lat">
+                                左上&nbsp;<input type="text" v-model="dujia_lat_leftUp_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_leftUp_lat" name="leftup" id="leftup">
+                                右上&nbsp;<input type="text" v-model="dujia_lat_rightUp_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_rightUp_lat" name="leftup" id="leftup">
+                            </div>
+                            <div class="road_lat">
+                                右下&nbsp;<input type="text" v-model="dujia_lat_rightDown_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_rightDown_lat" name="leftup" id="leftup">
+                                左上&nbsp;<input type="text" v-model="dujia_lat_leftDown_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_rightDown_lat" name="leftup" id="leftup">
+                            </div>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="saves()">保存</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

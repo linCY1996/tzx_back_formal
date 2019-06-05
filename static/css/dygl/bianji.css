@@ -1,0 +1,163 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.fanhui {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    line-height: 60px;
+    margin-left: 50px;
+    font-size: 1.2em;
+}
+
+a {
+    color: rgb(250, 122, 49);
+    text-decoration: none;
+    
+    
+}
+
+#tall {
+    width: 100%;
+    height: 100%;
+
+    /* background-color:  rgb(230, 116, 116); */
+}
+
+.all_Msgs, .all_Msgs1 {
+    width: 80%;
+    height: 400px;
+    margin-left: 10%;
+    margin-top: 50rpx;
+}
+.shouye_Id,.shouye_Img {
+    position: relative;
+    font-size: 1em;
+    font-weight: 600;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    margin-top: 15px;
+}
+
+.shouye_Id input {
+    position: absolute;
+    right: 10px;
+    font-size: 1.2em;
+    line-height: 40px;
+    height: 40px;
+    border: 1px solid rgb(146, 146, 146);
+    width: 90%;
+    color: rgb(161, 161, 161);
+}
+
+.shouye_Img input {
+    position: absolute;
+    right: 10px;
+    font-size: 1.2em;
+    line-height: 40px;
+    height: 40px;
+    border: 1px solid rgb(146, 146, 146);
+    width: 90%;
+    color: rgb(107, 107, 107);
+}
+
+.btn_All {
+    display: flex;
+    justify-content: space-between;
+    height: 40px;
+    margin-left: 20%;
+    width: 60%;
+    margin-top: 20px;
+}
+
+.btn_Left,.btn_Right {
+    cursor: pointer;
+    width: 70px;
+    height: 40px;
+    border-radius: 10px 10px;
+    color: white;
+    font-size: .9em;
+    line-height: 40px;
+    text-align: center;
+}
+
+.btn_Left {
+    background-color: #e08e0b;
+
+}
+
+.btn_Right {
+    background-color: #00acd6;
+}
+
+.chooses {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    height: 60px;
+    margin-left: 40%;
+    margin-bottom: 25px;
+    font-size: 1.4em;
+    /* font-weight: bold; */
+    line-height: 60px;
+}
+
+.bianji,.add{
+    width: 48%;
+    border-radius: 10px 10px;
+    border: 1px solid rgb(241, 241, 241);
+    background-color: rgba(192, 192, 192, 0.5);
+    color: #e08e0b;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.Bianji,.Add{
+    width: 48%;
+    border-radius: 10px 10px;
+    border: 1px solid rgb(241, 241, 241);
+    background-color: rgba(47, 248, 98, 0.5);
+    color: #ffffff;
+    line-height: 60px;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* 线路管理css */
+.road_end_msg,.road_lat {
+    line-height: 40px;
+    margin-bottom: 5px;
+    position: relative;
+    width: 663.6px;
+    height: 40px;
+}
+
+.road_end_msg input {
+    position: absolute;
+    right: 0px;
+    width: 550px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+
+}
+
+.road_end_msg select {
+    position: absolute;
+    right: 0px;
+    width: 550px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+}
+
+.road_lat input {
+    width:100px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+}

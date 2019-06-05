@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎页面-X-admin2.0</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> -->
+  <link rel="stylesheet" href="../../static/css/font.css">
+  <link rel="stylesheet" href="../../static/css/xadmin.css">
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="../../static/js/xadmin.js"></script>
+  <link rel="stylesheet" href="../../static/css/lxgl/lxgl.css">
+  <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+  <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+  <link rel="stylesheet" href="../../static/css/fenye.css">
+  <link rel="stylesheet" href="../../static/css/tanchuang.css">
+  <script src="../../static/js/lxgl/lxgl.js"></script>
+</head>
+
+<body>
+  <div class="x-nav">
+
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+      href="javascript:location.replace(location.href);" title="刷新">
+      <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+  </div>
+  <div class="x-body" id="tall" style="overflow-y:scroll;">
+    <div class="chaxun" style="display:flex;justify-content: space-between; width: 700px;">
+
+      线路名称&nbsp;<input type="text" name="poiname" v-model="lx_name" id="poiname">&nbsp;&nbsp;
+      线路城市&nbsp;<input type="text" name="poicity" v-model="lx_city" id="poicity">
+      <!-- 导游名字&nbsp;<input type="text" name="tourname" v-model="dy_name" id="tourname"> -->
+      渠道&nbsp;
+      <select name="poiclass" style="width:120px;" id="poiclass" v-model="poi_class">
+        <option v-for="qd in qudao" :value="qd.id">{{qd.id}}&nbsp;&nbsp;{{qd.name}}</option>
+      </select>&nbsp;&nbsp;
+      <i class="iconfont" style=" margin-left:20px; cursor: pointer;" @click="chaXun()">&#xe6ac;</i>
+    </div>
+    <xblock>
+      <button class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
+      <button class="layui-btn" @click="add_link()"><i class="layui-icon"></i>添加</button>
+      <span class="x-right" style="line-height:40px">共有数据：{{total}} 条</span>
+    </xblock>
+    <table class="layui-table" style="min-width:2800px;">
+      <thead>
+        <tr>
+          <th>
+              选择
+            <!-- <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i>
+            </div> -->
+          </th>
+          <th>操作</th>
+          <th>渠道id</th>
+          <th>线路id</th>
+          <th>线路名称</th>
+          <th>城市</th>
+          <th>导游名字</th>
+          <th>线路POI</th>
+          <th>价格(分)</th>
+          <th>线路标签</th>
+          <th>详情页目录</th>
+          <th>详情</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for='lx in luxian'>
+          <td>
+            <input type="checkbox" class="checks" :value="lx.Id" v-model="checkId">
+          </td>
+          <td class="td-manage">
+            <a title="编辑/添加" v-on:click='btn_link(lx.Id)'>
+              <i class="layui-icon">&#xe63c;</i>
+            </a>
+            <a title="删除" v-on:click="del(lx.Id)">
+              <i class="layui-icon">&#xe640;</i>
+            </a>
+            <a title="复制到" href="javascript:;">
+              <i class="layui-icon">&#xe744;</i>
+            </a>
+          </td>
+          <td>{{lx.ChannelId}}-{{lx.ChannelName}}</td>
+          <td>{{lx.Id}}</td>
+          <td>{{lx.Name}}</td>
+          <td>{{lx.City}}</td>
+          <td>{{lx.GuideId}}-{{lx.guide_name}}</td>
+          <td>{{lx.poi_ids}}</td>
+          <td>{{lx.Price}}</td>
+          <td>{{lx.Label}}</td>
+          <td>../detail/detail?routeid={{lx.Id}}&channel={{lx.ChannelId}}</td>
+          <td><a @click="goDetail(lx.Id)" style="cursor: pointer; color:rgb(6, 67, 158);">详情</a></td>
+
+
+        </tr>
+
+      </tbody>
+    </table>
+    <div class="page-bar">
+      <ul>
+        <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+        <li v-if="cur==1"><a class="banclick">上一页</a></li>
+        <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+          <a v-on:click="btnClick(index)">{{ index }}</a>
+        </li>
+        <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+        <li v-if="cur == all"><a class="banclick">下一页</a></li>
+        <li><a>共<i>{{all}}</i>页</a></li>
+      </ul>
+
+    </div>
+    <div class="tanchuang" v-if="tan_show">
+      <div class="tanMsgs">你确定要删除此内容吗？</div>
+      <div class="tanBtns">
+        <div class="Cancel" v-on:click="Cancels()">取消</div>
+        <div class="Confirms" v-on:click="Confirms()">确定</div>
+      </div>
+    </div>
+    <div class="tanchuang" v-if="tan_show_list == true">
+      <div class="tanMsgs">你确定要删除此内容吗？</div>
+      <div class="tanBtns">
+        <div class="Cancel" v-on:click="Refuse()">取消</div>
+        <div class="Confirms" v-on:click="Delete()">确定</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
