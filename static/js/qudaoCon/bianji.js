@@ -5,7 +5,6 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 const server = 'formal'   //正式服
 window.onload = function () {
     var ids = location.search.replace('?id=', "")
-    console.log(ids)
     var np = new Vue({
         el: '#tall',
         data: {

@@ -18,9 +18,7 @@ window.onload = function () {
     var ids = GetParameters('id')    //pname
     var channel_id = GetParameters('channel_id')
     var type = GetParameters('type')
-    console.log("type", type)
     var routeid = GetParameters('routeid')
-    console.log("routeid",routeid)
     var np = new Vue({
         el: '#talls',
         data: {

@@ -16,9 +16,7 @@ window.onload = function () {
         }
     }
     var id = GetParameters('id')    //pname
-    console.log("id", id)
     var count = GetParameters('count')
-    console.log("count", count)
     var np = new Vue({
         el: '#tall',
         data: {
@@ -45,12 +43,9 @@ window.onload = function () {
         methods: {
 
             saves: function () {
-                // console.log(parseInt(np.chooseMsg.slice(0,1)))
                 var workimg = np.work_Imgs.split(',')
                 var workImgs = JSON.stringify(workimg)
-                console.log("workimg",workimg) 
                 var sorts = np.workSort == '' ? count++ : np.workSort   //三元
-
                 if (np.chooseMsg == '1-文字说明任务') {
                     if (workImgs == '[""]') {
                         workImgs = '[]'
@@ -91,7 +86,6 @@ window.onload = function () {
                     if (workImgs == '[""]') {
                         workImgs = '[]'
                     }
-                    // console.log("====",workImgs)
                     var t = 0   //选择文字
                     var choose_wenzi = []
                     for (var i = 0; i < np.choose_wenzi.length; i++) {

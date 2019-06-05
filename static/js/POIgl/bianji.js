@@ -18,10 +18,7 @@ window.onload = function () {
         }
     }
     var ids = GetParameters('id')    //taskid
-    console.log("id", ids)
     var poiId = GetParameters('poiId')    //poiID
-    console.log("poiId", poiId)
-
     var np = new Vue({
         el: '#tall',
         data: {
@@ -182,7 +179,6 @@ window.onload = function () {
                             target: parseInt(np.choose_Img[x].target)
                         })
                     }
-                    console.log("8=",workImgs)
                     if (np.choose_Img[p].target == '') {
                         alert("请补全跳转id")
                     } else {

@@ -98,7 +98,6 @@ window.onload = function () {
                     id: parseInt(ids),
                     server: server
                 }).then((res) => {
-                    console.log(res.data.Body)
                     np.qudao_Id = res.data.Body.ChannelId
                     np.qudao_Name = res.data.Body.ChannelName
                     np.xianlu_Id = res.data.Body.Id
@@ -121,18 +120,15 @@ window.onload = function () {
                     np.dujia_showPage = JSON.parse(res.data.Body.MemImgs) /// 
                     np.dujia_btnmsg = res.data.Body.PriceText
                     var Go_Start = JSON.parse(res.data.Body.Start)
-                    console.log(Go_Start)
                     np.dujia_Go_imgs = Go_Start.image
                     np.dujia_Go_audio = Go_Start.audio
 
                     var finish = JSON.parse(res.data.Body.Finish)
-                    console.log(finish)
                     np.dujia_end_audio = finish.audio
                     np.dujia_end_img = finish.image
                     np.dujia_end_Class = finish.type
                     np.dujia_end_link = finish.jump
                     var Entity = JSON.parse(res.data.Body.Entity)
-                    console.log(Entity)
                     np.dujia_Mapbg = Entity.bg
                     np.dujia_niceroad = Entity.url
 
@@ -183,7 +179,6 @@ window.onload = function () {
                     server:server
                 }).then((res) => {
                     np.Poilist = res.data.Body.list
-                    console.log("hahahah", res.data.Body.list)
                   
                 })
             },
@@ -191,17 +186,11 @@ window.onload = function () {
               saves: function () {
                 var imgsOne = 'http://imgs1.tuzuu.com/12_zhifu.jpg'
                 var imims = JSON.stringify(np.xiangq_Banner)
-                console.log("imgs",imims)
                 var imss = imims.slice(1, imims.length - 1)
-                console.log(imss)
                 var imgsAll = '["' + imgsOne + '","' + np.zhifu_Img + '","' + np.dujia_InImg + '","' + np.dujia_fengImg + '",' + imss + ']'   //拼接imgs
-                console.log("imgsAll", imgsAll)
                 var Start = '{"image":"' + np.dujia_Go_imgs + '","audio":"' + np.dujia_Go_audio + '"}'
-                console.log("Start", Start)
                 var Finish = '{"image":"' + np.dujia_end_img + '","audio":"' + np.dujia_end_audio + '","type":' + np.dujia_end_Class + ',"jump":"' + np.dujia_end_link + '"}'
-                console.log(Finish)
                 var Entity = '{ "url": "' + np.dujia_niceroad + '", "bg": "' + np.dujia_Mapbg + '", "rect": [ { "lon":' + np.dujia_lat_leftUp_lon + ', "lat": ' + np.dujia_lat_leftUp_lat + ' }, { "lon": ' + np.dujia_lat_rightUp_lon + ', "lat": ' + np.dujia_lat_rightUp_lat + ' }, { "lon": ' + np.dujia_lat_rightDown_lon + ', "lat": ' + np.dujia_lat_rightDown_lat + ' }, { "lon": ' + np.dujia_lat_leftDown_lon + ', "lat": ' + np.dujia_lat_leftDown_lat + ' } ] }'
-                console.log(Entity)
 
                 // var label = np.xianlu_Label.split(',')
                 // console.log(label)
@@ -227,7 +216,6 @@ window.onload = function () {
                     entity: Entity,
                     server: server,
                 }).then((res) => {
-                    console.log(res.data)
                     alert("保存成功")
                     window.history.go(-1)
                 })

@@ -105,7 +105,6 @@ window.onload = function () {
                     server:server
                 }).then((res) => {
                     np.Poilist = res.data.Body.list
-                    console.log("hahahah", res.data.Body.list)
                   
                 })
             },
@@ -142,7 +141,6 @@ window.onload = function () {
                             current = i
                         }
                     }
-                    console.log("current=",current)       
                     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
                         np.jump_url = '../cardpackage/cardpackage?travelid='+np.route_id+'&name='+np.Name+'&current='+current
                     } else if (np.yj_choose == 4) {
@@ -153,7 +151,6 @@ window.onload = function () {
                         np.jump_url = '../memory/memory'
                     }
                 }
-                console.log("跳转链接",np.jump_url+"   类型：",np.jump_type)
 
                 var dname = np.dName.split(',')
                 if (np.viewCount == '' || np.qudao_Id == '' || np.xianlu_Id == '' || np.xianlu_Name == '' || np.City == '' || np.dName == '' || np.xianlu_Poi == '' || np.Price == '' || np.xianlu_Label == '' || np.zhifu_Img == '' || np.xianlu_Icon == '' || np.xingcheng_End == '' || np.dujia_InImg == '' || np.dujia_fengImg == '' || np.dujia_word == '' || np.dujia_showtitle == '' || np.dujia_showPage == '' || np.dujia_btnmsg == '' || np.dujia_Go_imgs == '' || np.dujia_end_img == '' || np.dujia_end_Class == '' || np.dujia_end_lin == '' || np.dujia_Mapbg == '' || np.dujia_niceroad == '' || np.dujia_lat_leftDown_lat == '' || np.dujia_lat_leftDown_lon == '' || np.dujia_lat_leftUp_lat == '' || np.dujia_lat_leftUp_lon == '' || np.dujia_lat_rightDown_lat == '' || np.dujia_lat_rightDown_lon == '' || np.dujia_lat_rightUp_lat == '' || np.dujia_lat_rightUp_lon == '') {
@@ -166,13 +163,12 @@ window.onload = function () {
                     var imgsAll = '["' + imgsOne + '","' + np.zhifu_Img + '","' + np.dujia_InImg + '","' + np.dujia_fengImg + '"]'   //拼接imgs
                     var Start = '{"image":"' + np.dujia_Go_imgs + '","audio":"' + np.dujia_Go_audio + '"}'
                     var Finish = '{"image":"' + np.dujia_end_img + '","audio":"' + np.dujia_end_audio + '","type":' + np.jump_type + ',"jump":"' + np.jump_url + '"}'
-                console.log(Finish)
                     var Entity = '{ "url": "' + np.dujia_niceroad + '", "bg": "' + np.dujia_Mapbg + '", "rect": [ { "lon":' + np.dujia_lat_leftUp_lon + ', "lat": ' + np.dujia_lat_leftUp_lat + ' }, { "lon": ' + np.dujia_lat_rightUp_lon + ', "lat": ' + np.dujia_lat_rightUp_lat + ' }, { "lon": ' + np.dujia_lat_rightDown_lon + ', "lat": ' + np.dujia_lat_rightDown_lat + ' }, { "lon": ' + np.dujia_lat_leftDown_lon + ', "lat": ' + np.dujia_lat_leftDown_lat + ' } ] }'
                     var label = np.xianlu_Label.split(',')
                     var poi_ids = []
                     for(var i = 0;i<np.checkedNames.length;i++) {
                         // poi_id[i] = np.checkedNames[i].split(',')[0]
-                        poi_ids.push({
+                            poi_ids.push({
                             poi_id:parseInt(np.checkedNames[i].split(',')[0]),
                             poi_name:np.checkedNames[i].split(',')[1]
                         })
@@ -203,27 +199,9 @@ window.onload = function () {
                         entity: Entity,
                         server: server,
                     }).then((res) => {
-                        // 更新详情页Banner
-                        console.log(res.data)
-                        // var imgs = np.xiangq_Banner.split(',')
-                        // var Imgs = JSON.stringify(imgs)
-                        // console.log("详情页bnner",typeof Imgs)
-                        // if(np.xiangq_Banner == ''){
-                        //     alert("不能传入空字段")
-                        // }else {
-                        //     axios.post(host+'/route/v1/api/detailBanner/update',{
-                        //         banner:JSON.parse(Imgs),
-                        //         route_id:parseInt(res.data.Body.Id),
-                        //         server:"dev"
-                        //     }).then((res) => {
-                        //         console.log(res.data)
-                        //     })
-                        // }
                         
                         // 更新独家回忆展示图
                         var dujia_Imgs = '["'+np.dujia_InImg + '","' + np.dujia_fengImg+'"]'
-                        console.log("独家回忆展示图",dujia_Imgs)
-                        console.log("====",JSON.parse(dujia_Imgs))
                         if(dujia_Imgs == '') {
                             alert("不能传入空字段")
                         }else {
@@ -232,7 +210,6 @@ window.onload = function () {
                                 route_id:parseInt(res.data.Body.Id),
                                 server:server
                             }).then((res) => {
-                                console.log(res.data)
                             })
                         }
 

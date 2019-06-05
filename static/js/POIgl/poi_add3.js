@@ -29,7 +29,6 @@ window.onload = function () {
                     server: server
                 }).then((res) => {
                     np.work = res.data.Body.list
-                    console.log(np.work)
                     // for(var j = 0;j<np.work.length;j++) {
                     //     np.work.push({
                     //         Id:np.work[j].Id,
@@ -125,7 +124,6 @@ window.onload = function () {
                     id: parseInt(e),
                     server: server
                 }).then((res) => {
-                    console.log(res.data)
                     that.showwork()
                     
                 })
@@ -141,7 +139,6 @@ window.onload = function () {
                 var that = this
                 // nm.tan_show = true
                 np.tan_show_list = false
-                console.log("checkId:",np.checkId)
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])
                 }

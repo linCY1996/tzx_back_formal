@@ -17,11 +17,8 @@ window.onload = function () {
         }
     }
     var ids = GetParameters('id') //pname
-    console.log("ids", ids)
     var fir_show = GetParameters('fshow')
-    console.log("首页", fir_show)
     var Sec_show = GetParameters('sshow')
-    console.log("详情页", Sec_show)
     var np = new Vue({
         el: '#tall',
         data: {

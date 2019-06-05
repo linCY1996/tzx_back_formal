@@ -82,7 +82,6 @@ window.onload = function () {
                     id: parseInt(ids),
                     server: server
                 }).then((res) => {
-                    console.log(res.data.Body)
                     np.qudao_Id = res.data.Body.ChannelId
                     np.qudao_Name = res.data.Body.ChannelName
                     np.xianlu_Id = res.data.Body.Id
@@ -91,12 +90,10 @@ window.onload = function () {
                     np.dNames = res.data.Body.guide_name + "," + res.data.Body.GuideId
                     // console.log("daoyou",np.dNames)
                     var cName = res.data.Body.poi_ids
-                    console.log(cName)
                     var chName = []
                     for (var i = 0; i < cName.length; i++) {
                         chName[i] = cName[i].poi_id + ',' + cName[i].poi_name
                     }
-                    console.log("chName", chName)
                     np.checkedNames = chName
                     np.viewCount = res.data.Body.ViewCount
                     np.Price = res.data.Body.Price
@@ -224,7 +221,6 @@ window.onload = function () {
                             current = i
                         }
                     }
-                    console.log("current=", current)
                     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
                         np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
                     } else if (np.yj_choose == 4) {
@@ -235,25 +231,15 @@ window.onload = function () {
                         np.jump_url = '../memory/memory'
                     }
                 }
-                console.log("jump_url==",np.jump_url)
-                // console.log("daoyou",np.dNames)
                 var dname = np.dNames.split(',')
-
                 var imgsOne = 'http://imgs1.tuzuu.com/12_zhifu.jpg'
-                // console.log("89", np.xiangq_Banner)
-                
                 var imgsAll = '["' + imgsOne + '","' + np.zhifu_Img + '","' + np.dujia_InImg + '","' + np.dujia_fengImg + '"]'   //拼接imgs
-                // console.log("imgsAll", imgsAll)
                 var Start = '{"image":"' + np.dujia_Go_imgs + '","audio":"' + np.dujia_Go_audio + '"}'
-                // console.log("Start", Start)
                 var Finish = '{"image":"' + np.dujia_end_img + '","audio":"' + np.dujia_end_audio + '","type":' + np.jump_type + ',"jump":"' + np.jump_url + '"}'
-                // console.log("===",Finish)
                 var Entity = '{ "url": "' + np.dujia_niceroad + '", "bg": "' + np.dujia_Mapbg + '", "rect": [ { "lon":' + np.dujia_lat_leftUp_lon + ', "lat": ' + np.dujia_lat_leftUp_lat + ' }, { "lon": ' + np.dujia_lat_rightUp_lon + ', "lat": ' + np.dujia_lat_rightUp_lat + ' }, { "lon": ' + np.dujia_lat_rightDown_lon + ', "lat": ' + np.dujia_lat_rightDown_lat + ' }, { "lon": ' + np.dujia_lat_leftDown_lon + ', "lat": ' + np.dujia_lat_leftDown_lat + ' } ] }'
-                // console.log(Entity)
 
                 var poi_ids = []
                 for (var i = 0; i < np.checkedNames.length; i++) {
-                    // poi_id[i] = np.checkedNames[i].split(',')[0]
                     poi_ids.push({
                         poi_id: parseInt(np.checkedNames[i].split(',')[0]),
                         poi_name: np.checkedNames[i].split(',')[1]
@@ -262,8 +248,6 @@ window.onload = function () {
 
                 // 更新独家回忆展示图
                 var dujia_Imgs = '["' + np.dujia_InImg + '","' + np.dujia_fengImg + '"]'
-                // console.log("独家回忆展示图", dujia_Imgs)
-                // console.log("====", JSON.parse(dujia_Imgs))
                 if (dujia_Imgs == '') {
                     alert("不能传入空字段")
                 } else {
@@ -272,7 +256,6 @@ window.onload = function () {
                         route_id: parseInt(ids),
                         server: server
                     }).then((res) => {
-                        console.log(res.data)
                     })
                 }
                 console.log("标签",'['+np.xianlu_Label+']')
@@ -302,7 +285,6 @@ window.onload = function () {
                     entity: Entity,
                     server: server,
                 }).then((res) => {
-                    console.log(res.data)
                     alert("保存成功")
                     window.history.go(-1)
                 })

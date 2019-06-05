@@ -80,7 +80,6 @@ window.onload = function () {
             // 删除导游
             del: function (e) {
                 var that = this
-                console.log(e)
                 np.Id = e
                 np.tan_show = true
                 
@@ -107,12 +106,10 @@ window.onload = function () {
             // 批量删除
             delete:function (e) {
                 var that = this
-                console.log("e",e)
                 axios.post(host + '/route/v1/api/poi/del', {
                     id: parseInt(e),
                     server: server
                 }).then((res) => {
-                    console.log(res.data)
                     that.showPoilist(1,50)
                     
                 })
@@ -128,7 +125,6 @@ window.onload = function () {
                 var that = this
                 // nm.tan_show = true
                 np.tan_show_list = false
-                console.log("checkId:",np.checkId)
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])
                 }

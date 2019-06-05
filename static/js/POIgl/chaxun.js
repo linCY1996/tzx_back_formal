@@ -15,12 +15,8 @@ window.onload = function () {
         }
     }
     var pname = GetParameters('pname')    //pname
-    console.log("pname", pname)
     var pclass = GetParameters('pclass')    //pclass
-    console.log("pclass",pclass)
-    console.log(typeof parseInt(pclass))
     var plabel = GetParameters('plabel')
-    console.log(plabel)
 
     var np = new Vue({
         el: '#tall',
@@ -46,7 +42,6 @@ window.onload = function () {
                     },
                     server:server
                 }).then((res) => {
-                    console.log(res.data.Body.list)
                     np.Poilist = res.data.Body.list
                     np.total = res.data.Body.pager.total
 
@@ -89,7 +84,6 @@ window.onload = function () {
             // 删除导游
             del: function (e) {
                 var that = this
-                console.log(e)
                 np.Id = e
                 np.tan_show = true
                 
@@ -116,12 +110,10 @@ window.onload = function () {
              // 批量删除
              delete:function (e) {
                 var that = this
-                console.log("e",e)
                 axios.post(host + '/route/v1/api/poi/del', {
                     id: parseInt(e),
                     server: server
                 }).then((res) => {
-                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })
@@ -135,13 +127,10 @@ window.onload = function () {
             },
             Delete:function () {
                 var that = this
-                // nm.tan_show = true
                 np.tan_show_list = false
-                console.log("checkId:",np.checkId)
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])
                 }
-                // window.location.reload()
             },
         },
         mounted: function () {

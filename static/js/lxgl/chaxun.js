@@ -15,11 +15,8 @@ window.onload = function () {
         }
     }
     var lxname = GetParameters('lxname')    //pname
-    console.log("lxname", lxname)
     var lxcity = GetParameters('lxcity')
-    console.log("lxcity",lxcity)
     var pclass = GetParameters('pclass')
-    console.log("pclass", pclass)  //渠道id
     var np = new Vue({
         el: '#tall',
         data: {
@@ -44,7 +41,6 @@ window.onload = function () {
                     city:lxcity,
                     channel_id:parseInt(pclass)      //渠道id
                 }).then((res) => {
-                    console.log(res.data.Body)
                     np.luxian = res.data.Body.list
                     np.all = res.data.Body.pager.pages
                     np.total = res.data.Body.pager.total
@@ -70,12 +66,10 @@ window.onload = function () {
             },
             // 编辑跳转链接
             btn_link:function (e) {
-                console.log(e)
                 window.location.href = '/lxbianji?id='+e
             },
             // 删除导游
             del: function (e) {
-                console.log("e",e)
                 np.Id = e
                 np.tan_show = true
                 
@@ -103,12 +97,10 @@ window.onload = function () {
             // 批量删除
             delete:function (e) {
                 var that = this
-                console.log("e",e)
                 axios.post(host + '/route/v1/api/route/del', {
                     id: parseInt(e),
                     server: server
                 }).then((res) => {
-                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })
@@ -124,7 +116,6 @@ window.onload = function () {
                 var that = this
                 // nm.tan_show = true
                 np.tan_show_list = false
-                console.log("checkId:",np.checkId)
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])
                 }
