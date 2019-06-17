@@ -4,7 +4,7 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
+    // var ids = location.search.replace('?id=', "")
     function GetParameters(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -18,6 +18,7 @@ window.onload = function () {
     var ids = GetParameters('id')    //pname
     var channel_id = GetParameters('channel_id')
     var type = GetParameters('type')
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#talls',
         data: {
@@ -41,7 +42,8 @@ window.onload = function () {
             showRouteName: function () {
                 axios.post(host + '/route/v1/api/channel/routeList', {
                     channel_id: parseInt(channel_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.routeName = res.data.Body
                 })
@@ -50,9 +52,9 @@ window.onload = function () {
             async showImgMsg() {
                 await axios.post(host + '/route/v1/api/homePage/get', {
                     id: parseInt(ids),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
-                    console.log("=说明=", res.data.Body)
                     np.jump_url = res.data.Body.jump_url
                     var jump_url = res.data.Body.jump_url
                     np.route_id = jump_url.charAt(jump_url.length - 1)
@@ -103,7 +105,6 @@ window.onload = function () {
                         current = i
                     }
                 }
-                console.log("current=",current)        
                 if (np.jump_type == 0) {
                     if (np.yj_choose == 0) {
                         np.jump_url = '../detail/detail?routeid=' + np.route_id
@@ -143,9 +144,9 @@ window.onload = function () {
                         jump_url: np.jump_url,   ///////
                         sort: parseInt(np.sort),
                         type: type,
-                        server:server
+                        server:server,
+                        token:token
                     }).then((res) => {
-                        console.log(res.data)
                         alert("编辑成功")
                         window.history.go(-1)
                     })
@@ -162,7 +163,8 @@ window.onload = function () {
             route_id: function () {
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(np.route_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.Poilist = res.data.Body.poi_ids
                     np.Name = res.data.Body.Name

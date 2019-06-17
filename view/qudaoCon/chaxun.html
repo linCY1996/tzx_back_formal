@@ -47,9 +47,13 @@
           <th>操作</th>
           <th>渠道id</th>
           <th>渠道名称</th>
-          <th>渠道线路数</th>
           <th>渠道首页入口</th>
-
+          <th>可用导游</th>
+          <th>可编辑导游</th>
+          <th>可用poi</th>
+          <th>可编辑poi</th>
+          <th>可用线路</th>
+          <th>可编辑线路</th>
 
         </tr>
       </thead>
@@ -72,8 +76,13 @@
           </td>
           <td>{{qd.id}}</td>
           <td>{{qd.name}}</td>
-          <td>{{qd.route_num}}</td>
           <td>..pages/index/index?channel={{qd.id}}</td>
+          <td>{{qd.can_use_guide}}</td>
+          <td>{{qd.can_edit_guide}}</td>
+          <td>{{qd.can_use_poi}}</td>
+          <td>{{qd.can_edit_poi}}</td>
+          <td>{{qd.can_use_route}}</td>
+          <td>{{qd.can_edit_route}}</td>
 
         </tr>
 

@@ -4,6 +4,7 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
     var ue1 = UE.getEditor('editor1')   //添加故事详情
     var ue2 = UE.getEditor('editor2')   //添加详情页简介
     var np = new Vue({
@@ -37,6 +38,8 @@ window.onload = function () {
             a_Poi_Two_left: '',   //Poi图标-已游玩左
             a_Poi_Two_top: '',   //Poi图标-已游玩上
             a_manual: '',  //是否可以手动触发
+            // 新增
+            map_scale:1,    //地图缩放比例
 
             // 添加
             a_cardtitle: '',   //Poi故事标题
@@ -52,27 +55,55 @@ window.onload = function () {
 
             // 重置
             chongzhi: function () {
-                console.log("here")
                 window.location.reload()
             },
 
             // 添加
             posts: function () {
+                // console.log(token)
                 var add_dubbing = '[{"text":[{"content":"' + np.a_Dubbing_content + '","br":0,"color":"","bold":0}],"audio":"' + np.a_Dubbing_video + '"}]'
+                if(np.a_Poi_One_width == '') {
+                    np.a_Poi_One_width = 0
+                }
+                if(np.a_Poi_One_height == '') {
+                    np.a_Poi_One_height = 0
+                }
+                if(np.a_Poi_One_left == '') {
+                    np.a_Poi_One_left = 0
+                }
+                if(np.a_Poi_One_top == '') {
+                    np.a_Poi_One_top = 0
+                }
+                if(np.a_Poi_Two_width == '') {
+                    np.a_Poi_Two_width = 0
+                }
+                if(np.a_Poi_Two_height == '') {
+                    np.a_Poi_Two_height = 0
+                }
+                if(np.a_Poi_Two_left == '') {
+                    np.a_Poi_Two_left = 0
+                }
+                if(np.a_Poi_Two_top == '') {
+                    np.a_Poi_Two_top = 0
+                }
                 var add_mapArr = '[ { "url": "' + np.a_Poi_One_link + '", "w": ' + np.a_Poi_One_width + ', "h": ' + np.a_Poi_One_height + ', "l": ' + np.a_Poi_One_left + ', "t": ' + np.a_Poi_One_top + '}, { "url": "' + np.a_Poi_Two_link + '", "w": ' + np.a_Poi_Two_width + ', "h": ' + np.a_Poi_Two_height + ', "l": ' + np.a_Poi_Two_left + ', "t": ' + np.a_Poi_Two_top + '} ]'
                 var add_cardImg = '["' + np.a_cardImg1 + '","' + np.a_cardImg2 + '"]'
+                
+                if(np.a_cardMusicLen == '') {
+                    np.a_cardMusicLen = 0
+                }
                 var add_cardMusic = '{"ln":' + np.a_cardMusicLen + ',"url":"' + np.a_cardMusic + '"}'
                 var multiIntro = '[{"content":"' + np.a_MultiIntro + '","br":0,"color":"","bold":0}]'
                 var a_Imgs = np.a_Imgs.split(',')
-                if (ue2.getContent() == '' || ue1.getContent() == '') {
-                    alert('富文本信息为空，请重试')
+                if (ue2.getContent() == '' || ue1.getContent() == '' || np.a_cardMusic == '' || np.a_Poi_Two_link == '' || np.a_Poi_One_link == '') {
+                    alert('信息填写不完整,无法提交')
                 } else {
                     axios.post(host + '/route/v1/api/poi/create', {
                         name: np.a_Name,
                         type: parseInt(np.a_Type),
                         dubbing: add_dubbing,
                         image: np.a_Image,
-                        imgs: JSON.stringify(a_Imgs),      ////////??
+                        imgs: JSON.stringify(a_Imgs),      
                         introduction: ue2.getContent(),
                         label: np.a_Label,
                         lat: np.a_Lat,
@@ -88,11 +119,14 @@ window.onload = function () {
                         cardMusic: add_cardMusic,
                         cardDetail: ue1.getContent(),
                         server: server,
-                        manual: eval(np.a_manual)
+                        manual: eval(np.a_manual),
+                        map_scale:parseInt(np.map_scale),
+                        token:token
                     }).then((res) => {
-                        alert("添加成功")
+                        console.log(res.data.Body)
+                        // alert("添加成功")
                         var id = res.data.Body.Id
-                        window.location.href = '/poiadd3?id=' + id
+                        window.location.href = '/poiadd3?id=' + id+'&token='+token
                     })
                 }
 

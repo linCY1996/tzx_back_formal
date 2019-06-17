@@ -17,6 +17,7 @@ window.onload = function () {
     var lxname = GetParameters('lxname')    //pname
     var lxcity = GetParameters('lxcity')
     var pclass = GetParameters('pclass')
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -39,7 +40,8 @@ window.onload = function () {
                     server:server,
                     route_name:lxname,
                     city:lxcity,
-                    channel_id:parseInt(pclass)      //渠道id
+                    channel_id:parseInt(pclass),      //渠道id
+                    token:token
                 }).then((res) => {
                     np.luxian = res.data.Body.list
                     np.all = res.data.Body.pager.pages
@@ -62,11 +64,12 @@ window.onload = function () {
                 that.showluxian(this.cur, 50)
             },
             add_link:function () {
-              window.location.href = '/lxadd'  
+              window.location.href = '/lxadd?token='+token
             },
             // 编辑跳转链接
             btn_link:function (e) {
-                window.location.href = '/lxbianji?id='+e
+                console.log(e)
+                window.location.href = '/lxbianji?id='+e+'&token='+token
             },
             // 删除导游
             del: function (e) {
@@ -76,7 +79,7 @@ window.onload = function () {
             },
             // 进入详情
             goDetail:function (e) {
-                window.location.href = '/lxdetail?id='+e
+                window.location.href = '/lxdetail?id='+e+'&token='+token
             },
             // 点击取消
             Cancels:function () {
@@ -88,7 +91,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/route/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showluxian(1,50)
                     np.tan_show = false
@@ -99,8 +103,10 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/route/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
+                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })

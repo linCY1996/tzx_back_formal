@@ -70,16 +70,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for='lx in luxian'>
+        <tr v-for='(lx,index) in luxian'>
           <td>
-            <input type="checkbox" class="checks" :value="lx.Id" v-model="checkId">
+            <input v-if="lx.can_edit" v-if="dy.can_edit" type="checkbox" class="checks" :value="lx.Id" v-model="checkId">
           </td>
           <td class="td-manage">
-            <a title="编辑/添加" v-on:click='btn_link(lx.Id)'>
+            <a v-if="lx.can_edit" title="编辑" v-on:click='btn_link(lx.Id)'>
               <i class="layui-icon">&#xe63c;</i>
             </a>
-            <a title="删除" v-on:click="del(lx.Id)">
+            <a v-if="lx.can_edit" title="删除" v-on:click="del(lx.Id)">
               <i class="layui-icon">&#xe640;</i>
+            </a>
+            <a v-if="!lx.can_edit" title="查看" @click="looks(lx.Id,lx.can_edit)">
+              <img src="../../static/images/look.png" alt="" class="layui-icon" style="width:16px;height:17px;cursor: pointer;margin-top: -3px;">
             </a>
             <a title="复制到" href="javascript:;">
               <i class="layui-icon">&#xe744;</i>
@@ -90,11 +93,11 @@
           <td>{{lx.Name}}</td>
           <td>{{lx.City}}</td>
           <td>{{lx.GuideId}}-{{lx.guide_name}}</td>
-          <td>{{lx.poi_ids}}</td>
+          <td><div v-for="item in lx.poi_ids">{{item.id}}-{{item.name}}</div></td>
           <td>{{lx.Price}}</td>
           <td>{{lx.Label}}</td>
           <td>../detail/detail?routeid={{lx.Id}}&channel={{lx.ChannelId}}</td>
-          <td><a @click="goDetail(lx.Id)" style="cursor: pointer; color:rgb(6, 67, 158);">详情</a></td>
+          <td><a @click="goDetail(lx.Id)" v-if="lx.can_edit" style="cursor: pointer; color:rgb(6, 67, 158);">详情</a></td>
 
 
         </tr>

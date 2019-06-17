@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"tzx_back_formal/control"
+	"tzx_back_test/control"
 )
 
 func main() {
@@ -46,9 +46,13 @@ func main() {
 	http.HandleFunc(`/banben`, control.Banben)
 	http.HandleFunc(`/banbenadd`, control.Banbenadd)
 	http.HandleFunc(`/banbenbianji`, control.Banbainji)
+	//账号管理
+	http.HandleFunc(`/loginCon`, control.LoginCon)
+	http.HandleFunc(`/loginBianji`, control.LoginConBianji)
 
-	http.ListenAndServe(`:60`, nil)
+	http.ListenAndServe(`:6933`, nil)
+	//正式服
 	// fmt.Println("123")
-	// http.ListenAndServeTLS(":30", "cert-1542427206238_www.linchongyang.cn.crt", "cert-1542427206238_www.linchongyang.cn.key", nil)
+	// http.ListenAndServeTLS(":7788", "cert-1542427206238_www.linchongyang.cn.crt", "cert-1542427206238_www.linchongyang.cn.key", nil)
 	// fmt.Println("456")
 }

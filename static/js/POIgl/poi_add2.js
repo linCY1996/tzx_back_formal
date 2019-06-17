@@ -1,4 +1,6 @@
-const host = 'https://tzx-admin.tuzuu.com'
+const host = 'https://tzx-admin.tuzuu.com'    //开发服
+// const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
+// const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 window.onload = function () {
     var ue = UE.getEditor('editor')   //编辑
     var ue1 = UE.getEditor('editor1')   //添加

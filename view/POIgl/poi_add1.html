@@ -23,10 +23,11 @@
 </head>
 
 <body>
-    <div id="tall" >
+    <div id="tall">
         <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
             <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
+                    style="color: rgb(241, 134, 11);">刷新</a></div>
         </div>
         <!-- <div class="chooses">
             <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
@@ -63,34 +64,34 @@
                                 <option value="6">6&nbsp;娱</option>
                             </select></td>
                         <td></td>
-                       
+
                     </tr>
                     <tr>
                         <td>默认对话</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Dubbing_content" cols="30"
                                 rows="4"></textarea></td>
                         <td><span style="color: red;">不超过20个字</span>（含标点符号）</td>
-                        
+
                     </tr>
                     <tr>
                         <td>默认对话语音</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Dubbing_video" cols="30"
                                 rows="4"></textarea></td>
                         <td>请输入音频链接</td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI头像</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Image" cols="30" rows="4"></textarea></td>
                         <td>请输入头像图片链接，<span style="color: red;">图片尺寸：120*120px</span></td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI介绍图</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Imgs" cols="30" rows="4"></textarea></td>
                         <td>请输入图片链接，<span style="color:red;">图片尺寸：650*350</span>。填写内容全部是英文字符，必须按照如下格式填写("","","")
                             <br>例如："http://imgs1.tuzuu.com/tuzhuxingzhe.png","http://imgs1.tuzuu.com/tuzhuxingzhe.png"</td>
-                        
+
                     </tr>
                     <tr>
                         <td>详情页简介</td>
@@ -99,51 +100,57 @@
                                 style="max-width: 503px;max-height:400px;overflow-y: scroll;"></script>
                         </td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI标签</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Label" cols="30" rows="4"></textarea></td>
                         <td style="color: red;">10个字以内</td>
-                        
+
                     </tr>
                     <tr>
                         <td>纬度</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Lat" cols="30" rows="4"></textarea></td>
-                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span style="color: red;">一定要精确</span></td>
-                        
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
+                            target="_blank"
+                            style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
+                                style="color: red;">一定要精确</span></td>
+
                     </tr>
                     <tr>
                         <td>经度</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Lon" cols="30" rows="4"></textarea></td>
-                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span style="color: red;">一定要精确</span></td>
-                        
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
+                            target="_blank"
+                            style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
+                                style="color: red;">一定要精确</span></td>
+
                     </tr>
                     <tr>
                         <td>建议游玩时间(分钟)</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_PlayTime" cols="30" rows="4"></textarea>
                         </td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>费用</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Price" cols="30" rows="4"></textarea></td>
                         <td></td>
-                       
+
                     </tr>
                     <tr>
                         <td>任务触发范围(米)</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Region" cols="30" rows="4"></textarea></td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>营业时间</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_ShopHours" cols="30" rows="4"></textarea>
                         </td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI弹窗介绍</td>
@@ -152,14 +159,14 @@
                             <span>换行用\n</span>
                         </td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI图标-未游玩</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Poi_One_link" cols="30"
                                 rows="4"></textarea></td>
                         <td>输入图片链接</td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI图标-未游玩尺寸(像素)</td>
@@ -169,7 +176,7 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>在地图中展示的尺寸宽高</td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI图标-未游玩位置(像素)</td>
@@ -179,14 +186,14 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>POI图标的中点距离地图的最左边和最上边距离</td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI图标-已游玩</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Poi_Two_link" cols="30"
                                 rows="4"></textarea></td>
                         <td>输入图片链接</td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI图标-已游玩尺寸(像素)</td>
@@ -196,7 +203,7 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>在地图中展示的尺寸宽高</td>
-                        
+
                     </tr>
                     <tr>
                         <td>POI图标-已游玩位置(像素)</td>
@@ -206,7 +213,7 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>POI图标的中点距离地图的最左边和最上边距离</td>
-                        
+
                     </tr>
                     <tr>
                         <td>是否可手动触发</td>
@@ -214,8 +221,15 @@
                                 <option value="true">是</option>
                                 <option value="false">否</option>
                             </select></textarea></td>
-                        <td>选是，表示用户可在未到达POI触发范围即可游玩POI；<br>选否，表示用户必须到达POI所在坐标的触发范围才可游玩</td>
-                        
+                        <td>选是，表示用户可在未到达POI触发范围即可游玩POI；选否，表示用户必须到达POI所在坐标的触发范围才可游玩</td>
+                    </tr>
+                    <tr>
+                        <td>显示时，地图得缩放比例</td>
+                        <td>
+                            <textarea name="daoname" id="daoname" v-model="map_scale" cols="30" rows="4"></textarea>
+                        </td>
+                        <td>默认是1.0</td>
+
                     </tr>
                 </tbody>
             </table>
@@ -225,7 +239,7 @@
                 <div class="btn_Right" id="btn_R" style="width:100px;" @click="saves()">保存并继续</div>
             </div> -->
         </div>
-        <div style="height:1900px;"></div>
+        <div style="height:1800px;"></div>
         <!-- 第二步编辑 -->
         <div class="Names">第二步 编辑POI故事</div>
         <div class="all_Msgs">
@@ -245,35 +259,35 @@
                         <td><textarea name="daoname" v-model="b_cardtitle" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td style="color: red;">18个字以内</td>
-                       
+
                     </tr>
                     <tr>
                         <td>故事卡片-未获得</td>
                         <td><textarea name="daoname" v-model="b_cardImg1" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td>输入图片链接，建议图片加上灰色滤镜，<span style="color: red;">图片尺寸：580*544</span></td>
-                       
+
                     </tr>
                     <tr>
                         <td>故事卡片-已获得</td>
                         <td><textarea name="daoname" v-model="b_cardImg2" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td>输入图片链接，<span style="color: red;">图片尺寸：580*544</span></td>
-                        
+
                     </tr>
                     <tr>
                         <td>音频链接</td>
                         <td><textarea name="daoname" v-model="b_cardMusic" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>音频时长(秒)</td>
                         <td><textarea name="daoname" v-model="b_cardMusicLen" id="daoname" cols="30"
                                 rows="4"></textarea></td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>故事详情</td>
@@ -282,7 +296,7 @@
                                 style="max-width: 503px;max-height:400px;overflow-y: scroll;"></script>
                         </td>
                         <td></td>
-                        
+
                     </tr>
 
 
@@ -294,7 +308,7 @@
             </div> -->
             <!-- <script type="text/javascript">
                    var ue = UE.getEditor('editor');</script> -->
-            <div class="btn_All">
+            <div class="btn_All" v-if="can_edit">
                 <div class="btn_Left" id="btn_L" v-on:click="chongzhi()">重置</div>
                 <div class="btn_Right" id="btn_R" style="width:100px;" @click="saves()">保存并继续</div>
             </div>

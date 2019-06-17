@@ -8,6 +8,7 @@
     height: 400px;
     margin-left: 25%;
     margin-top: 100px;
+    
 }
 
 .Msg1 {
@@ -39,26 +40,25 @@
     margin-top: 50px;
 }
 
-.btn_Left, .btn_Right {
-    width: 80px;
+.btn_Left,.btn_Right {
+    cursor: pointer;
+    width: 70px;
     height: 40px;
+    border-radius: 10px 10px;
+    color: white;
+    font-size: .9em;
     line-height: 40px;
     text-align: center;
-    font-size: 1.2em;
-    cursor: pointer;
-    border-radius: 10px;
 }
 
 .btn_Left {
-    background-color: rgb(187, 190, 3);
-    color: black;
+    background-color: #e08e0b;
+
 }
 
 .btn_Right {
-    background-color: rgb(23, 113, 231);
-    color: white;
+    background-color: #00acd6;
 }
-
 .fanhui a{
     text-decoration: none;
     color: rgb(241, 134, 11);

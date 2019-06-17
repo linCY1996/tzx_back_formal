@@ -16,7 +16,7 @@ window.onload = function () {
         }
     }
     var qdname = GetParameters('qdname')    //pname
-
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -35,7 +35,8 @@ window.onload = function () {
                       page_index:pindex,
                       page_size:psize
                   },
-                  server:server
+                  server:server,
+                  token:token
               }).then((res) => {
                   np.first_list = res.data.Body.list
                   np.total = res.data.Body.list.length
@@ -55,11 +56,11 @@ window.onload = function () {
             },
             // 编辑跳转
             bian_link:function (e) {
-                window.location.href = '/firstPagebianji?id='+e
+                window.location.href = '/firstPagebianji?id='+e+'&token='+token
             },
             // 详情跳转
             detail:function (e) {
-                window.location.href = '/firstPagexq?id='+e
+                window.location.href = '/firstPagexq?id='+e+'&token='+token
             },
             // 删除导游
             del: function (e) {
@@ -77,7 +78,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/homePage/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showlist(1,50)
                     nm.tan_show = false

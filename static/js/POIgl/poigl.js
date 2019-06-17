@@ -4,6 +4,7 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
     var np = new Vue({
         el: '#tall',
         data: {
@@ -20,15 +21,21 @@ window.onload = function () {
             tan_show_list:false,
         },
         methods: {
+            // 无权限点击查看
+            looks:function (e,e1) {
+                console.log("e=",e)
+                console.log("e1=",e1)
+                window.location.href = '/poiadd1?id='+e+'&token='+token+'&can_edit='+e1
+            },
             showPoilist:function (pindex,psize) {
                 axios.post(host+'/route/v1/api/poi/list',{
-                    
                     page:{
                         page_index:pindex,
                         page_size:psize
                     },
                     type:-1,
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
                     np.Poilist = res.data.Body.list
                     np.total = res.data.Body.pager.total
@@ -59,7 +66,7 @@ window.onload = function () {
                 var pname = np.poi_name
                 var pclass = np.poi_class
                 var plabel = np.poi_label
-                window.location.href = '/poichaxun?pname='+encodeURI(pname)+'&pclass='+encodeURI(pclass)+'&plabel='+encodeURI(plabel)
+                window.location.href = '/poichaxun?pname='+encodeURI(pname)+'&pclass='+encodeURI(pclass)+'&plabel='+encodeURI(plabel)+'&token='+token
             },
             //页码点击事件
             btnClick: function (e) {
@@ -75,29 +82,29 @@ window.onload = function () {
             },
             // 点击编辑页面
             bian_link: function (e) {
-                window.location.href = '/poiadd1?id='+e
+                window.location.href = '/poiadd1?id='+e+'&token='+token
             },
             // 删除导游
             del: function (e) {
                 var that = this
+                console.log(e)
                 np.Id = e
                 np.tan_show = true
-                
             },
             add_link:function () {
-              window.location.href = '/poinowadd1'  
+              window.location.href = '/poinowadd1?token='+token  
             },
             // 点击取消
             Cancels:function () {
                 np.tan_show = false
             },
-
             // 点击确认
             Confirms:function () {
                 var that = this
                 axios.post(host + '/route/v1/api/poi/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showPoilist(1,50)
                     np.tan_show = false
@@ -108,10 +115,10 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/poi/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showPoilist(1,50)
-                    
                 })
             },
             delAll:function () {

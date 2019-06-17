@@ -4,7 +4,18 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var ids = GetParameters('id')    //taskid
+    var token = GetParameters('token')    //token
     var np = new Vue({
         el:'#tall',
         data:{
@@ -15,7 +26,8 @@ window.onload = function () {
             showMsgs:function name(params) {
                 axios.post(host+'/route/v1/api/version/get',{
                     id:parseInt(ids),
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
                     np.b_Num = res.data.Body.num
                     np.b_Status = res.data.Body.status
@@ -39,7 +51,8 @@ window.onload = function () {
                         num:parseInt(np.b_Num),
                         server:server,
                         status: np.b_Status,
-                        update_time:JSON.parse(times)
+                        update_time:JSON.parse(times),
+                        token:token
                     }).then((res) => {
                         alert("保存成功")
                         window.history.go(-1)

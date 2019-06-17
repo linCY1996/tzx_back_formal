@@ -18,6 +18,7 @@ window.onload = function () {
     var channel_id = GetParameters('channel_id')
     var type = GetParameters('type')
     var routeid = GetParameters('routeid')
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#talls',
         data: {
@@ -41,7 +42,8 @@ window.onload = function () {
             showRouteName: function () {
                 axios.post(host + '/route/v1/api/channel/routeList', {
                     channel_id: parseInt(channel_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.routeName = res.data.Body
                 })
@@ -105,7 +107,8 @@ window.onload = function () {
                         sort: parseInt(np.sort),
                         type: type,
                         server:server,
-                        route_id:parseInt(routeid)
+                        route_id:parseInt(routeid),
+                        token:token
                     }).then((res) => {
                         alert("添加成功")
                         window.history.go(-1)
@@ -120,7 +123,8 @@ window.onload = function () {
             route_id: function () {
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(np.route_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.Poilist = res.data.Body.poi_ids
                     np.Name = res.data.Body.Name

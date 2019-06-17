@@ -1,39 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../../static/css/qudaoCon/bianji.css">
-    <!-- <link rel="stylesheet" href="../../static/css/POIgl/bianji.css"> -->
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script src="../../static/js/qudaoCon/qudao_Add.js"></script>
 </head>
+
 <body>
     <div id="tall">
         <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
             <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
+                    style="color: rgb(241, 134, 11);">刷新</a></div>
         </div>
-       <!-- 添加 -->
-       <div class="all_Msgs">
+        <div class="all_Msgs">
 
-            <div class="msgs_Alls">
-                <!-- <div class="shouye_Img">
-                    渠道id&nbsp;&nbsp;<input type="text" v-model="a_qudao_id" name="imgs" id="shou_Imgs">
-                </div> -->
-                <div class="shouye_Img">
-                    渠道名称&nbsp;&nbsp;<input type="text" v-model="a_qudao_name" name="names" id="names">
-                </div>
-            </div>
-
+            <table class="layui-table">
+                <thead>
+                    <tr>
+                        <th style="width:40px;">类目</th>
+                        <th style="min-width:60px;">填写</th>
+                        <th>个数</th>
+                        <th>备注</th>
+                        <th>说明</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>渠道名称</td>
+                        <td>
+                            <textarea name="qudaoId" id="qudaoId" v-model="qudaoName" style="width: 700px;height: 30px;line-height: 30px;"></textarea>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>可用导游</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="item in daoyou">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="item.Id" :value="item.Id+','+item.Name"
+                                        v-model="chooseTouer">
+                                    <label :for="item.Name">{{item.Id}}-{{item.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                        </td>
+                        <td>共选{{chooseTouer.length}}个</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>可编辑导游</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="item in daoyou">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="item.Id" :value="item.Id+','+item.Name"
+                                        v-model="bianjiTouer">
+                                    <label :for="item.Name">{{item.Id}}-{{item.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                        </td>
+                        <td>共选{{bianjiTouer.length}}个</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>可用Poi</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="pl in Poilist">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="pl.Id" :value="pl.Id+','+pl.Name"
+                                        v-model="choosePoi">
+                                    <label :for="pl.Name">{{pl.Id}}-{{pl.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                        </td>
+                        <td>共选{{choosePoi.length}}个</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>可编辑Poi</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="pl in Poilist">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="pl.Id" :value="pl.Id+','+pl.Name"
+                                        v-model="bianjiPoi">
+                                    <label :for="pl.Name">{{pl.Id}}-{{pl.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                        </td>
+                        <td>共选{{bianjiPoi.length}}个</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>可用线路</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="item in luxian">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="item.Id" :value="item.Id+','+item.Name"
+                                        v-model="chooseLuxian">
+                                    <label :for="item.Name">{{item.Id}}-{{item.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                        </td>
+                        <td>共选{{chooseLuxian.length}}个</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>可编辑线路</td>
+                        <td>
+                            <div class="poiMsgsAll"
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="item in luxian">
+                                    <input style="width: 18px;height:18px;" type="checkbox" :id="item.Id" :value="item.Id+','+item.Name"
+                                        v-model="bianjiLuxian">
+                                    <label :for="item.Name">{{item.Id}}-{{item.Name}}</label>
+                                </div>
+                                <br>
+                                <br><br>
+                            </div>
+                        </td>
+                        <td>共选{{bianjiLuxian.length}}个</td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
             <div class="btn_All">
-                <div class="btn_Left" @click="chongzhi()">重置</div>
-                <div class="btn_Right" @click="posts()">保存</div>
+                <div class="btn_Left" v-on:click="chongzhi()">重置</div>
+                <div class="btn_Right" v-on:click="posts()">保存</div>
             </div>
         </div>
     </div>
 </body>
+
 </html>

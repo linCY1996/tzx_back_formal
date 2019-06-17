@@ -48,14 +48,19 @@
               选择
           </th>
           <th>操作</th>
-          <th>渠道id</th>
-          <th>渠道名称</th>
-          <th>渠道线路数</th>
+          <th style="width: 20px;">渠道id</th>
+          <th style="width: 40px;">渠道名称</th>
           <th>渠道首页入口</th>
+          <th>可用导游</th>
+          <th>可编辑导游</th>
+          <th>可用poi</th>
+          <th>可编辑poi</th>
+          <th>可用线路</th>
+          <th>可编辑线路</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="qd in qudao">
+        <tr v-for="(qd,index) in qudao" :key="index">
           <td>
             <input type="checkbox" class="checks" :value="qd.id" v-model="checkId">
           </td>
@@ -72,10 +77,13 @@
           </td>
           <td>{{qd.id}}</td>
           <td>{{qd.name}}</td>
-          <td>{{qd.route_num}}</td>
-          <td>..pages/index/index?channel={{qd.id}}
-          </td>
-
+          <td>..pages/index/index?channel={{qd.id}}</td>
+          <td><div v-for="(item,ind) in qd.can_use_guide">{{item.id}}-{{item.name}}<br></div></td>
+          <td><div v-for="(item,ind) in qd.can_edit_guide">{{item.id}}-{{item.name}}<br></div></td>
+          <td><div v-for="(item,ind) in qd.can_use_poi">{{item.id}}-{{item.name}}<br></div></td>
+          <td><div v-for="(item,ind) in qd.can_edit_poi">{{item.id}}-{{item.name}}<br></div></td>
+          <td><div v-for="(item,ind) in qd.can_use_route">{{item.id}}-{{item.name}}<br></div></td>
+          <td><div v-for="(item,ind) in qd.can_edit_route">{{item.id}}-{{item.name}}<br></div></td>
         </tr>
 
       </tbody>

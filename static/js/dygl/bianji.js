@@ -4,7 +4,19 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
+    // var ids = location.search.replace('?id=', "")
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var ids = GetParameters('id')    //taskid
+    var token = GetParameters('token')    //taskid
     var np = new Vue({
         el: '#tall',
         data: {
@@ -17,7 +29,8 @@ window.onload = function () {
             bianjishow: function () {
                 axios.post(host + '/route/v1/api/guide/get', {
                     id: parseInt(ids),
-                    server: server
+                    server: server,
+                    token: token
                 }).then((res) => {
                     np.d_Name = res.data.Body.Name
                     np.d_Imgs = res.data.Body.Img
@@ -29,7 +42,8 @@ window.onload = function () {
                     name: np.d_Name,
                     img: np.d_Imgs,
                     server: server,
-                    id: parseInt(ids)
+                    id: parseInt(ids),
+                    token: token
                 }).then((res) => {
                     console.log(res.data.Body)
                     alert("保存成功")

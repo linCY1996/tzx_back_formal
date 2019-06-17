@@ -67,14 +67,14 @@
                         <td>默认对话</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Dubbing_content" cols="30"
                                 rows="4"></textarea></td>
-                                <td><span style="color: red;">不超过20个字</span>（含标点符号）</td>
+                        <td><span style="color: red;">不超过20个字</span>（含标点符号）</td>
 
                     </tr>
                     <tr>
                         <td>默认对话语音</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Dubbing_video" cols="30"
                                 rows="4"></textarea></td>
-                                <td>请输入音频链接</td>
+                        <td>请输入音频链接</td>
 
                     </tr>
                     <tr>
@@ -86,8 +86,8 @@
                     <tr>
                         <td>POI介绍图</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Imgs" cols="30" rows="4"></textarea></td>
-                        <td>请输入图片链接，<span style="color:red;">图片尺寸：650*350</span>。填写内容全部是英文字符，必须按照如下格式填写("","","")
-                            <br>例如："http://imgs1.tuzuu.com/tuzhuxingzhe.png","http://imgs1.tuzuu.com/tuzhuxingzhe.png"</td>
+                        <td>请输入图片链接，<span style="color:red;">图片尺寸：650*350</span>。填写内容全部是英文字符，必须按照如下格式填写(,,)
+                            <br>例如：http://imgs1.tuzuu.com/tuzhuxingzhe.png,http://imgs1.tuzuu.com/tuzhuxingzhe.png</td>
 
                     </tr>
                     <tr>
@@ -108,12 +108,18 @@
                     <tr>
                         <td>纬度</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Lat" cols="30" rows="4"></textarea></td>
-                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span style="color: red;">一定要精确</span></td>
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
+                            target="_blank"
+                            style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
+                                style="color: red;">一定要精确</span></td>
                     </tr>
                     <tr>
                         <td>经度</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Lon" cols="30" rows="4"></textarea></td>
-                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span style="color: red;">一定要精确</span></td>
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
+                            target="_blank"
+                            style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
+                                style="color: red;">一定要精确</span></td>
 
                     </tr>
                     <tr>
@@ -155,7 +161,7 @@
                         <td>POI图标-未游玩</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Poi_One_link" cols="30"
                                 rows="4"></textarea></td>
-                                <td>输入图片链接</td>
+                        <td>输入图片链接</td>
 
                     </tr>
                     <tr>
@@ -182,7 +188,7 @@
                         <td>POI图标-已游玩</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Poi_Two_link" cols="30"
                                 rows="4"></textarea></td>
-                                <td>输入图片链接</td>
+                        <td>输入图片链接</td>
 
                     </tr>
                     <tr>
@@ -211,7 +217,15 @@
                                 <option value="true">是</option>
                                 <option value="false">否</option>
                             </select></textarea></td>
-                            <td>选是，表示用户可在未到达POI触发范围即可游玩POI；<br>选否，表示用户必须到达POI所在坐标的触发范围才可游玩</td>
+                        <td>选是，表示用户可在未到达POI触发范围即可游玩POI；选否，表示用户必须到达POI所在坐标的触发范围才可游玩</td>
+
+                    </tr>
+                    <tr>
+                        <td>显示时，地图得缩放比例</td>
+                        <td>
+                            <textarea name="daoname" id="daoname" v-model="map_scale" cols="30" rows="4"></textarea>
+                        </td>
+                        <td>默认是1.0</td>
 
                     </tr>
                 </tbody>
@@ -222,7 +236,7 @@
                 <div class="btn_Right" id="btn_R" style="width:100px;" @click="posts()">保存并继续</div>
             </div> -->
         </div>
-        <div style="height:1900px;"></div>
+        <div style="height:1800px;"></div>
 
         <!-- 添加 -->
         <div class="Names">第二步 添加POI故事</div>

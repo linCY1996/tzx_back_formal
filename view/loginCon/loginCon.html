@@ -6,9 +6,6 @@
   <title>欢迎页面-X-admin2.0</title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <!-- <meta name="viewport"
-    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" /> -->
-  <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> -->
   <link rel="stylesheet" href="../../static/css/font.css">
   <link rel="stylesheet" href="../../static/css/xadmin.css">
   <link rel="stylesheet" href="../../static/lib/layui/css/layui.css">
@@ -20,7 +17,7 @@
   <link rel="stylesheet" href="../../static/css/dygl/dygl.css">
   <link rel="stylesheet" href="../../static/css/fenye.css">
   <link rel="stylesheet" href="../../static/css/tanchuang.css">
-  <script src="../../static/js/dygl/dygl.js"></script>
+  <script src="../../static/js/loginCon/loginCon.js"></script>
 
 </head>
 
@@ -32,10 +29,11 @@
       <i class="layui-icon" style="line-height:30px">ဂ</i></a>
   </div>
   <div class="x-body" id="tall" style="overflow-y:scroll;">
-    <div class="chaxun">
+    <div class="chaxun" style="width: 100%;position: relative;">
 
-      导游名&nbsp;&nbsp;<input type="text" name="dname" v-model="dname" id="dname"> <i v-on:click="looks()"
-        class="iconfont" style=" margin-left:20px; cursor: pointer;">&#xe6ac;</i>
+      <!-- 账号昵称&nbsp;&nbsp;<input type="text" name="loginNum" v-model="loginNum" id="loginNum"> <i v-on:click="looks()" -->
+        <!-- class="iconfont" style=" margin-left:20px; cursor: pointer;">&#xe6ac;</i> -->
+        <div @click="Changepwd()" style="position: absolute;top:0px;right:10px;width:60px;height:60px;color:black;font-size: 1.2em;text-align: center;line-height: 60px;cursor: pointer;">修改密码</div>
     </div>
 
     <xblock>
@@ -46,39 +44,30 @@
     <table class="layui-table" style="min-width:1000px;">
       <thead>
         <tr>
-          <th>
-            选择
-            <!-- <input type="checkbox" class="checks" value="" v-model="checkId"> -->
-          </th>
-          <th style="width:100px;">操作</th>
-          <th style="width:40px;">id</th>
-          <th style="width:60px;">导游名字(name)</th>
-          <th>导游头像(img)</th>
-          <!-- <th>导游欢迎语(Start)</th>
-          <th>导游结束语(End)</th> -->
+          <th>选择</th>
+          <th>操作</th>
+          <th>账号</th>
+          <th>渠道</th>
         </tr>
       </thead>
-      <tbody id="tbodys">
-        <tr v-for="dy in daoyou">
+      <tbody id="tbodys" v-for="item in MemberList"> 
+        <tr>
           <td>
-           <input v-if="dy.can_edit" type="checkbox" class="checks" :value="dy.Id" v-model="checkId">
+           <input type="checkbox" class="checks" :value="item.id" v-model="checkId">
           </td>
           <td class="td-manage">
-            <a v-if="dy.can_edit" title="编辑" v-on:click='btn_link(dy.Id)'>
+            <a title="编辑" @click='btn_link(item.id,item.channel_id)'>
               <i class="layui-icon">&#xe63c;</i>
             </a>
-            <a v-if="dy.can_edit" title="删除" v-on:click="del(dy.Id)" href="javascript:;">
+            <a title="删除" @click="del(item.id)" href="javascript:;">
               <i class="layui-icon">&#xe640;</i>
             </a>
-            <a title="复制到" href="javascript:;">
-              <i class="layui-icon">&#xe744;</i>
+            <a title="重置密码" @click="RewritePwd(item.id)">
+              <img style="width: 12px;height:12px;" src="../../static/images/rewrite.png" alt="">
             </a>
           </td>
-          <td>{{dy.Id}}</td>
-          <td>{{dy.Name}}</td>
-          <td>{{dy.Img}}</td>
-          <!-- <td>{{dy.Start}}</td>
-          <td>{{dy.End}}</td> -->
+          <td>{{item.name}}</td>
+          <td>{{item.channel_id}}-{{item.channel_name}}</td>
         </tr>  
       </tbody>
     </table>
@@ -92,12 +81,6 @@
             <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
             <li v-if="cur == all"><a class="banclick">下一页</a></li>
             <li><a>共<i>{{all}}</i>页</a></li>
-            <!-- <li><select name="pages" id="pages" v-model="pagesNum" v-on:click="chooseNum()">
-              <option value="10">10</option>
-              <option value="20">20</option>
-              <option value="30">30</option>
-              <option value="50">50</option>
-            </select></li> -->
         </ul>
      
     </div> 

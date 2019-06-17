@@ -3,6 +3,11 @@
     padding: 0px;
 }
 
+input {
+    border-radius: 10px 10px;
+    border: 1px solid rgb(100, 100, 100);
+}
+
 #tall {
     width: 100%;
     height: 100%;
@@ -16,7 +21,7 @@
     /* border: 1px solid black; */
     margin-left: 5%;
     margin-top: 50rpx;
-}   
+}
 
 
 .Name {
@@ -62,11 +67,32 @@
 
 }
 
-.wenzi_shouming, .shangchuan_shouming, .wenzi_choose {
+.wenzi_shouming,
+.shangchuan_shouming,
+.wenzi_choose,
+.deep_Show {
     /* border: 1px solid black; */
     width: 80%;
     /* height: 500px; */
     margin-left: 10%;
+}
+
+.chenjin {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.chenjin_Add {
+    margin-top: 30px;
+    width: 100%;
+    height: 40px;
+    background-color: rgba(75, 74, 74, 0.5);
+    text-align: center;
+    line-height: 40px;
+    font-size: 1.4em;
+    cursor: pointer;
+    border-radius: 10px;
 }
 
 .Msgs_Show2 {
@@ -135,7 +161,7 @@
     /* position: relative; */
     width: 100%;
     height: 295px;
-    background-color: rgba(250, 221, 168,.4);
+    background-color: rgba(250, 221, 168, .4);
 }
 
 .choose_ch1 {
@@ -176,7 +202,7 @@
 }
 
 .msgs_Alls {
-    
+
     width: 50%;
     margin-top: 20px;
     margin-left: 25%;
@@ -217,7 +243,8 @@
 
 
 
-.btn_Left,.btn_Right {
+.btn_Left,
+.btn_Right {
     cursor: pointer;
     width: 70px;
     height: 40px;
@@ -254,7 +281,8 @@
     width: 200px;
 }
 
-.bianji,.add{
+.bianji,
+.add {
     width: 48%;
     border-radius: 10px 10px;
     border: 1px solid rgb(241, 241, 241);
@@ -265,7 +293,8 @@
     cursor: pointer;
 }
 
-.Bianji,.Add{
+.Bianji,
+.Add {
     width: 48%;
     border-radius: 10px 10px;
     border: 1px solid rgb(241, 241, 241);
@@ -274,4 +303,175 @@
     line-height: 60px;
     text-align: center;
     cursor: pointer;
+}
+
+/* 沉浸式任务 */
+.deep_Choose {
+    width: 100%;
+    height: auto;
+    /* border: 1px solid black; */
+    margin-top: 20px;
+
+}
+
+.deep_nav,
+.deep_Suo {
+    width: 85%;
+    height: auto;
+    
+}
+
+.deep_ch1 {
+    position: relative;
+    width: 70%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+}
+
+.deep_ch2 {
+    position: relative;
+    width: 30%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2em;
+
+}
+
+.deep_nav {
+    position: absolute;
+    /* bottom: 0px; */
+    top: 0px;
+    right: 0px;
+    width: 72%;
+    height: 80px;
+    font-size: 1em;
+}
+
+.deep_nav input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 60%;
+    height: 40px;
+    font-size: 1.1em;
+}
+
+.deep_nav span {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    font-size: 1em;
+}
+
+.deep_ch2 input {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 60%;
+    height: 40px;
+    font-size: 1.1em;
+}
+
+#deep_Qian{
+    position: relative;
+}
+
+#deep_Qian input {
+    width: 75%;
+    position: absolute;
+    right: 67px;
+}
+
+#deep_Qian span {
+    position: absolute;
+    top: 0px;
+    right: 15px;
+    color: black;
+}
+
+.deep_Suo, .deep_qian {
+    position: relative;
+    height: 115px;
+    width: 100%;
+}
+
+.deep_Suo input,
+.deep_qian input {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 80%;
+    height: 40px;
+    font-size: 1.1em;
+    
+}
+
+.deep_Suo_Msg {
+    position: absolute;
+    width: 80%;
+    right: 0px;
+    bottom: 0px;    
+}
+
+.deep_Suo span,
+.deep_qian span {
+    color: red;
+    font-size: 1em;
+}
+
+.deep_Suo p,
+.deep_qian p {
+    color: black;
+    font-size: 1em;
+}
+
+.deep_link,
+.deep_link1 {
+    position: relative;
+    font-size: 1.2em;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+    margin-top: 10px;
+}
+
+.deep_link input {
+    position: absolute;
+    right: 0px;
+    width: 80%;
+    height: 40px;
+    font-size: 1em;
+}
+
+#deep_links {
+    position: absolute;
+    right: 0px;
+    width: 80%;
+}
+
+#deep_links input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 20%;
+    height: 40px;
+    font-size: 1em;
+}
+
+/* 删除 */
+.Delete {
+    position: absolute;
+    right: -40px;
+    top: 321px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    /* border: 1px solid black; */
+}
+
+.Delete img {
+    width: 100%;
+    height: 100%;
 }

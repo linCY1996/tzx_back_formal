@@ -19,6 +19,7 @@ window.onload = function () {
     var channel_id = GetParameters('channel_id')
     var type = GetParameters('type')
     var routeid = GetParameters('routeid')
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#talls',
         data: {
@@ -42,7 +43,8 @@ window.onload = function () {
             showRouteName: function () {
                 axios.post(host + '/route/v1/api/channel/routeList', {
                     channel_id: parseInt(channel_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.routeName = res.data.Body
                 })
@@ -51,7 +53,8 @@ window.onload = function () {
             async showImgMsg() {
                 await axios.post(host + '/route/v1/api/homePage/get', {
                     id: parseInt(ids),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     if(res.data.Body.jump_type == 1 || res.data.Body.jump_type == -1) {
                         np.jump_url = res.data.Body.jump_url
@@ -112,7 +115,6 @@ window.onload = function () {
             saves: function () {
                 
                 if (np.jump_type == 0) {
-                     
                     if (np.yj_choose == 0) {
                         var current = -1
                         for(var i = 0;i<np.Poilist.length;i++){
@@ -199,13 +201,14 @@ window.onload = function () {
                         sort: parseInt(np.sort),
                         type: type,
                         server:server,
-                        route_id:parseInt(routeid)
+                        route_id:parseInt(routeid),
+                        token:token
                     }).then((res) => {
                         alert("编辑成功")
                         window.history.go(-1)
                     })
                 }
-            },
+            }, 
 
         },
         mounted: function () {
@@ -218,7 +221,8 @@ window.onload = function () {
                 // console.log("___", np.route_id)
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(np.route_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     // console.log("=====", res.data.Body)
                     np.Poilist = res.data.Body.poi_ids

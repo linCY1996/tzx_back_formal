@@ -4,7 +4,21 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
+    // var ids = location.search.replace('?id=', "")
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var ids = GetParameters('id')    //taskid
+    var token = GetParameters('token')
+    var can_edit = GetParameters('can_edit')   //是否具有权限编辑
+    // console.log(can_edit)
     var ue = UE.getEditor('editor')   //编辑故事详情
     var ue3 = UE.getEditor('editor3')   //编辑详情页简介
     
@@ -40,6 +54,8 @@ window.onload = function () {
             b_Poi_Two_left:'',   //Poi图标-已游玩左
             b_Poi_Two_top:'',   //Poi图标-已游玩上
             b_manual:'',  //是否可以手动触发
+            // 新增
+            map_scale:1,   //地图得缩放比例
             // ****************************
             // 第二步
             editor: '',
@@ -52,6 +68,7 @@ window.onload = function () {
             b_cardMusicLen: '',  //音频时长
             b_cardDetail: '',  //故事正文
             // ************
+            can_edit:true,  //是否具有编辑权限
 
 
         },
@@ -60,7 +77,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host+'/route/v1/api/poi/get', {
                     id:parseInt(ids),
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
                     var dubbing = that.b64DecodeUnicode(res.data.Body.Dubbing)
                     var Dubbing = JSON.parse(dubbing)   //默认对话
@@ -109,6 +127,13 @@ window.onload = function () {
                     np.b_cardDetail = res.data.Body.CardDetail
                     ue.setContent(np.b_cardDetail);
                     np.b_manual = res.data.Body.Manual
+                    np.map_scale = res.data.Body.scale
+                    if(can_edit == null) {
+                        np.can_edit = true
+                    }else {
+                        np.can_edit = eval(can_edit)
+                    }
+                    console.log(np.can_edit)
                 })
             },
 
@@ -126,13 +151,45 @@ window.onload = function () {
           
              // 保存
              saves: function () {
+                // console.log(token)
                 var dubbing = '[{"text":[{"content":"'+np.b_Dubbing_content+'","br":0,"color":"","bold":0}],"audio":"'+np.b_Dubbing_video+'"}]'
+                 
+                if(np.b_Poi_One_width == '') {
+                    np.b_Poi_One_width = 0
+                }
+                if(np.b_Poi_One_height == '') {
+                    np.b_Poi_One_height = 0
+                }
+                if(np.b_Poi_One_left == '') {
+                    np.b_Poi_One_left = 0
+                }
+                if(np.b_Poi_One_top == '') {
+                    np.b_Poi_One_top = 0
+                }
+                if(np.b_Poi_Two_width == '') {
+                    np.b_Poi_Two_width = 0
+                }
+                if(np.b_Poi_Two_height == '') {
+                    np.b_Poi_Two_height = 0
+                }
+                if(np.b_Poi_Two_left == '') {
+                    np.b_Poi_Two_left = 0
+                }
+                if(np.b_Poi_Two_top == '') {
+                    np.b_Poi_Two_top = 0
+                }
+
                 var mapArr = '[ { "url": "'+np.b_Poi_One_link+'", "w": '+np.b_Poi_One_width+', "h": '+np.b_Poi_One_height+', "l": '+np.b_Poi_One_left+', "t": '+np.b_Poi_One_top+'}, { "url": "'+np.b_Poi_Two_link+'", "w": '+np.b_Poi_Two_width+', "h": '+np.b_Poi_Two_height+', "l": '+np.b_Poi_Two_left+', "t": '+np.b_Poi_Two_top+'} ]'
                 var cardImg = '["'+np.b_cardImg1+'","'+np.b_cardImg2+'"]'
+                
+                if(np.b_cardMusicLen == '') {
+                    np.b_cardMusicLen = 0
+                }
                 var cardMusic = '{"ln":'+np.b_cardMusicLen+',"url":"'+np.b_cardMusic+'"}'
                 var bmultiIntro = '[{"content":"'+np.b_MultiIntro+'","br":0,"color":"","bold":0}]'
-                if(ue3.getContent() == '' || ue.getContent() == '') {
-                    alert('富文本信息为空，请重试')
+
+                if(ue3.getContent() == '' || ue.getContent() == '' || np.b_cardMusic == '' || np.b_Poi_Two_link == '' || np.b_cardMusic == '') {
+                    alert('信息填写不完整。不允许提交')
                 }else {
                     axios.post(host+'/route/v1/api/poi/update' ,{
                         id:parseInt(ids),
@@ -156,11 +213,18 @@ window.onload = function () {
                         cardMusic:cardMusic,
                         cardDetail:ue.getContent(),
                         server:server,
-                        manual:eval(np.b_manual)
+                        manual:eval(np.b_manual),
+                        scale:parseInt(np.map_scale),
+                        token:token
                     }).then((res)=> {
-                        // console.log(res.data)
-                        alert("编辑成功")
-                        window.location.href = '/poiadd3?id=' + ids
+                        console.log(res.data.Body)
+                        if(res.data.Body == '没有编辑权限') {
+                            alert("没有权限编辑，不能修改数据")
+                            window.history.go(-1)
+                        }else {
+                            alert("编辑成功")
+                            window.location.href = '/poiadd3?id=' + ids+'&token='+token
+                        }
                     })
                 }
                 

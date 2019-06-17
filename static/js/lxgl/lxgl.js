@@ -4,6 +4,7 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
     var np = new Vue({
         el: '#tall',
         data: {
@@ -22,17 +23,24 @@ window.onload = function () {
             tan_show_list:false,
         },
         methods: {
+            // 无权限点击查看
+            looks:function (e,e1) {
+                console.log("e=",e)
+                console.log("e1=",e1)
+                window.location.href = '/lxbianji?id='+e+'&token='+token+'&can_edit='+e1
+            },
             showluxian:function (pindex,psize) {
                 axios.post(host+'/route/v1/api/route/list',{
                     page:{
                         page_index:pindex,
                         page_size:psize
                     },
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
                     np.luxian = res.data.Body.list
                     np.all = res.data.Body.pager.pages
-                    np.total = res.data.Body.pager.total
+                    np.total = res.data.Body.list.length
                     if(np.total/50 != 0) {
                         np.all = parseInt(np.total/50)+1
                     }
@@ -44,7 +52,8 @@ window.onload = function () {
                         page_index:1,
                         page_size:1000
                     },
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
                     np.qudao = res.data.Body.list
                 })
@@ -53,7 +62,7 @@ window.onload = function () {
                 var lxname = np.lx_name
                 var lxcity = np.lx_city
                 var pclass = np.poi_class
-                window.location.href = '/lxchaxun?lxname='+encodeURI(lxname)+'&lxcity='+encodeURI(lxcity)+'&pclass='+encodeURI(pclass)
+                window.location.href = '/lxchaxun?lxname='+encodeURI(lxname)+'&lxcity='+encodeURI(lxcity)+'&pclass='+encodeURI(pclass)+'&token='+token
             },
             //页码点击事件
             btnClick: function (e) {
@@ -68,11 +77,12 @@ window.onload = function () {
                 that.showluxian(this.cur, 50)
             },
             add_link:function () {
-              window.location.href = '/lxadd'  
+              window.location.href = '/lxadd?token='+token  
             },
             // 编辑跳转链接
             btn_link:function (e) {
-                window.location.href = '/lxbianji?id='+e
+                console.log(e)
+                window.location.href = '/lxbianji?id='+e+'&token='+token
             },
             // 删除导游
             del: function (e) {
@@ -82,7 +92,7 @@ window.onload = function () {
             },
             // 进入详情
             goDetail:function (e) {
-                window.location.href = '/lxdetail?id='+e
+                window.location.href = '/lxdetail?id='+e+'&token='+token
             },
             // 点击取消
             Cancels:function () {
@@ -94,7 +104,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/route/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showluxian(1,50)
                     np.tan_show = false
@@ -105,8 +116,10 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/route/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
+                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })
@@ -120,9 +133,7 @@ window.onload = function () {
             },
             Delete:function () {
                 var that = this
-                // nm.tan_show = true
                 np.tan_show_list = false
-                console.log("checkId:",np.checkId)
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])
                 }

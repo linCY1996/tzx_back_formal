@@ -17,7 +17,7 @@ window.onload = function () {
     var pname = GetParameters('pname')    //pname
     var pclass = GetParameters('pclass')    //pclass
     var plabel = GetParameters('plabel')
-
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -40,8 +40,10 @@ window.onload = function () {
                         page_index:pindex,
                         page_size:psize
                     },
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
+                    console.log(res.data.Body.list)
                     np.Poilist = res.data.Body.list
                     np.total = res.data.Body.pager.total
 
@@ -79,7 +81,7 @@ window.onload = function () {
             },
             // 点击编辑页面
             bian_link: function (e) {
-                window.location.href = '/poiadd1?id='+e
+                window.location.href = '/poiadd1?id='+e+'&token='+token
             },
             // 删除导游
             del: function (e) {
@@ -89,7 +91,7 @@ window.onload = function () {
                 
             },
             add_link:function () {
-              window.location.href = '/poinowadd1'  
+              window.location.href = '/poinowadd1?token='+token  
             },
             // 点击取消
             Cancels:function () {
@@ -101,7 +103,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/poi/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showPoilist(1,50)
                     np.tan_show = false
@@ -112,7 +115,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/poi/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showluxian(1,50)
                     
@@ -127,6 +131,7 @@ window.onload = function () {
             },
             Delete:function () {
                 var that = this
+                // nm.tan_show = true
                 np.tan_show_list = false
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])

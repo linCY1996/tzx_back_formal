@@ -17,6 +17,8 @@ window.onload = function () {
                     pwd:np.passNum,
                     server:server
                 }).then((res) => {
+                    console.log(res.data)
+                    // alert("123")
                     if(res.data.Code == 10000) {
                         window.location.href = '/view?token='+res.data.Body.token
                     }else {

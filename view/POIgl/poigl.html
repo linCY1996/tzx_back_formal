@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>欢迎页面-X-admin2.0</title>
+  <title></title>
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport"
@@ -74,14 +74,17 @@
       <tbody style="width:auto;">
         <tr v-for="plist in Poilist">
           <td>
-            <input type="checkbox" class="checks" :value="plist.Id" v-model="checkId">
+            <input v-if="plist.can_edit" type="checkbox" class="checks" :value="plist.Id" v-model="checkId">
           </td>
           <td class="td-manage">
-            <a title="编辑" @click="bian_link(plist.Id)">
+            <a v-if="plist.can_edit" title="编辑" @click="bian_link(plist.Id)">
               <i class="layui-icon">&#xe63c;</i>
             </a>
-            <a title="删除" @click="del(plist.Id)" href="javascript:;">
+            <a v-if="plist.can_edit" title="删除" @click="del(plist.Id)" href="javascript:;">
               <i class="layui-icon">&#xe640;</i>
+            </a>
+            <a v-if="!plist.can_edit" title="查看" @click="looks(plist.Id,plist.can_edit)">
+              <img src="../../static/images/look.png" alt="" class="layui-icon" style="width:16px;height:17px;cursor: pointer;margin-top: -3px;">
             </a>
             <a title="复制到" href="javascript:;">
               <i class="layui-icon">&#xe744;</i>
@@ -93,7 +96,7 @@
           <td>{{plist.Introduction}}</td>
           <td>{{plist.Label}}</td>
           <td>{{plist.Region}}</td>
-          <td><a @click="bian_link(plist.Id)" style="cursor: pointer;color:rgb(4, 72, 173);">查看</a></td>
+          <td><a @click="bian_link(plist.Id)" v-if="plist.can_edit" style="cursor: pointer;color:rgb(4, 72, 173);">查看</a></td>
 
         </tr>
 

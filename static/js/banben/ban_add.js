@@ -4,6 +4,8 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
+    console.log(token)
     var np = new Vue({
         el:'#tall',
         data:{
@@ -26,7 +28,8 @@ window.onload = function () {
                         num:parseInt(np.b_Num),
                         server:server,
                         status: np.b_Status,
-                        update_time:JSON.parse(times)
+                        update_time:JSON.parse(times),
+                        token:token
                     }).then((res) => {
                         alert("保存成功")
                         window.history.go(-1)

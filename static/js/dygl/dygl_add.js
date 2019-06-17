@@ -4,16 +4,13 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
     var np = new Vue({
         el:'#tall',
         data:{
             d_Name:'',
             d_Imgs:'',
-            d_Start:'',
-            d_Start_Audio:'',
-            d_End:'',
-            d_End_Audio:''
-
+           
         },
         methods:{
             // 上传
@@ -24,10 +21,10 @@ window.onload = function () {
                     axios.post(host+'/route/v1/api/guide/create',{
                         name:np.d_Name,
                         img:np.d_Imgs,
-                        start:'',
-                        end:'',
-                        server:server
+                        server:server,
+                        token:token
                     }).then((res) => {
+                        console.log(res.data.Body)
                         alert("添加成功")
                         window.history.go(-1)
                     })

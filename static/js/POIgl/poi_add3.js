@@ -4,7 +4,19 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
+    // var ids = location.search.replace('?id=', "")
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var ids = GetParameters('id')    //taskid
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -26,20 +38,10 @@ window.onload = function () {
                         page_size: 50
                     },
                     poi_id: parseInt(ids),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.work = res.data.Body.list
-                    // for(var j = 0;j<np.work.length;j++) {
-                    //     np.work.push({
-                    //         Id:np.work[j].Id,
-                    //         Class:np.work[j].Class,
-                    //         Sort:np.work[j].Sort,
-                    //         ImgArr:np.work[j].ImgArr,
-                    //         ButtonCopy:np.work[j].ButtonCopy,
-                    //         Audio:np.work[j].TaskCopyStruct[0].audio,
-                    //         Content:np.work[j].TaskCopyStruct[0].text
-                    //     })
-                    // }
                     var works = np.work
                     for(var i = 0;i < np.work.length; i++) {
                         np.work[i].TaskCopyStruct[0].text[0].content = JSON.stringify(that.b64DecodeUnicode(np.work[i].TaskCopyStruct[0].text[0].content))
@@ -51,11 +53,11 @@ window.onload = function () {
                             np.work[i].Class = '4-文字选择任务'
                         }else if(works[i].Class == 8) {
                             np.work[i].Class = '8-图片选择任务'
+                        }else if(works[i].Class == 16) {
+                            np.work[i].Class = '16-沉浸式任务'
                         }
                     }
 
-                    
-                    console.log("=",np.work)
                     np.count = np.work.length
                 })
             },
@@ -78,7 +80,7 @@ window.onload = function () {
             add: function () {
                 np.bianji_show = false
                 np.add_show = true
-                window.location.href = '/poiaddtask?id='+ids+'&count='+np.count
+                window.location.href = '/poiaddtask?id='+ids+'&count='+np.count+'&token='+token
             },
             // 保存
             saves: function () {
@@ -105,7 +107,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/task/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     // alert("删除成功")
                     that.showwork()
@@ -114,16 +117,17 @@ window.onload = function () {
             },
             bian_link: function (e) {
                 
-                window.location.href = '/poibianji?id=' + e+'&poiId='+ids
+                window.location.href = '/poibianji?id=' + e+'&poiId='+ids+'&token='+token
             },
              // 批量删除
              delete:function (e) {
                 var that = this
-                console.log("e",e)
                 axios.post(host + '/route/v1/api/task/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
+                    console.log(res.data)
                     that.showwork()
                     
                 })

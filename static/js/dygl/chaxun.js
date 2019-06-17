@@ -6,7 +6,18 @@ const server = 'formal'   //正式服
 window.onload = function () {
     var ids = location.search.replace('?id=', "")
     var name = decodeURI(ids)
-    // console.log(is)
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var name = GetParameters('id')    //taskid
+    var token = GetParameters('token')    //taskid
     var nm = new Vue({
         el: '#tall',
         data: {
@@ -29,7 +40,8 @@ window.onload = function () {
                         page_index:1,
                         page_size:50
                     },
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     nm.chaxun = res.data.Body.list
                     nm.total = res.data.Body.pager.total
@@ -54,7 +66,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/guide/del', {
                     id: parseInt(nm.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showchaxun()
                     nm.tan_show = false
@@ -62,14 +75,15 @@ window.onload = function () {
             },
              // 跳转页面
              btn_link: function (e) {
-                window.location.href = '/bianji?id=' + e
+                window.location.href = '/bianji?id=' + e +'&token='+token
             },
             // 批量删除
             delete:function (e) {
                 var that = this
                 axios.post(host + '/route/v1/api/guide/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showchaxun()
                     

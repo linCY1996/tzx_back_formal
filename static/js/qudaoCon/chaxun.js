@@ -16,7 +16,7 @@ window.onload = function () {
         }
     }
     var qdname = GetParameters('qdname')    //pname
-
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -35,7 +35,8 @@ window.onload = function () {
                         page_index:1,
                         page_size:50
                     },
-                    server:server
+                    server:server,
+                    token:token
                 }).then((res) => {
                     np.qudao = res.data.Body.list
                 })
@@ -52,7 +53,7 @@ window.onload = function () {
             },
             // 编辑跳转
             bian_link:function (e) {
-                window.location.href = '/qudaobianji?id='+e
+                window.location.href = '/qudaobianji?id='+e+'&token='+token
             },
             // 删除导游
             del: function (e) {
@@ -70,7 +71,7 @@ window.onload = function () {
                 // var that = this
                 // axios.post(host + '/route/v1/api/guide/del', {
                 //     id: parseInt(nm.Id),
-                //     server: "dev"
+                //     server: server
                 // }).then((res) => {
                 //     that.showdaoyou(1,30)
                 //     nm.tan_show = false
@@ -78,7 +79,7 @@ window.onload = function () {
             },
             // 查询
             looks:function () {
-                window.location.href = '/qudaochaxun?name='+np.q_name
+                window.location.href = '/qudaochaxun?name='+np.q_name+'&token='+token
             }
         },
         mounted: function () {

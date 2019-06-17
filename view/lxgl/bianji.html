@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!-- <link rel="stylesheet" href="../../static/css/POIgl/bianji.css"> -->
     <link rel="stylesheet" href="../../static/css/xadmin.css">
     <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
     <link rel="stylesheet" href="../../static/css/dygl/bianji.css">
@@ -13,6 +14,11 @@
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script>
+    <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script>
+    <script src="../../static/utf8-jsp/ueditor.parse.min.js"></script>
+    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <script src="../../static/js/lxgl/bianji.js"></script>
 </head>
 
@@ -20,9 +26,13 @@
     <div id="tall">
         <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
             <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
+                    style="color: rgb(241, 134, 11);">刷新</a></div>
         </div>
-
+        <!-- <div class="chooses">
+            <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
+            <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
+        </div> -->
         <!-- 编辑 -->
         <div class="all_Msgs">
             <table class="layui-table">
@@ -40,21 +50,21 @@
                                 <option v-for="qd in qudao" :value="qd.id">{{qd.id}}&nbsp;{{qd.name}}</option>
                             </select></td>
                         <td></td>
-                       
+
                     </tr>
                     <tr>
                         <td>线路名称</td>
                         <td><textarea name="daoname" id="daoname" v-model="xianlu_Name" cols="90" rows="4"></textarea>
                         </td>
                         <td style="color: red;">20个字以内</td>
-                        
+
                     </tr>
                     <tr>
                         <td>城市</td>
                         <td><textarea name="daoname" id="daoname" v-model="City" cols="90" rows="4"></textarea>
                         </td>
                         <td></td>
-                      
+
                     </tr>
                     <tr>
                         <td>导游名字</td>
@@ -62,13 +72,13 @@
                                 <option v-for="dm in daoyouname" :value="dm.Name+','+dm.Id">{{dm.Name}}</option>
                             </select></td>
                         <td></td>
-                       
+
                     </tr>
                     <tr>
                         <td>线路POI</td>
                         <td>
                             <div class="poiMsgsAll"
-                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 300px;">
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 350px;">
                                 <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="pl in Poilist">
                                     <input style="width: 18px;height:18px;" type="checkbox" :id="pl.Id"
                                         :value="pl.Id+','+pl.Name" v-model="checkedNames">
@@ -81,58 +91,64 @@
 
                         </td>
                         <td></td>
-                       
+
                     </tr>
                     <tr>
                         <td>价格(分)</td>
                         <td><textarea name="daoname" id="daoname" v-model="Price" cols="90" rows="4"></textarea>
                         </td>
                         <td></td>
-                        
+
                     </tr>
                     <tr>
                         <td>线路标签</td>
                         <td><textarea name="daoname" id="daoname" v-model="xianlu_Label" cols="90" rows="4"></textarea>
                         </td>
                         <td>每个标签最多6个字，最多4个标签，每个标签之间使用英文,间隔(例如：标签1,标签2,标签3)</td>
-                        
+
                     </tr>
                     <tr>
                         <td>热度值</td>
                         <td><textarea name="daoname" id="daoname" v-model="viewCount" cols="90" rows="4"></textarea>
                         </td>
                         <td>你希望该条线路从多少热度值开始显示，用户浏览会自动增加热度值</td>
-                   
+
                     </tr>
                     <tr>
                         <td>支付页图片</td>
                         <td><textarea name="daoname" id="daoname" v-model="zhifu_Img" cols="90" rows="4"></textarea>
                         </td>
-                        <td>输入图片链接，用于支付页的图片展示，<span style="color: red;">图片尺寸：610*406，命名：zhifu_渠道名全拼_第几条线路</span>(例如：zhifu_guanfang_1.jpg)</td>
-                        
+                        <td>输入图片链接，用于支付页的图片展示，<span
+                                style="color: red;">图片尺寸：610*406，命名：zhifu_渠道名全拼_第几条线路</span>(例如：zhifu_guanfang_1.jpg)
+                        </td>
+
                     </tr>
-                   
+
                     <tr>
                         <td>线路盖章图</td>
                         <td><textarea name="daoname" id="daoname" v-model="xianlu_Icon" cols="90" rows="4"></textarea>
                         </td>
                         <td>输入图片链接，印章颜色推荐#000000，非印章区域为透明，<span style="color: red;">图片尺寸：220*174</span></td>
-                       
+
                     </tr>
-                   
+
                     <tr>
                         <td>独家回忆入口图</td>
                         <td><textarea name="daoname" id="daoname" v-model="dujia_InImg" cols="90" rows="4"></textarea>
                         </td>
-                        <td>输入图片链接，<span style="color: red;">图片尺寸：650*350；图片命名：mem_inlet_渠道名全拼_第几条线路</span>(例如：mem_inlet_guanfang_1.png)</td>
-                        
+                        <td>输入图片链接，<span
+                                style="color: red;">图片尺寸：650*350；图片命名：mem_inlet_渠道名全拼_第几条线路</span>(例如：mem_inlet_guanfang_1.png)
+                        </td>
+
                     </tr>
                     <tr>
                         <td>独家回忆封面图</td>
                         <td><textarea name="daoname" id="daoname" v-model="dujia_fengImg" cols="90" rows="4"></textarea>
                         </td>
-                        <td>输入图片链接，<span style="color: red;">图片尺寸：650*610；图片命名：mem_cover_渠道名全拼_第几条线路</span>(例如：mem_cover_guanfang_1.jpg)</td>
-                       
+                        <td>输入图片链接，<span
+                                style="color: red;">图片尺寸：650*610；图片命名：mem_cover_渠道名全拼_第几条线路</span>(例如：mem_cover_guanfang_1.jpg)
+                        </td>
+
                     </tr>
                     <!-- 新增 -->
                     <tr>
@@ -140,7 +156,7 @@
                         <td><textarea name="daoname" v-model="dujia_word" id="daoname" cols="90" rows="4"></textarea>
                         </td>
                         <td></td>
-                      
+
                     </tr>
                     <tr>
                         <td>独家回忆分享标题</td>
@@ -148,7 +164,7 @@
                                 rows="4"></textarea>
                         </td>
                         <td><span style="color: red;">24个字以内</span>>（含标点符号在内）</td>
-                        
+
                     </tr>
                     <tr>
                         <td>独家回忆分享图片</td>
@@ -157,14 +173,14 @@
                         </td>
                         <td><span style="color: red;">图片尺寸：420*336，命名：memshare_渠道全拼_第几条线路</span>>
                             (例如：memshare_guanfang_1.jpg)</td>
-                       
+
                     </tr>
                     <tr>
                         <td>体验按钮文案</td>
                         <td><textarea name="daoname" v-model="dujia_btnmsg" id="daoname" cols="90" rows="4"></textarea>
                         </td>
                         <td></td>
-                       
+
                     </tr>
                     <tr>
                         <td>行程开始页配置</td>
@@ -176,15 +192,15 @@
                         </td>
                         <td><span style="color: red;">图片尺寸：620*830，命名：start_渠道全拼_第几条线路</span>
                             (例如：start_guafang_1.jpg)</td>
-                     
+
                     </tr>
                     <tr>
                         <td>行程结束页配置</td>
                         <td style="height: 270px;">
-                            <div class="road_end_msg">音频&nbsp;<input type="text" v-model="dujia_end_audio"
-                                    id="road_end"></div>
                             <div class="road_end_msg">图片&nbsp;<input type="text" v-model="dujia_end_img" id="road_end">
                             </div>
+                            <div class="road_end_msg">音频&nbsp;<input type="text" v-model="dujia_end_audio"
+                                    id="road_end"></div>
                             <div class="road_end_msg">
                                 跳转类型 <select name="jumps" v-model="jump_type" id="jumps">
                                     <option value="-1">不跳转</option>
@@ -233,8 +249,10 @@
                             </div>
                         </td>
 
-                        <td><span style="color: red;">图片尺寸：620*830，命名：end_渠道全拼_第几条线路；</span>>跳转类型，推荐选择跳转到独家回忆(例如：end_guafang_1.jpg)</td>
-                        
+                        <td><span
+                                style="color: red;">图片尺寸：620*830，命名：end_渠道全拼_第几条线路；</span>>跳转类型，推荐选择跳转到独家回忆(例如：end_guafang_1.jpg)
+                        </td>
+
                     </tr>
                     <tr>
                         <td>地图背景</td>
@@ -242,7 +260,7 @@
                         </td>
                         <td><span style="color: red;">图片尺寸：750*1334，命名：bg_渠道全拼_第几条线路</span>
                             (例如：bg_guanfang_1.jpg)</td>
-                      
+
                     </tr>
                     <tr>
                         <td>推荐路线</td>
@@ -251,7 +269,7 @@
                         </td>
                         <td>除了推荐路线区域，其他用透明，<span style="color: red;">图片尺寸：750*1334，命名：tjlx_渠道全拼_第几条线路</span>
                             (例如：tjlx_guanfang_1.png)</td>
-                       
+
                     </tr>
                     <tr>
                         <td>地图坐标</td>
@@ -269,14 +287,34 @@
                                 &nbsp;<input type="text" v-model="dujia_lat_leftDown_lat" name="leftup" id="leftup">
                             </div>
                         </td>
-                        <td>地图背景图对应的真实地图的四个点的坐标，坐标点请在请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank" style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中查找，<span style="color:red;">请准确填写</span></td>
-                      
+                        <td>地图背景图对应的真实地图的四个点的坐标，坐标点请在请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
+                                target="_blank"
+                                style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中查找，<span
+                                style="color:red;">请准确填写</span></td>
+                    </tr>
+                    <tr>
+                        <td>是否显示当前位置</td>
+                        <td>
+                            <select name="nowLoaction" id="nowLoaction" v-model="is_cur_location" style="width:663.6px;color: black;">
+                                <option value="true">是</option>
+                                <option value="false">否</option>
+                            </select>
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>详情页富文本</td>
+                        <td>
+                            <script id="editor" type="text/plain"
+                                style="max-width: 663px;max-height:400px;overflow-y: scroll;"></script>
+                        </td>
+                        <td></td>
                     </tr>
 
                 </tbody>
             </table>
 
-            <div class="btn_All">
+            <div class="btn_All" v-if="can_edit">
                 <div class="btn_Left" @click="chongzhi()">重置</div>
                 <div class="btn_Right" @click="saves()">保存</div>
             </div>

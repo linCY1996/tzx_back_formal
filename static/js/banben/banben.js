@@ -4,6 +4,7 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
     var np = new Vue({
         el: '#tall',
         data: {
@@ -24,28 +25,31 @@ window.onload = function () {
                         page_index: 1,
                         page_size: 50
                     },
-                    server: server
+                    server: server,
+                    token: token
                 }).then((res) => {
+                    console.log(res.data.Body)
+                    // var t = Date(time)
                     np.total = res.data.Body.pager.total
                     var ban = res.data.Body.list
-                    for(var i = 0;i<np.total;i++) {
+                    for (var i = 0; i < np.total; i++) {
                         np.banben.push({
-                            id:ban[i].id,
-                            num:ban[i].num,
-                            status:ban[i].status,
-                            update_time:that.getLocalTime(ban[i].update_time)
+                            id: ban[i].Id,
+                            num: ban[i].V,
+                            status: ban[i].S,
+                            update_time: that.format(ban[i].T,'yyyy-MM-dd HH:mm:ss')
                         })
                     }
-                    console.log("===",np.banben)
+                    // console.log("===",np.banben)
                 })
             },
             // 添加版本
             add_banben: function () {
-                window.location.href = '/banbenadd'
+                window.location.href = '/banbenadd?token=' + token
             },
             // 编辑版本
             bianji: function (e) {
-                window.location.href = '/banbenbianji?id=' + e
+                window.location.href = '/banbenbianji?id=' + e + '&token=' + token
             },
             //页码点击事件
             btnClick: function (e) {
@@ -74,7 +78,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/version/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token: token
                 }).then((res) => {
                     // that.viewbanben()
                     window.location.reload()
@@ -86,7 +91,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/version/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token: token
                 }).then((res) => {
                     console.log(res.data)
                     window.location.reload()
@@ -109,9 +115,38 @@ window.onload = function () {
             },
 
             // 格式时间
-            getLocalTime:function (nS) {     
-                return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
-             }
+            getLocalTime: function (nS) {
+                return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+            },
+
+            format: function (time, format) {
+                var t = new Date(time);
+                var tf = function (i) {
+                    return (i < 10 ? '0' : '') + i
+                };
+                return format.replace(/yyyy|MM|dd|HH|mm|ss/g, function (a) {
+                    switch (a) {
+                        case 'yyyy':
+                            return tf(t.getFullYear());
+                            break;
+                        case 'MM':
+                            return tf(t.getMonth() + 1);
+                            break;
+                        case 'mm':
+                            return tf(t.getMinutes());
+                            break;
+                        case 'dd':
+                            return tf(t.getDate());
+                            break;
+                        case 'HH':
+                            return tf(t.getHours());
+                            break;
+                        case 'ss':
+                            return tf(t.getSeconds());
+                            break;
+                    }
+                })
+            }
         },
         mounted: function () {
             this.viewbanben()

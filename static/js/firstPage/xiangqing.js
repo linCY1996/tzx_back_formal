@@ -4,8 +4,14 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
 
+    $("#colla-titles").click(function () {
+        $("#colla-contents").toggle();
+    });
+ 
+
+    var ids = location.search.replace('?id=', "")
+    var ue = UE.getEditor('editor')   //编辑故事详情
     function GetParameters(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -16,9 +22,10 @@ window.onload = function () {
             return null;
         }
     }
-    var ids = GetParameters('id') //pname
+    var ids = GetParameters('id') //
     var fir_show = GetParameters('fshow')
     var Sec_show = GetParameters('sshow')
+    var token = GetParameters('token')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -38,22 +45,74 @@ window.onload = function () {
             daishen: false, //审核标题
             guanfang: false, //官方标题
             routeName: [],
+            // 编辑富文本信息所需要字段
+            can_edit_guide: [],
+            can_edit_poi: [],
+            can_edit_route: [],
+            can_use_guide: [],
+            can_use_poi: [],
+            can_use_route: [],
+            name: '',
+            page_url: '',
+            // 折叠面板
+            
 
         },
         methods: {
-
+            //隐藏面板
+            titles:function (index) {
+              this.detailimgarr[index].showContent = !this.detailimgarr[index].showContent
+            },
+            // 通过id来获取rich信息
+            showRich: function () {
+                axios.post(host + '/route/v1/api/channel/get', {
+                    id: parseInt(ids),
+                    server: server,
+                    token: token
+                }).then((res) => {
+                    //   console.log(res.data.Body)
+                    np.can_edit_guide = res.data.Body.can_edit_guide
+                    np.can_edit_poi = res.data.Body.can_edit_poi
+                    np.can_edit_route = res.data.Body.can_edit_route
+                    np.can_use_guide = res.data.Body.can_use_guide
+                    np.can_use_poi = res.data.Body.can_use_poi
+                    np.can_use_route = res.data.Body.can_use_route
+                    np.name = res.data.Body.name
+                    np.page_url = res.data.Body.page_url
+                    var rich = res.data.Body.rich
+                    ue.setContent(rich)
+                })
+            },
+            saves: function () {
+                // console.log(typeof np.can_edit_guide)
+                axios.post(host + '/route/v1/api/channel/update', {
+                    can_edit_guide: JSON.parse(np.can_edit_guide),
+                    can_edit_poi: JSON.parse(np.can_edit_poi),
+                    can_edit_route: JSON.parse(np.can_edit_route),
+                    can_use_guide: JSON.parse(np.can_use_guide),
+                    can_use_poi: JSON.parse(np.can_use_poi),
+                    can_use_route: JSON.parse(np.can_use_route),
+                    id: parseInt(ids),
+                    name: np.name,
+                    page_url: np.page_url,
+                    server: server,
+                    rich: ue.getContent()
+                }).then((res) => {
+                    // console.log(res.data.Body)
+                    alert("富文本信息保存成功")
+                })
+            },
             firListshow: function () {
                 axios.post(host + '/route/v1/api/homePage/getRouteIdList', {
                     channel_id: parseInt(ids),
-                    server: server
-
+                    server: server,
+                    token: token
                 }).then((res) => {
                     if (ids == 0) {
                         np.guanfang = true
                     } else if (ids == -1) {
                         np.daishen = true
                     }
-
                     np.first_page_show = eval(fir_show)
                     np.xiangqing_page_show = eval(Sec_show)
                     var plist = res.data.Body
@@ -82,7 +141,8 @@ window.onload = function () {
                                     RouteId: arr[j],
                                     Data: plist[i].Data,
                                     route_name: plist[i].route_name,
-                                    banner: plist[i].banner
+                                    banner: plist[i].banner,
+                                    showContent:true
                                 })
                             }
                         }
@@ -90,10 +150,12 @@ window.onload = function () {
                     np.detailimgarr = detailimgarr
                 })
             },
+
             // 显示首页banner和说明图
             showfirstImgs: function () {
                 axios.post(host + '/route/v1/api/channel/jumpList', {
                     channel_id: parseInt(ids),
+                    // route_id:parseInt(),
                     server: server
                 }).then((res) => {
                     var shouBanner = [] //首页banner
@@ -122,6 +184,7 @@ window.onload = function () {
                     }
                     np.shouBanner = shouBanner.reverse()
                     np.shouimgarr = shouimgarr.reverse()
+                    // console.log(np.shouBanner)
                 })
             },
 
@@ -152,7 +215,8 @@ window.onload = function () {
                 var that = this
                 axios.post(host + '/route/v1/api/homePage/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token: token
                 }).then((res) => {
                     np.tan_show = false
                     that.firListshow()
@@ -163,22 +227,22 @@ window.onload = function () {
             //添加首页banner
             addshouBanner: function () {
                 var type = 'banner'
-                window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids
+                window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids + '&token=' + token
             },
 
             //添加首页imgarr
             addshouImgArr: function () {
                 var type = 'imgarr'
-                window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids
+                window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids + '&token=' + token
             },
             // 详情页banner
             ImgsxiangBannerBian: function (e) {
-                window.location.href = '/firstxiangbianji?routeid=' + e
+                window.location.href = '/firstxiangbianji?routeid=' + e+'&token='+token
             },
             // 详情页说明页
             addxiangqingDetail: function (e) {
-                var type = ""
-                window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids+'&routeid='+e
+                var type = "detail"
+                window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids + '&routeid=' + e + '&token=' + token
             },
 
             // 首页信息显示
@@ -192,21 +256,21 @@ window.onload = function () {
             },
             // 点击进入详情图片得编辑
             ImgsBian: function (e, e1) {
-                window.location.href = '/firstPagebianji?id=' + e + '&channel_id=' + ids + '&type=' + encodeURI(e1)
+                window.location.href = '/firstPagebianji?id=' + e + '&channel_id=' + ids + '&type=' + encodeURI(e1) + '&token=' + token
             },
             // 编辑详情页说明图
-            Imgsxiangshuo:function (e,e1,e2) {
-                window.location.href = '/firstPagebianji?id=' + e + '&channel_id=' + ids + '&type=' + encodeURI(e1)+'&routeid='+e2
+            Imgsxiangshuo: function (e, e1, e2) {
+                window.location.href = '/firstPagebianji?id=' + e + '&channel_id=' + ids + '&type=' + encodeURI(e1) + '&routeid=' + e2 + '&token=' + token
             },
             shouImgsBian: function (e, e1) {
-                window.location.href = '/firstPagebianji?id=' + e + '&channel_id=' + ids + '&type=' + encodeURI(e1)
+                window.location.href = '/firstPagebianji?id=' + e + '&channel_id=' + ids + '&type=' + encodeURI(e1) + '&token=' + token
             }
         },
         mounted: function () {
             this.firListshow();
             this.showfirstImgs();
+            this.showRich();
         }
     })
-
 
 }

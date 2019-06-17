@@ -168,3 +168,14 @@ func Banbainji(w http.ResponseWriter, r *http.Request) {
 	buf, _ := ioutil.ReadFile(`view/banben/bianji.html`)
 	w.Write(buf)
 }
+
+//账号管理
+func LoginCon(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/loginCon/loginCon.html`)
+	w.Write(buf)
+}
+
+func LoginConBianji(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/loginCon/loginBianji.html`)
+	w.Write(buf)
+}

@@ -1,0 +1,111 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>账号管理</title>
+    <link rel="stylesheet" href="../../static/css/loginCon/loginBianji.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="../../static/js/loginCon/loginBianji.js"></script>
+</head>
+
+<body>
+    <div
+        style="width: 140px;height:60px;display: flex;justify-content: space-between;margin-top: 50px;margin-left: 100px;">
+        <div class="fanhui"><a href="javascript:history.go(-1)"
+                style="color: rgb(241, 134, 11);text-decoration: none;">返回</a></div>
+        <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
+                style="color: rgb(241, 134, 11);text-decoration: none;">刷新</a></div>
+    </div>
+    <div id="tall">
+        <!-- 添加账号 -->
+        <div class="Navcat" v-if="addNum">
+            <p class="Nav_Name">添加账号</p>
+            <div class="Navs">
+                <div class="Nav_ch1">
+                    <div class="Nav_chl_name">账号</div><input type="text" name="Num" id="Num" v-model="TouerNum">
+                </div>
+                <div class="Nav_ch1">
+                    <div class="Nav_chl_name">渠道</div>
+                    <select name="qudao" id="qudao" v-model="channel_id">
+                        <option v-for="item in qudao" :value="item.id">{{item.id}}&nbsp;{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="Nav_ch1">添加账号后，默认密码为：guest123</div>
+            </div>
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="addNums()">保存</div>
+            </div>
+        </div>
+        <!-- 编辑账号 -->
+        <div class="Navcat" v-if="bianjiNum">
+            <p class="Nav_Name">编辑账号</p>
+            <div class="Navs">
+                <div class="Nav_ch1">
+                    <div class="Nav_chl_name">账号</div><input type="text" name="Num" id="Num" v-model="bianjiName">
+                </div>
+                <div class="Nav_ch1">
+                    <div class="Nav_chl_name">渠道</div>
+                    <select name="qudao" id="qudao" v-model="bianji_channel_id">
+                        <option v-for="item in qudao" :value="item.id">{{item.id}}&nbsp;{{item.name}}</option>
+                    </select>
+                </div>
+                <div class="Nav_ch1">添加账号后，默认密码为：guest123</div>
+            </div>
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="saves()">保存</div>
+            </div>
+        </div>
+        <!-- 修改密码 -->
+        <div class="Navcat RewritePwds" v-if="modifyPwd">
+            <p class="Nav_Name">修改密码</p>
+            <div class="Navs">
+                <div class="Nav_ch1">账号：{{bianjiNames}}</div>
+                <div class="Nav_ch1_pwd">
+                    <div class="Nav_ch1_name">原密码</div><input type="password" name="Num" id="Num" v-model="old_Pwd">
+                </div>
+                <div class="nacPwd">
+                    <div class="Nav_chs">
+                        <div class="Nav_chl_name">新密码</div><input type="password" name="Num" id="Num"
+                            v-model="uploadNew_Pwd">
+                    </div>
+                    <!-- <div style="width: 10px;"></div> -->
+                    <div class="Nav_ch1">
+                        <div class="Nav_chl_name">再次输入新密码</div><input type="password" name="Num" id="Num"
+                            v-model="uploadAgain_Pwd">
+                    </div>
+                </div>
+            </div>
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="updataPwd()">保存</div>
+            </div>
+        </div>
+        <!-- 重置密码 -->
+        <div class="Navcat" v-if="rewritePwd">
+            <p class="Nav_Name">重置密码</p>
+            <div class="Navs">
+                <div class="Nav_ch1">账号：{{bianjiName}}</div>
+                <div class="Nav_chc">
+                    <div class="Nav_chl_name">新密码</div><input type="password" name="Num" id="Num" v-model="new_Pwd">
+                </div>
+                <div class="Nav_chc">
+                    <div class="Nav_chl_name">再次输入新密码</div><input type="password" name="Num" id="Num"
+                        v-model="again_Pwd">
+                </div>
+            </div>
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="chongzhiPwd()">保存</div>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

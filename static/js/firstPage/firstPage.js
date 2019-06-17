@@ -4,6 +4,7 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
+    var token = location.search.replace('?token=', "")
     var np = new Vue({
         el: '#tall',
         data: {
@@ -25,7 +26,8 @@ window.onload = function () {
                       page_index:pindex,
                       page_size:psize
                   },
-                  server:server
+                  server:server,
+                  token:token
               }).then((res) => {
                   np.first_list = res.data.Body.list
                   np.total = res.data.Body.list.length
@@ -37,7 +39,7 @@ window.onload = function () {
             chaXun:function () {
                 var qdname = np.qd_name
                 var lxname = np.lx_name
-                window.location.href = '/firchaxun?qdname='+encodeURI(qdname)+'&lxname='+encodeURI(lxname)  
+                window.location.href = '/firchaxun?qdname='+encodeURI(qdname)+'&lxname='+encodeURI(lxname)+'&token='+token
             },
             //页码点击事件
             btnClick: function (e) {
@@ -53,15 +55,15 @@ window.onload = function () {
             },
             // 编辑跳转
             bian_link:function (e) {
-                window.location.href = '/firstPagebianji?id='+e
+                window.location.href = '/firstPagebianji?id='+e +'&token='+token
             },
             // 首页详情跳转
             detail:function (e) {
-                window.location.href = '/firstPagexq?id='+e+'&fshow='+true+'&sshow='+false
+                window.location.href = '/firstPagexq?id='+e+'&fshow='+true+'&sshow='+false+'&token='+token
             },
             // 详情页详情跳转
             detail1:function (e) {
-                window.location.href = '/firstPagexq?id='+e+'&fshow='+false+'&sshow='+true
+                window.location.href = '/firstPagexq?id='+e+'&fshow='+false+'&sshow='+true+'&token='+token
             },
             // 删除导游
             del: function (e) {
@@ -77,23 +79,26 @@ window.onload = function () {
             // 点击确认
             Confirms:function () {
                 var that = this
-                axios.post(host + '/route/v1/api/homePage/del', {
+                axios.post(host + '/route/v1/api/channel/del', {
                     id: parseInt(np.Id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     that.showlist(1,50)
-                    nm.tan_show = false
+                    np.tan_show = false
                 })
             },
              // 批量删除
              delete:function (e) {
                 var that = this
-                axios.post(host + '/route/v1/api/homePage/del', {
+                axios.post(host + '/route/v1/api/channel/del', {
                     id: parseInt(e),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
-                    that.showluxian(1,50)
-                    
+                    console.log(res.data.Body)
+                    that.showlist(1,50)
+                    np.tan_show = false
                 })
             },
             delAll:function () {
@@ -105,6 +110,7 @@ window.onload = function () {
             },
             Delete:function () {
                 var that = this
+                console.log('==',np.checkId)
                 np.tan_show_list = false
                 for(var i = 0;i<np.checkId.length;i++){
                     that.delete(np.checkId[i])

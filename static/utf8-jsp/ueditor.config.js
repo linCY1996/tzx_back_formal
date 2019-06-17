@@ -58,8 +58,8 @@
 
         //主题配置项,默认是default。有需要的话也可以使用如下这样的方式来自动多主题切换，当然，前提条件是themes文件夹下存在对应的主题文件：
         //现有如下皮肤:default
-        //,theme:'default'
-        //,themePath:URL +"themes/"
+        // , theme: 'wx'
+        // , themePath: URL + "themes/"
 
         //,zIndex : 900     //编辑器层级的基数,默认是900
 
@@ -70,11 +70,11 @@
         //,customDomain:false
 
         //常用配置项目
-        //,isShow : true    //默认显示编辑器
+        ,isShow : true    //默认显示编辑器
 
         //,textarea:'editorValue' // 提交表单时，服务器获取编辑器提交内容的所用的参数，多实例时可以给容器name属性，会将name给定的值最为每个实例的键值，不用每次实例化的时候都设置这个值
 
-        //,initialContent:'欢迎使用ueditor!'    //初始化编辑器的内容,也可以通过textarea/script给值，看官网例子
+        ,initialContent:'欢迎使用土著行后台功能管理界面~~~'    //初始化编辑器的内容,也可以通过textarea/script给值，看官网例子
 
         //,autoClearinitialContent:true //是否自动清除编辑器初始内容，注意：如果focus属性设置为true,这个也为真，那么编辑器一上来就会触发导致初始化的内容看不到了
 
@@ -87,10 +87,10 @@
 
         //indentValue
         //首行缩进距离,默认是2em
-        //,indentValue:'2em'
+        , indentValue: '2em'
 
-        //,initialFrameWidth:1000  //初始化编辑器宽度,默认1000
-        //,initialFrameHeight:320  //初始化编辑器高度,默认320
+        // , initialFrameWidth: "auto"  //初始化编辑器宽度,默认1000
+        // , initialFrameHeight: "auto"  //初始化编辑器高度,默认320
 
         //,readonly : false //编辑器初始化结束后,编辑区域是否是只读的，默认是false
 
@@ -99,14 +99,14 @@
         //启用自动保存
         //,enableAutoSave: true
         //自动保存间隔时间， 单位ms
-        //,saveInterval: 500
+        , saveInterval: 500
 
         //,fullscreen : false //是否开启初始化时即全屏，默认关闭
 
         //,imagePopup:true      //图片操作的浮层开关，默认打开
 
         //,autoSyncData:true //自动同步编辑器要提交的数据
-        //,emotionLocalization:false //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
+        , emotionLocalization: true //是否开启表情本地化，默认关闭。若要开启请确保emotion文件夹下包含官网提供的images表情文件夹
 
         //粘贴只保留标签，去除标签所有属性
         //,retainOnlyLabelPasted: false
@@ -144,31 +144,31 @@
 
         //insertorderedlist
         //有序列表的下拉配置,值留空时支持多语言自动识别，若配置值，则以此值为准
-        //,'insertorderedlist':{
-        //      //自定的样式
-        //        'num':'1,2,3...',
-        //        'num1':'1),2),3)...',
-        //        'num2':'(1),(2),(3)...',
-        //        'cn':'一,二,三....',
-        //        'cn1':'一),二),三)....',
-        //        'cn2':'(一),(二),(三)....',
-        //     //系统自带
-        //     'decimal' : '' ,         //'1,2,3...'
-        //     'lower-alpha' : '' ,    // 'a,b,c...'
-        //     'lower-roman' : '' ,    //'i,ii,iii...'
-        //     'upper-alpha' : '' , lang   //'A,B,C'
-        //     'upper-roman' : ''      //'I,II,III...'
-        //}
+        , 'insertorderedlist': {
+            //自定的样式
+            'num': '1,2,3...',
+            'num1': '1),2),3)...',
+            'num2': '(1),(2),(3)...',
+            'cn': '一,二,三....',
+            'cn1': '一),二),三)....',
+            'cn2': '(一),(二),(三)....',
+            //系统自带
+            'decimal': '',         //'1,2,3...'
+            'lower-alpha': '',    // 'a,b,c...'
+            'lower-roman': '',    //'i,ii,iii...'
+            'upper-alpha': '',   //'A,B,C'
+            'upper-roman': ''      //'I,II,III...'
+        }
 
         //insertunorderedlist
         //无序列表的下拉配置，值留空时支持多语言自动识别，若配置值，则以此值为准
-        //,insertunorderedlist : { //自定的样式
-        //    'dash' :'— 破折号', //-破折号
-        //    'dot':' 。 小圆圈', //系统自带
-        //    'circle' : '',  // '○ 小圆圈'
-        //    'disc' : '',    // '● 小圆点'
-        //    'square' : ''   //'■ 小方块'
-        //}
+        ,insertunorderedlist : { //自定的样式
+           'dash' :'— 破折号', //-破折号
+           'dot':' 。 小圆圈', //系统自带
+           'circle' : '',  // '○ 小圆圈'
+           'disc' : '',    // '● 小圆点'
+           'square' : ''   //'■ 小方块'
+        }
         //,listDefaultPaddingLeft : '30'//默认的左边缩进的基数倍
         //,listiconpath : 'http://bs.baidu.com/listicon/'//自定义标号的路径
         //,maxListLevel : 3 //限制可以tab的级数, 设置-1为不限制
@@ -177,7 +177,7 @@
 
         //fontfamily
         //字体设置 label留空支持多语言自动切换，若配置，则以配置值为准
-        //,'fontfamily':[
+        // ,'fontfamily':[
         //    { label:'',name:'songti',val:'宋体,SimSun'},
         //    { label:'',name:'kaiti',val:'楷体,楷体_GB2312, SimKai'},
         //    { label:'',name:'yahei',val:'微软雅黑,Microsoft YaHei'},
@@ -189,27 +189,27 @@
         //    { label:'',name:'comicSansMs',val:'comic sans ms'},
         //    { label:'',name:'impact',val:'impact,chicago'},
         //    { label:'',name:'timesNewRoman',val:'times new roman'}
-        //]
+        // ]
 
         //fontsize
         //字号
-        //,'fontsize':[10, 11, 12, 14, 16, 18, 20, 24, 36]
+        ,'fontsize':[10, 11, 12, 14, 16, 18, 20, 24, 36]
 
         //paragraph
         //段落格式 值留空时支持多语言自动识别，若配置，则以配置值为准
-        //,'paragraph':{'p':'', 'h1':'', 'h2':'', 'h3':'', 'h4':'', 'h5':'', 'h6':''}
+        // ,'paragraph':{'p':'', 'h1':'', 'h2':'', 'h3':'', 'h4':'', 'h5':'', 'h6':''}
 
         //rowspacingtop
         //段间距 值和显示的名字相同
-        //,'rowspacingtop':['5', '10', '15', '20', '25']
+        ,'rowspacingtop':['5', '10', '15', '20', '25','35','45']
 
         //rowspacingBottom
         //段间距 值和显示的名字相同
-        //,'rowspacingbottom':['5', '10', '15', '20', '25']
+        ,'rowspacingbottom':['5', '10', '15', '20', '25','35','45']
 
         //lineheight
         //行内间距 值和显示的名字相同
-        //,'lineheight':['1', '1.5','1.75','2', '3', '4', '5']
+        ,'lineheight':['1', '1.5','1.75','2', '3', '4', '5','7.5','9','10.5','12']
 
         //customstyle
         //自定义样式，不支持国际化，此处配置值即可最后显示值
@@ -250,8 +250,8 @@
         //,elementPathEnabled : true
 
         //wordCount
-        //,wordCount:true          //是否开启字数统计
-        //,maximumWords:10000       //允许的最大字符数
+        ,wordCount:true          //是否开启字数统计
+        ,maximumWords:10000       //允许的最大字符数
         //字数统计提示，{#count}代表当前字数，{#leave}代表还可以输入多少字符数,留空支持多语言自动切换，否则按此配置显示
         //,wordCountMsg:''   //当前已输入 {#count} 个字符，您还可以输入{#leave} 个字符
         //超出字数限制提示  留空支持多语言自动切换，否则按此配置显示
@@ -302,7 +302,7 @@
 
         //autotypeset
         //自动排版参数
-        //,autotypeset: {
+        // ,autotypeset: {
         //    mergeEmptyline: true,           //合并空行
         //    removeClass: true,              //去掉冗余的class
         //    removeEmptyline: false,         //去掉空行
@@ -318,7 +318,7 @@
         //    indentValue : '2em',            //行首缩进的大小
         //    bdc2sb: false,
         //    tobdc: false
-        //}
+        // }
 
         //tableDragable
         //表格是否可以拖拽
@@ -355,78 +355,78 @@
         //,allowDivTransToP:true      //允许进入编辑器的div标签自动变成p标签
         //,rgb2Hex:true               //默认产出的数据中的color自动从rgb格式变成16进制格式
 
-		// xss 过滤是否开启,inserthtml等操作
-		,xssFilterRules: true
-		//input xss过滤
-		,inputXssFilter: true
-		//output xss过滤
-		,outputXssFilter: true
-		// xss过滤白名单 名单来源: https://raw.githubusercontent.com/leizongmin/js-xss/master/lib/default.js
-		,whitList: {
-			a:      ['target', 'href', 'title', 'class', 'style'],
-			abbr:   ['title', 'class', 'style'],
-			address: ['class', 'style'],
-			area:   ['shape', 'coords', 'href', 'alt'],
-			article: [],
-			aside:  [],
-			audio:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'class', 'style'],
-			b:      ['class', 'style'],
-			bdi:    ['dir'],
-			bdo:    ['dir'],
-			big:    [],
-			blockquote: ['cite', 'class', 'style'],
-			br:     [],
-			caption: ['class', 'style'],
-			center: [],
-			cite:   [],
-			code:   ['class', 'style'],
-			col:    ['align', 'valign', 'span', 'width', 'class', 'style'],
-			colgroup: ['align', 'valign', 'span', 'width', 'class', 'style'],
-			dd:     ['class', 'style'],
-			del:    ['datetime'],
-			details: ['open'],
-			div:    ['class', 'style'],
-			dl:     ['class', 'style'],
-			dt:     ['class', 'style'],
-			em:     ['class', 'style'],
-			font:   ['color', 'size', 'face'],
-			footer: [],
-			h1:     ['class', 'style'],
-			h2:     ['class', 'style'],
-			h3:     ['class', 'style'],
-			h4:     ['class', 'style'],
-			h5:     ['class', 'style'],
-			h6:     ['class', 'style'],
-			header: [],
-			hr:     [],
-			i:      ['class', 'style'],
-			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', 'loadingclass', 'class', 'data-latex'],
-			ins:    ['datetime'],
-			li:     ['class', 'style'],
-			mark:   [],
-			nav:    [],
-			ol:     ['class', 'style'],
-			p:      ['class', 'style'],
-			pre:    ['class', 'style'],
-			s:      [],
-			section:[],
-			small:  [],
-			span:   ['class', 'style'],
-			sub:    ['class', 'style'],
-			sup:    ['class', 'style'],
-			strong: ['class', 'style'],
-			table:  ['width', 'border', 'align', 'valign', 'class', 'style'],
-			tbody:  ['align', 'valign', 'class', 'style'],
-			td:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
-			tfoot:  ['align', 'valign', 'class', 'style'],
-			th:     ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
-			thead:  ['align', 'valign', 'class', 'style'],
-			tr:     ['rowspan', 'align', 'valign', 'class', 'style'],
-			tt:     [],
-			u:      [],
-			ul:     ['class', 'style'],
-			video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style']
-		}
+        // xss 过滤是否开启,inserthtml等操作
+        , xssFilterRules: true
+        //input xss过滤
+        , inputXssFilter: true
+        //output xss过滤
+        , outputXssFilter: true
+        // xss过滤白名单 名单来源: https://raw.githubusercontent.com/leizongmin/js-xss/master/lib/default.js
+        , whitList: {
+            a: ['target', 'href', 'title', 'class', 'style'],
+            abbr: ['title', 'class', 'style'],
+            address: ['class', 'style'],
+            area: ['shape', 'coords', 'href', 'alt'],
+            article: [],
+            aside: [],
+            audio: ['autoplay', 'controls', 'loop', 'preload', 'src', 'class', 'style'],
+            b: ['class', 'style'],
+            bdi: ['dir'],
+            bdo: ['dir'],
+            big: [],
+            blockquote: ['cite', 'class', 'style'],
+            br: [],
+            caption: ['class', 'style'],
+            center: [],
+            cite: [],
+            code: ['class', 'style'],
+            col: ['align', 'valign', 'span', 'width', 'class', 'style'],
+            colgroup: ['align', 'valign', 'span', 'width', 'class', 'style'],
+            dd: ['class', 'style'],
+            del: ['datetime'],
+            details: ['open'],
+            div: ['class', 'style'],
+            dl: ['class', 'style'],
+            dt: ['class', 'style'],
+            em: ['class', 'style'],
+            font: ['color', 'size', 'face'],
+            footer: [],
+            h1: ['class', 'style'],
+            h2: ['class', 'style'],
+            h3: ['class', 'style'],
+            h4: ['class', 'style'],
+            h5: ['class', 'style'],
+            h6: ['class', 'style'],
+            header: [],
+            hr: [],
+            i: ['class', 'style'],
+            img: ['src', 'alt', 'title', 'width', 'height', 'id', '_src', 'loadingclass', 'class', 'data-latex'],
+            ins: ['datetime'],
+            li: ['class', 'style'],
+            mark: [],
+            nav: [],
+            ol: ['class', 'style'],
+            p: ['class', 'style'],
+            pre: ['class', 'style'],
+            s: [],
+            section: [],
+            small: [],
+            span: ['class', 'style'],
+            sub: ['class', 'style'],
+            sup: ['class', 'style'],
+            strong: ['class', 'style'],
+            table: ['width', 'border', 'align', 'valign', 'class', 'style'],
+            tbody: ['align', 'valign', 'class', 'style'],
+            td: ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
+            tfoot: ['align', 'valign', 'class', 'style'],
+            th: ['width', 'rowspan', 'colspan', 'align', 'valign', 'class', 'style'],
+            thead: ['align', 'valign', 'class', 'style'],
+            tr: ['rowspan', 'align', 'valign', 'class', 'style'],
+            tt: [],
+            u: [],
+            ul: ['class', 'style'],
+            video: ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style']
+        }
     };
 
     function getUEBasePath(docUrl, confUrl) {
@@ -439,7 +439,7 @@
 
         var configPath = document.getElementsByTagName('script');
 
-        return configPath[ configPath.length - 1 ].src;
+        return configPath[configPath.length - 1].src;
 
     }
 
@@ -466,7 +466,7 @@
 
     function optimizationPath(path) {
 
-        var protocol = /^[a-z]+:\/\//.exec(path)[ 0 ],
+        var protocol = /^[a-z]+:\/\//.exec(path)[0],
             tmp = null,
             res = [];
 
@@ -474,11 +474,11 @@
 
         path = path.replace(/\\/g, '/').split(/\//);
 
-        path[ path.length - 1 ] = "";
+        path[path.length - 1] = "";
 
         while (path.length) {
 
-            if (( tmp = path.shift() ) === "..") {
+            if ((tmp = path.shift()) === "..") {
                 res.pop();
             } else if (tmp !== ".") {
                 res.push(tmp);

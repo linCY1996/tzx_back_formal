@@ -4,11 +4,24 @@ const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
 // const server = 'test'    //体验服
 const server = 'formal'   //正式服
 window.onload = function () {
-    var ids = location.search.replace('?id=', "")
+    // var ids = location.search.replace('?id=', "")
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var ids = GetParameters('id')    //管理员id
+    var token = GetParameters('token')
+    var can_edit = GetParameters('can_edit')
+    var ue = UE.getEditor('editor')   //编辑故事详情
     var np = new Vue({
         el: '#tall',
         data: {
-            // guideMsg:[],  //导游信息
             qudao: [],   //渠道信息
             daoyouname: [],   //导游名字
             checkedNames: [],   //选择的Point
@@ -62,26 +75,25 @@ window.onload = function () {
             dujia_lat_rightDown_lat: '',  //地图坐标--右下  lat
             dujia_lat_leftDown_lon: '',  //地图坐标--左下  lon
             dujia_lat_leftDown_lat: '',  //地图坐标--左下  lat
+            // 新增
+            is_cur_location:'',   //是否显示当前位置
+            can_edit:true,   //是否具有编辑权限
 
 
         },
         methods: {
-            // 获取线路name
-            // showRouteName: function () {
-            //     console.log(channel_id)
-            //     axios.post(host + '/route/v1/api/channel/routeList', {
-            //         channel_id: parseInt(channel_id),
-            //         server: "dev"
-            //     }).then((res) => {
-            //         //   console.log("sd==",res.data.Body)
-            //         np.routeName = res.data.Body
-            //     })
-            // },
             bianjishow: function () {
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(ids),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
+                    // console.log(res.data.Body)
+                    if(can_edit == null) {
+                        np.can_edit = true
+                    }else {
+                        np.can_edit = eval(can_edit)
+                    }
                     np.qudao_Id = res.data.Body.ChannelId
                     np.qudao_Name = res.data.Body.ChannelName
                     np.xianlu_Id = res.data.Body.Id
@@ -97,13 +109,11 @@ window.onload = function () {
                     np.checkedNames = chName
                     np.viewCount = res.data.Body.ViewCount
                     np.Price = res.data.Body.Price
-                    np.xianlu_Label = res.data.Body.Label.substring(1,res.data.Body.Label.length-1)
+                    np.xianlu_Label = JSON.parse(res.data.Body.Label)
                     np.zhifu_Img = res.data.Body.pay_url
                     var xiangzhan = JSON.stringify(res.data.Body.jump_url)
                     np.xiangqing_ShowImg = xiangzhan.substring(1,xiangzhan.length-1)  ////////////////////// 详情页展示图：根据route@tzx_route表中的id关联img_jump@tzx_route表中的route_id，查询img_jump@tzx_route表中type为空的img_url
-                    // console.log("详情页展示图",np.xiangqing_ShowImg)
-                    var honor = res.data.Body.Honor
-                    np.xianlu_Icon = honor.substring(1,honor.length-1)
+                    np.xianlu_Icon = JSON.parse(res.data.Body.Honor)
                     np.xingcheng_End = res.data.Body.end_words
                     np.dujia_InImg = res.data.Body.MemInlet
                     np.dujia_fengImg = res.data.Body.MemCover
@@ -113,18 +123,15 @@ window.onload = function () {
                     np.dujia_showPage = dujia_IMGs.substring(1,dujia_IMGs.length-1) /// 
                     np.dujia_btnmsg = res.data.Body.PriceText
                     var Go_Start = JSON.parse(res.data.Body.Start)
-                    // console.log(Go_Start)
                     np.dujia_Go_imgs = Go_Start.image
                     np.dujia_Go_audio = Go_Start.audio
 
                     var finish = JSON.parse(res.data.Body.Finish)
-                    // console.log(finish)
                     np.dujia_end_audio = finish.audio
                     np.dujia_end_img = finish.image
                     np.jump_type = finish.type
                     np.jump_url = finish.jump
                     var Entity = JSON.parse(res.data.Body.Entity)
-                    // console.log(Entity)
                     np.dujia_Mapbg = Entity.bg
                     np.dujia_niceroad = Entity.url
 
@@ -136,11 +143,18 @@ window.onload = function () {
                     np.dujia_lat_rightDown_lat = Entity.rect[2].lat
                     np.dujia_lat_leftDown_lon = Entity.rect[3].lon
                     np.dujia_lat_leftDown_lat = Entity.rect[3].lat
+                    np.is_cur_location = res.data.Body.show_place
+                    // 新增    详情页富文本  /   /////////////////
+                    var detail_multi = res.data.Body.rich
+                    ue.setContent(detail_multi);
+                    // ue.setContent();   //显示富文本信息
+                    // ue.getContent();    //获取富文本信息
 
                     // 获取所有的routeName
                     axios.post(host + '/route/v1/api/channel/routeList', {
                         channel_id: parseInt(np.qudao_Id),
-                        server: server
+                        server: server,
+                        token:token
                     }).then((res) => {
                         //   console.log("sd==",res.data.Body)
                         np.routeName = res.data.Body
@@ -154,7 +168,8 @@ window.onload = function () {
                         page_size: 1000
                     },
                     type: -1,
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.Poilist = res.data.Body.list
                     // console.log("hahahah", res.data.Body.list)
@@ -168,7 +183,8 @@ window.onload = function () {
                         page_index: 1,
                         page_size: 50
                     },
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     np.qudao = res.data.Body.list
                 })
@@ -181,7 +197,8 @@ window.onload = function () {
                         page_index: 1,
                         page_size: 1000
                     },
-                    server: server
+                    server: server,
+                    token:token
 
                 }).then((resp) => {
                     np.daoyouname = resp.data.Body.list
@@ -189,7 +206,6 @@ window.onload = function () {
             },
             // 保存
             saves: function () {
-                // console.log("==详情==",'['+np.xiangqing_ShowImg+']')
                 if (np.jump_type == 0) {
                     var current = -1
                     for (var i = 0; i < np.Poilist.length; i++) {
@@ -197,7 +213,6 @@ window.onload = function () {
                             current = i
                         }
                     }
-                    console.log("current=", current)
                     if (np.yj_choose == 0) {
                         np.jump_url = '../detail/detail?routeid=' + np.route_id
                     } else if (np.yj_choose == 1) {
@@ -221,6 +236,7 @@ window.onload = function () {
                             current = i
                         }
                     }
+                    console.log("current=", current)
                     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
                         np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
                     } else if (np.yj_choose == 4) {
@@ -237,7 +253,6 @@ window.onload = function () {
                 var Start = '{"image":"' + np.dujia_Go_imgs + '","audio":"' + np.dujia_Go_audio + '"}'
                 var Finish = '{"image":"' + np.dujia_end_img + '","audio":"' + np.dujia_end_audio + '","type":' + np.jump_type + ',"jump":"' + np.jump_url + '"}'
                 var Entity = '{ "url": "' + np.dujia_niceroad + '", "bg": "' + np.dujia_Mapbg + '", "rect": [ { "lon":' + np.dujia_lat_leftUp_lon + ', "lat": ' + np.dujia_lat_leftUp_lat + ' }, { "lon": ' + np.dujia_lat_rightUp_lon + ', "lat": ' + np.dujia_lat_rightUp_lat + ' }, { "lon": ' + np.dujia_lat_rightDown_lon + ', "lat": ' + np.dujia_lat_rightDown_lat + ' }, { "lon": ' + np.dujia_lat_leftDown_lon + ', "lat": ' + np.dujia_lat_leftDown_lat + ' } ] }'
-
                 var poi_ids = []
                 for (var i = 0; i < np.checkedNames.length; i++) {
                     poi_ids.push({
@@ -255,10 +270,32 @@ window.onload = function () {
                         banner: JSON.parse(dujia_Imgs),
                         route_id: parseInt(ids),
                         server: server
-                    }).then((res) => {
-                    })
+                    }).then((res) => {})
                 }
-                console.log("标签",'['+np.xianlu_Label+']')
+                // 线路标签
+                var lx_Lable = []
+                if(typeof np.xianlu_Label == 'string') {
+                    lx_Lable = np.xianlu_Label.split(',')
+                }else if(typeof np.xianlu_Label == 'object') {
+                    var xianlu = ''
+                    for(var i = 0;i<np.xianlu_Label.length;i++) {
+                        xianlu += np.xianlu_Label[i]+','
+                    }
+                    var xianlu_La = xianlu.substring(0,xianlu.length-1)
+                    lx_Lable = xianlu_La.split(',')
+                }
+                // 线路盖章图
+                var Icons = []
+                if(typeof np.xianlu_Icon == 'string') {
+                    Icons = np.xianlu_Icon.split(',')
+                } else if(typeof np.xianlu_Icon == 'object') {
+                    var icon = ''
+                    for(var j = 0;j<np.xianlu_Icon.length;j++) {
+                        icon += np.xianlu_Icon[j]+','
+                    }
+                    var xianluIcon = icon.substring(0,icon.length-1)
+                    Icons = xianluIcon.split(',')
+                }
                 axios.post(host + '/route/v1/api/route/update', {
                     channelId: parseInt(np.qudao_Id),   //渠道id
                     id: parseInt(ids),
@@ -268,8 +305,8 @@ window.onload = function () {
                     guideId: parseInt(dname[1]),
                     poi_ids: poi_ids,  //线路POi   ////[]
                     price: parseInt(np.Price),
-                    label: '['+np.xianlu_Label+']',
-                    honor: '['+np.xianlu_Icon+']',
+                    label: JSON.stringify(lx_Lable),
+                    honor: JSON.stringify(Icons),
                     imgs: imgsAll,
                     memInlet:np.dujia_InImg,    //独家回忆入口图
                     memCover:np.dujia_fengImg,   //独家回忆封面图
@@ -283,8 +320,12 @@ window.onload = function () {
                     start: Start,
                     finish: Finish,
                     entity: Entity,
+                    show_place:eval(np.is_cur_location),
                     server: server,
+                    rich:ue.getContent(),   //详情页富文本
+                    token:token
                 }).then((res) => {
+                    console.log(res.data.Body)
                     alert("保存成功")
                     window.history.go(-1)
                 })
@@ -296,7 +337,7 @@ window.onload = function () {
             },
             // 编辑
             bianji: function () {
-                np.bianji_show = true,
+                np.bianji_show = true
                     np.add_show = false
             },
             // 添加
@@ -317,7 +358,8 @@ window.onload = function () {
                 // console.log("___", np.route_id)
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(np.route_id),
-                    server: server
+                    server: server,
+                    token:token
                 }).then((res) => {
                     // console.log("=====", res.data.Body)
                     np.Poilist = res.data.Body.poi_ids
