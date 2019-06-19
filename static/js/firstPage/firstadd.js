@@ -32,8 +32,8 @@ window.onload = function () {
             route_id: '',  //跳转的routeid
             Poilist: [],  //对应routeid下得poi列表
             Poi_choose: '',  //选择得Poi得id
-            Name:'',   //行程名字
-            jump_url:'',  //跳转
+            Name: '',   //行程名字
+            jump_url: '',  //跳转
 
         },
         methods: {
@@ -43,7 +43,7 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/channel/routeList', {
                     channel_id: parseInt(channel_id),
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     np.routeName = res.data.Body
                 })
@@ -55,24 +55,24 @@ window.onload = function () {
             },
             // 保存
             saves: function () {
-                
+
                 if (np.jump_type == 0) {
                     var current = -1
-                    for(var i = 0;i<np.Poilist.length;i++){
-                        if(np.Poilist[i].poi_id == np.Poi_choose){
+                    for (var i = 0; i < np.Poilist.length; i++) {
+                        if (np.Poilist[i].poi_id == np.Poi_choose) {
                             current = i
                         }
                     }
                     if (np.yj_choose == 0) {
                         np.jump_url = '../detail/detail?routeid=' + np.route_id
                     } else if (np.yj_choose == 1) {
-                        np.jump_url = '../advice/advice' 
+                        np.jump_url = '../advice/advice'
                     } else if (np.yj_choose == 3) {  ///////name    poi的名字
-                        np.jump_url = '../routekabao/routekabao?routeid=' + np.route_id + '&name='+np.Poilist[current].poi_name
+                        np.jump_url = '../routekabao/routekabao?routeid=' + np.route_id + '&name=' + np.Poilist[current].poi_name
                     } else if (np.yj_choose == 6) {
                         np.jump_url = '../listshowroute/listshowroute?routeid=' + np.route_id
                     } else if (np.yj_choose == 9) {  ///poiid   index(表示第几个poi，从0开始)
-                        np.jump_url = '../poidetail/poidetail?poiid='+np.Poi_choose+'&index='+current
+                        np.jump_url = '../poidetail/poidetail?poiid=' + np.Poi_choose + '&index=' + current
                     } else if (np.yj_choose == 10) {
                         np.jump_url = '../travelmap/travelmap?routeid=' + np.route_id
                     } else if (np.yj_choose == 8) {
@@ -81,13 +81,13 @@ window.onload = function () {
                 }
                 if (np.jump_type == 2) {
                     var current = -1
-                    for(var i = 0;i<np.Poilist.length;i++){
-                        if(np.Poilist[i].poi_id == np.Poi_choose){
+                    for (var i = 0; i < np.Poilist.length; i++) {
+                        if (np.Poilist[i].poi_id == np.Poi_choose) {
                             current = i
                         }
                     }
                     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
-                        np.jump_url = '../cardpackage/cardpackage?travelid='+np.route_id+'&name='+np.Name+'&current='+current
+                        np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
                     } else if (np.yj_choose == 4) {
                         np.jump_url = '../journey/journey'
                     } else if (np.yj_choose == 5) {
@@ -96,19 +96,28 @@ window.onload = function () {
                         np.jump_url = '../memory/memory'
                     }
                 }
-                if(np.img_url == ''){
+                // 判断上传类型 ，添加route_id
+                switch (type) {
+                    case 'banner': routeid = np.route_id;
+                        break;
+                    case 'imgarr': routeid = np.route_id;
+                        break;
+                    case 'detail': routeid = routeid;
+                        break;
+                }
+                if (np.img_url == '') {
                     alert("信息填写不完整，无法提交")
                 } else {
                     axios.post(host + '/route/v1/api/homePage/create', {
-                        channel_id:parseInt(channel_id),
+                        channel_id: parseInt(channel_id),
                         img_url: np.img_url,
                         jump_type: parseInt(np.jump_type),
                         jump_url: np.jump_url,   ///////
                         sort: parseInt(np.sort),
                         type: type,
-                        server:server,
-                        route_id:parseInt(routeid),
-                        token:token
+                        server: server,
+                        route_id: parseInt(routeid),
+                        token: token
                     }).then((res) => {
                         alert("添加成功")
                         window.history.go(-1)
@@ -124,7 +133,7 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(np.route_id),
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     np.Poilist = res.data.Body.poi_ids
                     np.Name = res.data.Body.Name

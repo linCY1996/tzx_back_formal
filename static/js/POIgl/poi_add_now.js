@@ -39,7 +39,7 @@ window.onload = function () {
             a_Poi_Two_top: '',   //Poi图标-已游玩上
             a_manual: '',  //是否可以手动触发
             // 新增
-            map_scale:1,    //地图缩放比例
+            map_scale:1.00,    //地图缩放比例
 
             // 添加
             a_cardtitle: '',   //Poi故事标题
@@ -120,7 +120,7 @@ window.onload = function () {
                         cardDetail: ue1.getContent(),
                         server: server,
                         manual: eval(np.a_manual),
-                        map_scale:parseInt(np.map_scale),
+                        scale:parseInt(np.map_scale),
                         token:token
                     }).then((res) => {
                         console.log(res.data.Body)

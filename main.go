@@ -52,7 +52,5 @@ func main() {
 
 	http.ListenAndServe(`:6933`, nil)
 	//正式服
-	// fmt.Println("123")
-	// http.ListenAndServeTLS(":7788", "cert-1542427206238_www.linchongyang.cn.crt", "cert-1542427206238_www.linchongyang.cn.key", nil)
-	// fmt.Println("456")
+
 }

@@ -25,17 +25,14 @@ window.onload = function () {
             daoyouname: [],   //导游名字
             checkedNames: [],   //选择的Point
             Poilist: [],
-            jump_class: 1,   //跳转目录时   跳转选择
-            yj_choose: 1,   //一级选项卡
+            yj_choose: 7,   //一级选项卡
             route_id: '',  //跳转的routeid
             Poilist: [],  //对应routeid下得poi列表
             Poi_choose: '',  //选择得Poi得id
             Name: '',   //行程名字
             jump_url: '',  //跳转
-            jump_type: '',  //跳转类型
+            jump_type: 2,  //跳转类型
             routeName: [],   //渠道下所有routeName
-
-
             qudao_Id: '',  //渠道id
             qudao_Name: '',  //渠道名字
             xianlu_Id: '', //线路id
@@ -57,7 +54,7 @@ window.onload = function () {
             dujia_word: '',  //独家回忆引导文案
             dujia_showtitle: '',  //独家回忆分享标题
             dujia_showPage: '',  //独家回忆分享图片
-            dujia_btnmsg: '',   //体验按钮文案
+            dujia_btnmsg: '马上体验',   //体验按钮文案
             dujia_Go_imgs: '',
             dujia_Go_audio: '',
             dujia_end_audio: '',  //行程结束页配置--音频
