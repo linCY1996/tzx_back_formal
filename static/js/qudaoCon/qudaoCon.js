@@ -1,13 +1,27 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
-var token = location.search.replace('?token=', "")
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
+// var token = location.search.replace('?token=', "")
+function GetParameters(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURI(r[2]);//解决中文乱码
+
+    } else {
+        return null;
+    }
+}
+var token = GetParameters('token')    
+var is_super = GetParameters('is_super')
 window.onload = function () {
     var np = new Vue({
         el: '#tall',
         data: {
+            total:0,
             all: 1, //总页数
             cur: 1,//当前页码
             tan_show: false,   //弹出
@@ -28,6 +42,16 @@ window.onload = function () {
                     token:token
                 }).then((res) => {
                     var qudao = res.data.Body.list
+                    if(is_super == true) {
+                        np.total = res.data.Body.pager.total
+                    }else {
+                        np.total = qudao.length
+                    }
+                    if(np.total%50 != 0) {
+                        np.all = parseInt(np.total/50)+1
+                    }else {
+                        np.all = parseInt(np.total/50)
+                    }
                     for(var i = 0;i<qudao.length;i++) {
                         np.qudao.push({
                             id:qudao[i].id,
@@ -43,15 +67,13 @@ window.onload = function () {
                     }
 
                     // np.qudao = res.data.Body.list
-                    var total = np.qudao.length
-                    if(total/50 != 0) {
-                        np.all = parseInt(total/50)+1
-                    }
+                    
                 })
             },
             //页码点击事件
             btnClick: function (e) {
                 var that = this
+                np.qudao = []
                 that.showqudao(e, 50)
                 if (e != this.cur) {
                     this.cur = e
@@ -59,6 +81,7 @@ window.onload = function () {
             },
             pageClick: function () {
                 var that = this
+                np.qudao = []
                 that.showqudao(this.cur, 50)
             },
             // 添加渠道

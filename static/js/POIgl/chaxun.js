@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     function GetParameters(name){
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -43,10 +44,8 @@ window.onload = function () {
                     server:server,
                     token:token
                 }).then((res) => {
-                    console.log(res.data.Body.list)
                     np.Poilist = res.data.Body.list
                     np.total = res.data.Body.pager.total
-
                     var poilist = np.Poilist
                     for(var i = 0;i<poilist.length;i++) {
                         if(poilist[i].Type == 0) {

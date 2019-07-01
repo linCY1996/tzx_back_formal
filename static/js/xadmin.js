@@ -1,11 +1,13 @@
 var token = location.search.replace('?token=', "")
+var is_super = ''
 
 $(function () {
     // const host = 'https://tzx-admin.tuzuu.com'    //开发服
     // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
     const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-    // const server = 'test'    //体验服
-    const server = 'formal'   //正式服
+    // const server = 'dev'
+    // const server = 'test'
+    const server = 'formal'
     //加载弹出层
     layui.use(['form', 'element'],
         function () {
@@ -30,6 +32,7 @@ $(function () {
                 }).then((res) => {
                     np.userNames = res.data.Body.name
                     np.is_super = res.data.Body.is_super
+                    is_super = res.data.Body.is_super
                 })
             },
             // 修改密码
@@ -194,7 +197,7 @@ $(function () {
             }
         } else {
 
-            var url = $(this).children('a').attr('_href') + token;
+            var url = $(this).children('a').attr('_href') + token + '&is_super=' + is_super;
             var title = $(this).find('cite').html();
             var index = $('.left-nav #nav li').index($(this));
             for (var i = 0; i < $('.x-iframe').length; i++) {

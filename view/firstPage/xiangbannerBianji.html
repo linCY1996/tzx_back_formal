@@ -17,10 +17,13 @@
             <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);text-decoration: none;">刷新</a></div>
         </div>
         <div class="Nac">
-            <b>修改：</b>&nbsp;&nbsp;
+            <div class="nacCh">
+                图片链接:<input name="banner" id="banner" v-model="banner">
+            </div>
             <br>
-            <br>
-            <textarea name="banner" id="banner" v-model="banner"></textarea>
+            <div class="nacCh">
+                排序:<input type="text" name="sort" id="sort" v-model="sort">
+            </div>
         </div>
         <div class="btn">
             <div class="btnLeft" @click="chongzhi()">重置</div>

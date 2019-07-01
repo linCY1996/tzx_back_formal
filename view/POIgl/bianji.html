@@ -7,6 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
+    <script src="../../static/wangEditor-3.1.1/release/wangEditor.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
@@ -16,9 +18,9 @@
 <body>
     <div id="tall">
         <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
+            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);text-decoration: none;">返回</a></div>
             <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
-                    style="color: rgb(241, 134, 11);">刷新</a></div>
+                    style="color: rgb(241, 134, 11);text-decoration: none;">刷新</a></div>
         </div>
         <div class="all_Msgs">
             <div class="Name">编辑任务</div>
@@ -35,10 +37,15 @@
                 </select></div>
             <div class="Msgs_Show">任务排序&nbsp;&nbsp;<input type="text" v-model="workSort" name="renwu_id" id="renwu_id">
             </div>
-            <div class="Msgs_Show2">任务内容&nbsp;&nbsp;<textarea style="border-radius: 10px 10px;" v-model="work_Msg"
-                    name="renwu_Msgs" id="renwu_Msgs"></textarea>
-                <span>说明：换行请用\n</span>
+            <div class="Msgs_Show2">任务内容&nbsp;&nbsp;
+                <div class="fwb">
+                    <div id="editor" style="margin-top: -20px;">
+                        <p></p>
+                    </div>
+                </div>
+                <!-- <span>说明：换行请用\n</span> -->
             </div>
+            <div style="height: 240px;"></div>
             <!-- 文字说明任务 -->
             <div class="wenzi_shouming" v-if="chooseMsg === '1-文字说明任务'">
                 <div class="Msgs_Show1">任务按钮文字&nbsp;&nbsp;<input type="text" v-model="workBtn" name="renwu_btn"
@@ -175,7 +182,7 @@
                         </div>
                     </div>
                     <!-- 删除 -->
-                    <div class="Delete" v-if="delChen" @click="delChenjin(item.delIndex)" v-model="item.delIndex">
+                    <div class="Delete" v-if="choose_chenjin.length != 1" @click="delChenjin(item.delIndex)" v-model="item.delIndex">
                         <img src="../../static/images/del.png" alt="">
                     </div>
                 </div>

@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     // var ids = location.search.replace('?id=', "")
     function GetParameters(name) {
@@ -44,7 +45,8 @@ window.onload = function () {
                     np.work = res.data.Body.list
                     var works = np.work
                     for(var i = 0;i < np.work.length; i++) {
-                        np.work[i].TaskCopyStruct[0].text[0].content = JSON.stringify(that.b64DecodeUnicode(np.work[i].TaskCopyStruct[0].text[0].content))
+                        // np.work[i].TaskCopyStruct[0].text[0].content = JSON.stringify(that.b64DecodeUnicode(np.work[i].TaskCopyStruct[0].text[0].content))
+                        np.work[i].TaskCopy = JSON.parse(that.b64DecodeUnicode(np.work[i].TaskCopy))
                         if(works[i].Class == 1) {
                             np.work[i].Class = '1-文字说明任务'
                         }else if(works[i].Class == 2) {
@@ -127,7 +129,6 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
-                    console.log(res.data)
                     that.showwork()
                     
                 })

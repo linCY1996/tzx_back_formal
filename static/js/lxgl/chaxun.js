@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     function GetParameters(name){
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
@@ -68,7 +69,6 @@ window.onload = function () {
             },
             // 编辑跳转链接
             btn_link:function (e) {
-                console.log(e)
                 window.location.href = '/lxbianji?id='+e+'&token='+token
             },
             // 删除导游
@@ -106,7 +106,6 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
-                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })

@@ -14,11 +14,12 @@
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
-    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script>
-    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script>
-    <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script>
-    <script src="../../static/utf8-jsp/ueditor.parse.min.js"></script>
-    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+    <!-- <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script> -->
+    <!-- <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script> -->
+    <!-- <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script> -->
+    <!-- <script src="../../static/utf8-jsp/ueditor.parse.min.js"></script> -->
+    <!-- <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"> -->
+    <script src="../../static/wangEditor-3.1.1/release/wangEditor.min.js"></script>
     <script src="../../static/js/lxgl/bianji.js"></script>
 </head>
 
@@ -78,7 +79,7 @@
                         <td>线路POI</td>
                         <td>
                             <div class="poiMsgsAll"
-                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 350px;">
+                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 380px;">
                                 <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="pl in Poilist">
                                     <input style="width: 18px;height:18px;" type="checkbox" :id="pl.Id"
                                         :value="pl.Id+','+pl.Name" v-model="checkedNames">
@@ -218,14 +219,14 @@
                                         style="width: 150px;position: absolute;top: 0px;left: 0px;">
                                         <option value="0" v-show="jump_type == 0">详情页</option>
                                         <option value="1" v-show="jump_type == 0">反馈建议</option>
-                                        <option value="2" v-show="jump_type == 2">指定个人卡包</option>
-                                        <option value="3" v-show="jump_type == 0">指定线路卡包</option>
+                                        <!-- <option value="2" v-show="jump_type == 2">指定个人卡包</option> -->
+                                        <!-- <option value="3" v-show="jump_type == 0">指定线路卡包</option> -->
                                         <option value="4" v-show="jump_type == 2">个人全部行程页</option>
-                                        <option value="5" v-show="jump_type == 2">指定线路的个人行程浏览列表</option>
+                                        <!-- <option value="5" v-show="jump_type == 2">指定线路的个人行程浏览列表</option> -->
                                         <option value="6" v-show="jump_type == 0">指定线路的浏览列表</option>
                                         <option value="7" v-show="jump_type == 2">所有独家回忆</option>
-                                        <option value="8" v-show="jump_type == 0">指定独家回忆视频</option>
-                                        <option value="9" v-show="jump_type == 0">指定个人行程的POI详情页</option>
+                                        <!-- <option value="8" v-show="jump_type == 0">指定独家回忆视频</option> -->
+                                        <!-- <option value="9" v-show="jump_type == 0">指定个人行程的POI详情页</option> -->
                                         <option value="10" v-show="jump_type == 0">指定线路地图预览页</option>
                                     </select>
                                     <!-- </div> -->
@@ -305,8 +306,7 @@
                     <tr>
                         <td>详情页富文本</td>
                         <td>
-                            <script id="editor" type="text/plain"
-                                style="max-width: 663px;max-height:400px;overflow-y: scroll;"></script>
+                            <div id='editor'></div>
                         </td>
                         <td></td>
                     </tr>

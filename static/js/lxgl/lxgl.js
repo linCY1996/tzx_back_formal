@@ -1,10 +1,23 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
-    var token = location.search.replace('?token=', "")
+    // var token = location.search.replace('?token=', "")
+    function GetParameters(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);//解决中文乱码
+
+        } else {
+            return null;
+        }
+    }
+    var token = GetParameters('token')    
+    var is_super = GetParameters('is_super')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -25,8 +38,6 @@ window.onload = function () {
         methods: {
             // 无权限点击查看
             looks:function (e,e1) {
-                console.log("e=",e)
-                console.log("e1=",e1)
                 window.location.href = '/lxbianji?id='+e+'&token='+token+'&can_edit='+e1
             },
             showluxian:function (pindex,psize) {
@@ -39,10 +50,16 @@ window.onload = function () {
                     token:token
                 }).then((res) => {
                     np.luxian = res.data.Body.list
-                    np.all = res.data.Body.pager.pages
-                    np.total = res.data.Body.list.length
-                    if(np.total/50 != 0) {
+                    // np.all = res.data.Body.pager.pages
+                    if(is_super == "true") {
+                        np.total = res.data.Body.pager.total
+                    }else {
+                        np.total = np.luxian.length
+                    }
+                    if(np.total%50 != 0) {
                         np.all = parseInt(np.total/50)+1
+                    }else {
+                        np.all = parseInt(np.total/50)
                     }
                 })
             },
@@ -81,7 +98,6 @@ window.onload = function () {
             },
             // 编辑跳转链接
             btn_link:function (e) {
-                console.log(e)
                 window.location.href = '/lxbianji?id='+e+'&token='+token
             },
             // 删除导游
@@ -119,7 +135,6 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
-                    console.log(res.data)
                     that.showluxian(1,50)
                     
                 })

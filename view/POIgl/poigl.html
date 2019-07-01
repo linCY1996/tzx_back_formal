@@ -64,7 +64,7 @@
           <th>id</th>
           <th>POI名称</th>
           <th>POI类型</th>
-          <th>默认对话</th>
+          <th>详情页简介</th>
           <th>POI标签</th>
           <th>触发范围</th>
           <th>详情</th>
@@ -93,7 +93,7 @@
           <td>{{plist.Id}}</td>
           <td>{{plist.Name}}</td>
           <td>{{plist.Type}}</td>
-          <td>{{plist.Introduction}}</td>
+          <td><div v-html="plist.Introduction"></div></td>
           <td>{{plist.Label}}</td>
           <td>{{plist.Region}}</td>
           <td><a @click="bian_link(plist.Id)" v-if="plist.can_edit" style="cursor: pointer;color:rgb(4, 72, 173);">查看</a></td>

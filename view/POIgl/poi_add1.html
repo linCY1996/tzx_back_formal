@@ -7,17 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../../static/css/xadmin.css">
-    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="../../static/wangEditor-3.1.1/release/wangEditor.min.js"></script>
     <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
     <link rel="stylesheet" href="../../static/css/POIgl/poi_add1.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
-    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script>
-    <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script>
-    <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script>
-    <script src="../../static/utf8-jsp/ueditor.parse.min.js"></script>
-    <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
     <script src="../../static/js/POIgl/poi_add1.js"></script>
 </head>
@@ -47,6 +43,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <!-- <tr>
+                        <td>POI性质</td>
+                        <td><select name="daoname" id="daoname" v-model="poiClass">
+                                <option value="1">1-有故事有任务</option>
+                                <option value="2">2-有故事无任务</option>
+                                <option value="4">4-无故事无任务</option>
+                            </select></td>
+                        <td style="color: red;">不超过8个字</td>
+                    </tr> -->
                     <tr>
                         <td>POI名字</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Name" cols="30" rows="4"></textarea></td>
@@ -68,8 +73,11 @@
                     </tr>
                     <tr>
                         <td>默认对话</td>
-                        <td><textarea name="daoname" id="daoname" v-model="b_Dubbing_content" cols="30"
-                                rows="4"></textarea></td>
+                        <td>
+                            <div id="editor4">
+                                <p></p>
+                            </div>
+                        </td>
                         <td><span style="color: red;">不超过20个字</span>（含标点符号）</td>
 
                     </tr>
@@ -88,19 +96,29 @@
                     </tr>
                     <tr>
                         <td>POI介绍图</td>
-                        <td><textarea name="daoname" id="daoname" v-model="b_Imgs" cols="30" rows="4"></textarea></td>
+                        <!-- <textarea name="daoname" id="daoname" v-model="b_Imgs" cols="30" rows="4"></textarea> -->
+                        <td>
+                            <div class="taskImgs" v-for="item in b_Imgs">
+                                <div class="taskCh">
+                                    <input type="text" name="daoname" v-model="item.imgs" id="daoname">
+                                    <img @click="delImgs(item.index)" v-if="b_Imgs.length != 1"
+                                        src="../../static/images/delete.png" alt="">
+                                </div>
+                            </div>
+                            <div class="AddImgs" @click="AddImgs">+</div>
+                        </td>
                         <td>请输入图片链接，<span style="color:red;">图片尺寸：650*350</span>。填写内容全部是英文字符，必须按照如下格式填写("","","")
-                            <br>例如："http://imgs1.tuzuu.com/tuzhuxingzhe.png","http://imgs1.tuzuu.com/tuzhuxingzhe.png"</td>
-
+                            <br>例如："http://imgs1.tuzuu.com/tuzhuxingzhe.png","http://imgs1.tuzuu.com/tuzhuxingzhe.png"
+                        </td>
                     </tr>
                     <tr>
                         <td>详情页简介</td>
                         <td>
-                            <script id="editor3" type="text/plain"
-                                style="max-width: 503px;max-height:400px;overflow-y: scroll;"></script>
+                            <div id="editor">
+                                <!-- <p>欢迎使用 <b>土著行</b> 后台功能管理系统~~</p> -->
+                            </div>
                         </td>
                         <td></td>
-
                     </tr>
                     <tr>
                         <td>POI标签</td>
@@ -111,18 +129,16 @@
                     <tr>
                         <td>纬度</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Lat" cols="30" rows="4"></textarea></td>
-                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
-                            target="_blank"
-                            style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank"
+                                style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
                                 style="color: red;">一定要精确</span></td>
 
                     </tr>
                     <tr>
                         <td>经度</td>
                         <td><textarea name="daoname" id="daoname" v-model="b_Lon" cols="30" rows="4"></textarea></td>
-                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
-                            target="_blank"
-                            style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
+                        <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank"
+                                style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
                                 style="color: red;">一定要精确</span></td>
 
                     </tr>
@@ -213,7 +229,6 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>POI图标的中点距离地图的最左边和最上边距离</td>
-
                     </tr>
                     <tr>
                         <td>是否可手动触发</td>
@@ -233,21 +248,14 @@
                     </tr>
                 </tbody>
             </table>
-
-            <!-- <div class="btn_All">
-                <div class="btn_Left" id="btn_L" @click="chongzhi()">重置</div>
-                <div class="btn_Right" id="btn_R" style="width:100px;" @click="saves()">保存并继续</div>
-            </div> -->
         </div>
-        <div style="height:1800px;"></div>
+        <div style="height:2200px;"></div>
         <!-- 第二步编辑 -->
         <div class="Names">第二步 编辑POI故事</div>
         <div class="all_Msgs">
-
             <table class="layui-table">
                 <thead>
                     <tr>
-
                         <th>类目</th>
                         <th style="width: 700px;">填写</th>
                         <th>备注</th>
@@ -273,36 +281,28 @@
                         <td><textarea name="daoname" v-model="b_cardImg2" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td>输入图片链接，<span style="color: red;">图片尺寸：580*544</span></td>
-
                     </tr>
                     <tr>
                         <td>音频链接</td>
                         <td><textarea name="daoname" v-model="b_cardMusic" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td></td>
-
                     </tr>
                     <tr>
                         <td>音频时长(秒)</td>
                         <td><textarea name="daoname" v-model="b_cardMusicLen" id="daoname" cols="30"
                                 rows="4"></textarea></td>
                         <td></td>
-
                     </tr>
                     <tr>
                         <td>故事详情</td>
                         <td>
-                            <script id="editor" type="text/plain"
-                                style="max-width: 503px;max-height:400px;overflow-y: scroll;"></script>
+                            <div id="editor1"></div>
                         </td>
                         <td></td>
-
                     </tr>
-
-
                 </tbody>
             </table>
-
             <!-- <div class="fuWenBen">
                 <script id="editor" type="text/plain" style="max-height:400px;overflow-y: scroll;"></script>
             </div> -->

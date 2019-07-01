@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     function GetParameters(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -29,8 +30,8 @@ window.onload = function () {
                     server:server,
                     token:token
                 }).then((res) => {
-                    np.b_Num = res.data.Body.num
-                    np.b_Status = res.data.Body.status
+                    np.b_Num = res.data.Body.V
+                    np.b_Status = res.data.Body.S
                 })
             },
 
@@ -41,7 +42,6 @@ window.onload = function () {
             posts:function () {
                 var str = Date.parse(new Date())
                 var strs = JSON.stringify(str)
-                console.log(strs.substring(0,10))
                 var times = strs.substring(0,10)
                 if(np.b_Num == '' || np.b_Status == '') {
                     alert("信息未填写完整")

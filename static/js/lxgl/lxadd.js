@@ -1,24 +1,28 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     var token = location.search.replace('?token=', "")
-    var ue = UE.getEditor('editor')   //编辑故事详情
+    // var ue = UE.getEditor('editor')   //编辑故事详情
+    var E = window.wangEditor
+    var ue = new E('#editor')
     var np = new Vue({
         el: '#tall',
         data: {
             qudao: [],   //渠道信息
             daoyouname: [],   //导游名字
-            checkedNames: [],   //选择的Point
-            Poilist: [],
-            yj_choose: 7,   //一级选项卡
-            route_id: '',  //跳转的routeid
+            Poilist:[],
+            checkedNames:[],   //选择的Point
+            Poilist:[],
+            yj_choose:7,   //一级选项卡
+            route_id:'',  //跳转的routeid
             Poilist: [],  //对应routeid下得poi列表
             Poi_choose: '',  //选择得Poi得id
-            Name: '',   //行程名字
-            jump_url: '',  //跳转
+            Name:'',   //行程名字
+            jump_url:'',  //跳转
             jump_type: 2,  //跳转类型
             routeName: [],   //渠道下所有routeName
             qudao_Id: '',  //渠道id
@@ -65,7 +69,10 @@ window.onload = function () {
 
         },
         methods: {
-
+            // 加载富文本
+            showFwb:function () {
+              ue.create()  
+            },
             // 显示所有渠道
             showqudao: function () {
                 axios.post(host + '/route/v1/api/channel/list', {
@@ -197,11 +204,11 @@ window.onload = function () {
                         entity: Entity,
                         show_place:eval(np.is_cur_location),
                         server: server,
-                        rich:ue.getContent(),
+                        rich:ue.txt.html(),
                         token:token
                     }).then((res) => {
                        
-                        console.log(res.data.Body)
+                        // console.log(res.data.Body)
                         // 更新独家回忆展示图
                         var dujia_Imgs = '["'+np.dujia_InImg + '","' + np.dujia_fengImg+'"]'
                         if(dujia_Imgs == '') {
@@ -234,6 +241,7 @@ window.onload = function () {
             }
         },
         mounted: function () {
+            this.showFwb();
             this.showqudao();
             this.showdaoyouname();
             this.showPoilist();

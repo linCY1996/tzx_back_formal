@@ -20,7 +20,7 @@ input {
     height: 800px;
     /* border: 1px solid black; */
     margin-left: 5%;
-    margin-top: 50rpx;
+    margin-top: 50px;
 }
 
 
@@ -98,32 +98,29 @@ input {
 .Msgs_Show2 {
     position: relative;
     width: 80%;
-    height: 150px;
-    line-height: 40px;
+    height: 120px;
+    /* line-height: 40px; */
     margin-top: 20px;
     margin-left: 10%;
-    /* border: 1px solid black; */
 }
 
-.Msgs_Show2 textarea {
+.fwb {
     position: absolute;
     right: 5px;
     width: 80%;
-    height: 120px;
-    border: 1px solid rgb(100, 100, 100);
-    font-size: 1.2em;
+    height: 450px;
+    /* font-size: 1.2em; */
     color: black;
 
 }
 
-.Msgs_Show2 span {
+/* .Msgs_Show2 span {
     position: absolute;
     bottom: 0px;
     width: 80%;
     height: 30px;
-    line-height: 30px;
     right: 5px;
-}
+} */
 
 .Msgs_Show1 {
     position: relative;

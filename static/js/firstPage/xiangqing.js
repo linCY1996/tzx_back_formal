@@ -1,17 +1,49 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
 
     $("#colla-titles").click(function () {
         $("#colla-contents").toggle();
     });
- 
+
 
     var ids = location.search.replace('?id=', "")
-    var ue = UE.getEditor('editor')   //编辑故事详情
+    // var ue = UE.getEditor('editor')   //编辑故事详情
+    var E = window.wangEditor
+    var ue = new E('#editor')
+    ////////
+    ue.customConfig.colors = [
+        '#000000',
+        '#eeece0',
+        '#1c487f',
+        '#4d80bf',
+        '#c24f4a',
+        '#8baa4a',
+        '#7b5ba1',
+        '#46acc8',
+        '#f9963b',
+        '#ffffff'
+    ]
+    ue.customConfig.fontNames = [
+        '宋体',
+        '微软雅黑',
+        'Arial',
+        'Tahoma',
+        'Verdana'
+    ]
+    // 关闭粘贴样式的过滤
+    ue.customConfig.pasteFilterStyle = false
+    // 忽略粘贴内容中的图片
+    ue.customConfig.pasteIgnoreImg = true
+    // 自定义处理粘贴的文本内容
+    ue.customConfig.pasteTextHandle = function (content) {
+        // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
+        return content
+    }
     function GetParameters(name) {
         var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
@@ -34,7 +66,8 @@ window.onload = function () {
             add_show: false,
             first_Img: '', //首页信息
             detail_Img: [],
-            tan_show: false,
+            tan_show: false,    //针对于一般情况
+            tan_shows: false,    //针对于详情页banner
             Id: -1,
             first_page_show: true, //首页信息显示
             xiangqing_page_show: false, //详情信息显示
@@ -55,13 +88,14 @@ window.onload = function () {
             name: '',
             page_url: '',
             // 折叠面板
-            
+            XQRouteId: '',   //编辑详情页图片
+            XQIndex: '',   //删除详情页banner图片
 
         },
         methods: {
             //隐藏面板
-            titles:function (index) {
-              this.detailimgarr[index].showContent = !this.detailimgarr[index].showContent
+            titles: function (index) {
+                this.detailimgarr[index].showContent = !this.detailimgarr[index].showContent
             },
             // 通过id来获取rich信息
             showRich: function () {
@@ -70,6 +104,7 @@ window.onload = function () {
                     server: server,
                     token: token
                 }).then((res) => {
+                    ue.create()
                     //   console.log(res.data.Body)
                     np.can_edit_guide = res.data.Body.can_edit_guide
                     np.can_edit_poi = res.data.Body.can_edit_poi
@@ -80,7 +115,7 @@ window.onload = function () {
                     np.name = res.data.Body.name
                     np.page_url = res.data.Body.page_url
                     var rich = res.data.Body.rich
-                    ue.setContent(rich)
+                    ue.txt.html(rich)
                 })
             },
             saves: function () {
@@ -96,7 +131,7 @@ window.onload = function () {
                     name: np.name,
                     page_url: np.page_url,
                     server: server,
-                    rich: ue.getContent()
+                    rich: ue.txt.html()
                 }).then((res) => {
                     // console.log(res.data.Body)
                     alert("富文本信息保存成功")
@@ -142,7 +177,7 @@ window.onload = function () {
                                     Data: plist[i].Data,
                                     route_name: plist[i].route_name,
                                     banner: plist[i].banner,
-                                    showContent:true
+                                    showContent: true
                                 })
                             }
                         }
@@ -223,7 +258,41 @@ window.onload = function () {
                     that.showfirstImgs()
                 })
             },
+            // 删除详情页banner
+            delxqBanner: function (e, e1) {
+                // console.log(e)
+                // console.log(e1)
+                np.XQRouteId = e
+                np.XQIndex = e1
+                np.tan_shows = true
+            },
+            // 点击取消
+            XQCancels: function () {
+                np.tan_shows = false
+            },
 
+            // 点击确认
+            XQConfirms: function () {
+                var that = this
+                var index = -2
+                for (var i = 0; i < np.detailimgarr.length; i++) {
+                    if (np.XQRouteId == np.detailimgarr[i].RouteId) {
+                        index = i
+                    }
+                }
+                var banner = np.detailimgarr[index].banner
+                banner.splice(np.XQIndex, 1)
+                axios.post(host + '/route/v1/api/route/updateBanner', {
+                    server: server,
+                    banner: JSON.stringify(banner),
+                    route_id: parseInt(np.XQRouteId)
+                }).then((res) => {
+                    console.log(res.data.Body)
+                    np.tan_shows = false
+                    that.firListshow()
+                    that.showfirstImgs()
+                })
+            },
             //添加首页banner
             addshouBanner: function () {
                 var type = 'banner'
@@ -236,8 +305,8 @@ window.onload = function () {
                 window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids + '&token=' + token
             },
             // 详情页banner
-            ImgsxiangBannerBian: function (e) {
-                window.location.href = '/firstxiangbianji?routeid=' + e+'&token='+token
+            ImgsxiangBannerBian: function (e, e1) {
+                window.location.href = '/firstxiangbianji?routeid=' + e + '&token=' + token + '&index=' + e1
             },
             // 详情页说明页
             addxiangqingDetail: function (e) {

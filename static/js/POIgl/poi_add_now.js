@@ -1,12 +1,103 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     var token = location.search.replace('?token=', "")
-    var ue1 = UE.getEditor('editor1')   //添加故事详情
-    var ue2 = UE.getEditor('editor2')   //添加详情页简介
+    // var ue1 = UE.getEditor('editor1')   //添加故事详情
+    // var ue2 = UE.getEditor('editor2')   //添加详情页简介
+    var E = window.wangEditor
+    var ue2 = new E('#editor')
+    var ue1 = new E('#editor1')
+    var ue4 = new E('#editor4')   //默认对话
+    ue1.customConfig.colors = [
+        '#000000',
+        '#eeece0',
+        '#1c487f',
+        '#4d80bf',
+        '#c24f4a',
+        '#8baa4a',
+        '#7b5ba1',
+        '#46acc8',
+        '#f9963b',
+        '#ffffff'
+    ]
+    ue1.customConfig.fontNames = [
+        '宋体',
+        '微软雅黑',
+        'Arial',
+        'Tahoma',
+        'Verdana'
+    ]
+     // 关闭粘贴样式的过滤
+     ue1.customConfig.pasteFilterStyle = false
+     // 忽略粘贴内容中的图片
+     ue1.customConfig.pasteIgnoreImg = true
+     // 自定义处理粘贴的文本内容
+     ue1.customConfig.pasteTextHandle = function (content) {
+         // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
+         return content
+     }
+     ////////
+     ue2.customConfig.colors = [
+        '#000000',
+        '#eeece0',
+        '#1c487f',
+        '#4d80bf',
+        '#c24f4a',
+        '#8baa4a',
+        '#7b5ba1',
+        '#46acc8',
+        '#f9963b',
+        '#ffffff'
+    ]
+    ue2.customConfig.fontNames = [
+        '宋体',
+        '微软雅黑',
+        'Arial',
+        'Tahoma',
+        'Verdana'
+    ]
+     // 关闭粘贴样式的过滤
+     ue2.customConfig.pasteFilterStyle = false
+     // 忽略粘贴内容中的图片
+     ue2.customConfig.pasteIgnoreImg = true
+     // 自定义处理粘贴的文本内容
+     ue2.customConfig.pasteTextHandle = function (content) {
+         // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
+         return content
+     }
+     ////////
+     ue4.customConfig.colors = [
+        '#000000',
+        '#eeece0',
+        '#1c487f',
+        '#4d80bf',
+        '#c24f4a',
+        '#8baa4a',
+        '#7b5ba1',
+        '#46acc8',
+        '#f9963b',
+        '#ffffff'
+    ]
+    ue4.customConfig.fontNames = [
+        '宋体',
+        '微软雅黑',
+        'Arial',
+        'Tahoma',
+        'Verdana'
+    ]
+     // 关闭粘贴样式的过滤
+     ue4.customConfig.pasteFilterStyle = false
+     // 忽略粘贴内容中的图片
+     ue4.customConfig.pasteIgnoreImg = true
+     // 自定义处理粘贴的文本内容
+     ue4.customConfig.pasteTextHandle = function (content) {
+         // content 即粘贴过来的内容（html 或 纯文本），可进行自定义处理然后返回
+         return content
+     }
     var np = new Vue({
         el: '#tall',
         data: {
@@ -17,7 +108,9 @@ window.onload = function () {
             a_Dubbing_content: '',   //默认对话
             a_Dubbing_video: '',  //默认对话语音
             a_Image: '',   //poi头像
-            a_Imgs: '', //poi介绍图
+            a_Imgs: [{ imgs: '', index: 0 }], //poi介绍图
+            btn_Count: 0,   //点击添加poi介绍图的次数
+            delIndex: -1,//删除poi介绍图的下标
             a_Introduction: '',     //详情页简介
             a_Label: '',  //poi标签
             a_Lat: '',   //维度
@@ -39,8 +132,7 @@ window.onload = function () {
             a_Poi_Two_top: '',   //Poi图标-已游玩上
             a_manual: '',  //是否可以手动触发
             // 新增
-            map_scale:1.00,    //地图缩放比例
-
+            map_scale: "1.00",    //地图缩放比例
             // 添加
             a_cardtitle: '',   //Poi故事标题
             a_cardImg1: '',  //poi故事卡片-未获得
@@ -52,7 +144,27 @@ window.onload = function () {
 
         },
         methods: {
-
+            // 预加载富文本
+            showFwb: function () {
+                ue1.create()
+                ue2.create()
+                ue4.create()
+            },
+            // 添加poi介绍图
+            AddImgs: function () {
+                np.btn_Count += 1
+                var count = np.btn_Count
+                np.a_Imgs.splice(20, 0, { imgs: '', index: count })
+            },
+            // 删除poi介绍图
+            delImgs: function (e) {
+                for (var i = 0; i < np.a_Imgs.length; i++) {
+                    if (e == np.a_Imgs[i].index) {
+                        np.delIndex = i
+                    }
+                }
+                np.a_Imgs.splice(np.delIndex, 1)
+            },
             // 重置
             chongzhi: function () {
                 window.location.reload()
@@ -61,41 +173,53 @@ window.onload = function () {
             // 添加
             posts: function () {
                 // console.log(token)
-                var add_dubbing = '[{"text":[{"content":"' + np.a_Dubbing_content + '","br":0,"color":"","bold":0}],"audio":"' + np.a_Dubbing_video + '"}]'
-                if(np.a_Poi_One_width == '') {
+                var s = ue4.txt.html()
+                var mr = s.replace(/\"/g, '\\"')
+                var mrDuihua = mr.replace(/\\&quot;/g, '')
+                var add_dubbing = '[{"text":"' + mrDuihua + '","audio":"' + np.a_Dubbing_video + '"}]'
+                if (np.a_Poi_One_width == '') {
                     np.a_Poi_One_width = 0
                 }
-                if(np.a_Poi_One_height == '') {
+                if (np.a_Poi_One_height == '') {
                     np.a_Poi_One_height = 0
                 }
-                if(np.a_Poi_One_left == '') {
+                if (np.a_Poi_One_left == '') {
                     np.a_Poi_One_left = 0
                 }
-                if(np.a_Poi_One_top == '') {
+                if (np.a_Poi_One_top == '') {
                     np.a_Poi_One_top = 0
                 }
-                if(np.a_Poi_Two_width == '') {
+                if (np.a_Poi_Two_width == '') {
                     np.a_Poi_Two_width = 0
                 }
-                if(np.a_Poi_Two_height == '') {
+                if (np.a_Poi_Two_height == '') {
                     np.a_Poi_Two_height = 0
                 }
-                if(np.a_Poi_Two_left == '') {
+                if (np.a_Poi_Two_left == '') {
                     np.a_Poi_Two_left = 0
                 }
-                if(np.a_Poi_Two_top == '') {
+                if (np.a_Poi_Two_top == '') {
                     np.a_Poi_Two_top = 0
                 }
                 var add_mapArr = '[ { "url": "' + np.a_Poi_One_link + '", "w": ' + np.a_Poi_One_width + ', "h": ' + np.a_Poi_One_height + ', "l": ' + np.a_Poi_One_left + ', "t": ' + np.a_Poi_One_top + '}, { "url": "' + np.a_Poi_Two_link + '", "w": ' + np.a_Poi_Two_width + ', "h": ' + np.a_Poi_Two_height + ', "l": ' + np.a_Poi_Two_left + ', "t": ' + np.a_Poi_Two_top + '} ]'
                 var add_cardImg = '["' + np.a_cardImg1 + '","' + np.a_cardImg2 + '"]'
-                
-                if(np.a_cardMusicLen == '') {
+
+                if (np.a_cardMusicLen == '') {
                     np.a_cardMusicLen = 0
                 }
                 var add_cardMusic = '{"ln":' + np.a_cardMusicLen + ',"url":"' + np.a_cardMusic + '"}'
                 var multiIntro = '[{"content":"' + np.a_MultiIntro + '","br":0,"color":"","bold":0}]'
-                var a_Imgs = np.a_Imgs.split(',')
-                if (ue2.getContent() == '' || ue1.getContent() == '' || np.a_cardMusic == '' || np.a_Poi_Two_link == '' || np.a_Poi_One_link == '') {
+                // var a_Imgs = np.a_Imgs.split(',')
+                // poi介绍图的操作
+                var allImgs = ''
+                for (var j = 0; j < np.a_Imgs.length; j++) {
+                    allImgs += np.a_Imgs[j].imgs + ','
+                }
+                var jianqieIMgs = allImgs.substring(0, allImgs.length - 1)
+                // console.log(ue1.txt.html())
+                // console.log(ue2.txt.html())
+                // console.log(typeof parseFloat(np.map_scale).toFixed(2))
+                if (ue2.txt.html() == '' || ue1.txt.html() == '' || np.a_cardMusic == '' || np.a_Poi_Two_link == '' || np.a_Poi_One_link == '') {
                     alert('信息填写不完整,无法提交')
                 } else {
                     axios.post(host + '/route/v1/api/poi/create', {
@@ -103,8 +227,8 @@ window.onload = function () {
                         type: parseInt(np.a_Type),
                         dubbing: add_dubbing,
                         image: np.a_Image,
-                        imgs: JSON.stringify(a_Imgs),      
-                        introduction: ue2.getContent(),
+                        imgs: JSON.stringify(jianqieIMgs.split(',')),
+                        introduction: ue2.txt.html(),
                         label: np.a_Label,
                         lat: np.a_Lat,
                         lon: np.a_Lon,
@@ -117,22 +241,23 @@ window.onload = function () {
                         cardTitle: np.a_cardtitle,
                         cardImg: add_cardImg,
                         cardMusic: add_cardMusic,
-                        cardDetail: ue1.getContent(),
+                        cardDetail: ue1.txt.html(),
                         server: server,
                         manual: eval(np.a_manual),
-                        scale:parseInt(np.map_scale),
-                        token:token
+                        scale: parseFloat(np.map_scale),
+                        token: token,
+                        class:parseInt(1)
                     }).then((res) => {
-                        console.log(res.data.Body)
                         // alert("添加成功")
                         var id = res.data.Body.Id
-                        window.location.href = '/poiadd3?id=' + id+'&token='+token
+                        window.location.href = '/poiadd3?id=' + id + '&token=' + token
                     })
                 }
 
             },
         },
         mounted: function () {
+            this.showFwb()
         }
     })
 }

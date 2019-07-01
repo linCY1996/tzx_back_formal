@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     var token = location.search.replace('?token=', "")
     var np = new Vue({
@@ -26,18 +27,16 @@ window.onload = function () {
                         page_size: 50
                     },
                     server: server,
-                    token: token
+                    token:token
                 }).then((res) => {
-                    console.log(res.data.Body)
-                    // var t = Date(time)
                     np.total = res.data.Body.pager.total
                     var ban = res.data.Body.list
-                    for (var i = 0; i < np.total; i++) {
+                    for(var i = 0;i<np.total;i++) {
                         np.banben.push({
-                            id: ban[i].Id,
-                            num: ban[i].V,
-                            status: ban[i].S,
-                            update_time: that.format(ban[i].T,'yyyy-MM-dd HH:mm:ss')
+                            id:ban[i].Id,
+                            num:ban[i].V,
+                            status:ban[i].S,
+                            update_time:that.format(ban[i].T,'yyyy-MM-dd HH:mm:ss')
                         })
                     }
                     // console.log("===",np.banben)
@@ -45,11 +44,11 @@ window.onload = function () {
             },
             // 添加版本
             add_banben: function () {
-                window.location.href = '/banbenadd?token=' + token
+                window.location.href = '/banbenadd?token='+token
             },
             // 编辑版本
             bianji: function (e) {
-                window.location.href = '/banbenbianji?id=' + e + '&token=' + token
+                window.location.href = '/banbenbianji?id=' + e+'&token='+token
             },
             //页码点击事件
             btnClick: function (e) {
@@ -79,9 +78,8 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/version/del', {
                     id: parseInt(np.Id),
                     server: server,
-                    token: token
+                    token:token
                 }).then((res) => {
-                    // that.viewbanben()
                     window.location.reload()
                     np.tan_show = false
                 })
@@ -92,9 +90,8 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/version/del', {
                     id: parseInt(e),
                     server: server,
-                    token: token
+                    token:token
                 }).then((res) => {
-                    console.log(res.data)
                     window.location.reload()
 
                 })
@@ -115,11 +112,10 @@ window.onload = function () {
             },
 
             // 格式时间
-            getLocalTime: function (nS) {
-                return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
-            },
-
-            format: function (time, format) {
+            getLocalTime:function (nS) {     
+                return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
+             },
+             format: function (time, format) {
                 var t = new Date(time);
                 var tf = function (i) {
                     return (i < 10 ? '0' : '') + i

@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     // var ids = location.search.replace('?id=', "")
     function GetParameters(name) {
@@ -17,7 +18,9 @@ window.onload = function () {
     }
     var ids = GetParameters('id')    //管理员id
     var token = GetParameters('token')
-    var ue = UE.getEditor('editor')   //编辑故事详情
+    // var ue = UE.getEditor('editor')   //编辑故事详情
+    var E = window.wangEditor
+    var ue = new E('#editor')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -74,7 +77,6 @@ window.onload = function () {
             // 新增
             is_cur_location:'',   //是否显示当前位置
 
-
         },
         methods: {
             bianjishow: function () {
@@ -83,7 +85,8 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
-                    console.log(res.data.Body)
+                    ue.create()
+                    // console.log(res.data.Body)
                     np.qudao_Id = res.data.Body.ChannelId
                     np.qudao_Name = res.data.Body.ChannelName
                     np.xianlu_Id = res.data.Body.Id
@@ -92,7 +95,7 @@ window.onload = function () {
                     np.dNames = res.data.Body.guide_name + "," + res.data.Body.GuideId
                     // console.log("daoyou",np.dNames)
                     var cName = res.data.Body.poi_ids
-                    console.log("poi=",cName)
+                    // console.log("poi=",cName)
                     var chName = []
                     for (var i = 0; i < cName.length; i++) {
                         chName[i] = cName[i].poi_id + ',' + cName[i].poi_name
@@ -142,7 +145,7 @@ window.onload = function () {
                     np.is_cur_location = res.data.Body.show_place
                     // 新增    详情页富文本  /   /////////////////
                     var detail_multi = res.data.Body.rich
-                    ue.setContent(detail_multi);
+                    ue.txt.html(detail_multi);
                     // ue.setContent();   //显示富文本信息
                     // ue.getContent();    //获取富文本信息
 
@@ -182,7 +185,6 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
-                    console.log("=",res.data.Body.list)
                     np.qudao = res.data.Body.list
                 })
             },
@@ -234,7 +236,6 @@ window.onload = function () {
                             current = i
                         }
                     }
-                    console.log("current=", current)
                     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
                         np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
                     } else if (np.yj_choose == 4) {
@@ -296,7 +297,7 @@ window.onload = function () {
                     entity: Entity,
                     show_place:eval(np.is_cur_location),
                     server: server,
-                    rich:ue.getContent(),   //详情页富文本
+                    rich:ue.txt.html(),   //详情页富文本
                     token:token
                 }).then((res) => {
                     if(res.data.Body == '没有编辑权限') {

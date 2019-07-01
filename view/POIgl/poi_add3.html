@@ -72,7 +72,7 @@
                         <td>{{w.Id}}</td>
                         <td>{{w.Class}}</td>
                         <td>{{w.Sort}}</td>
-                        <td>{{w.TaskCopyStruct[0].text[0].content}}</td>
+                        <td v-html="w.TaskCopy[0].text" style="max-width: 6 00px;"></td>
                         <td>{{w.ImgArr}}</td>
                         <td>{{w.ButtonCopy}}</td>
                         <td>{{w.TaskCopyStruct[0].audio}}</td>

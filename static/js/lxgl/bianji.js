@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     // var ids = location.search.replace('?id=', "")
     function GetParameters(name) {
@@ -18,7 +19,9 @@ window.onload = function () {
     var ids = GetParameters('id')    //管理员id
     var token = GetParameters('token')
     var can_edit = GetParameters('can_edit')
-    var ue = UE.getEditor('editor')   //编辑故事详情
+    // var ue = UE.getEditor('editor')   //编辑故事详情
+    var E = window.wangEditor
+    var ue = new E('#editor')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -85,6 +88,7 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
+                    ue.create()
                     // console.log(res.data.Body)
                     if(can_edit == null) {
                         np.can_edit = true
@@ -120,15 +124,18 @@ window.onload = function () {
                     np.dujia_showPage = dujia_IMGs.substring(1,dujia_IMGs.length-1) /// 
                     np.dujia_btnmsg = res.data.Body.PriceText
                     var Go_Start = JSON.parse(res.data.Body.Start)
+                    // console.log(Go_Start)
                     np.dujia_Go_imgs = Go_Start.image
                     np.dujia_Go_audio = Go_Start.audio
 
                     var finish = JSON.parse(res.data.Body.Finish)
+                    // console.log(finish)
                     np.dujia_end_audio = finish.audio
                     np.dujia_end_img = finish.image
                     np.jump_type = finish.type
                     np.jump_url = finish.jump
                     var Entity = JSON.parse(res.data.Body.Entity)
+                    // console.log(Entity)
                     np.dujia_Mapbg = Entity.bg
                     np.dujia_niceroad = Entity.url
 
@@ -143,7 +150,7 @@ window.onload = function () {
                     np.is_cur_location = res.data.Body.show_place
                     // 新增    详情页富文本  /   /////////////////
                     var detail_multi = res.data.Body.rich
-                    ue.setContent(detail_multi);
+                    ue.txt.html(detail_multi);
                     // ue.setContent();   //显示富文本信息
                     // ue.getContent();    //获取富文本信息
 
@@ -203,6 +210,7 @@ window.onload = function () {
             },
             // 保存
             saves: function () {
+                // console.log("==详情==",'['+np.xiangqing_ShowImg+']')
                 if (np.jump_type == 0) {
                     var current = -1
                     for (var i = 0; i < np.Poilist.length; i++) {
@@ -233,7 +241,6 @@ window.onload = function () {
                             current = i
                         }
                     }
-                    console.log("current=", current)
                     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
                         np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
                     } else if (np.yj_choose == 4) {
@@ -319,10 +326,9 @@ window.onload = function () {
                     entity: Entity,
                     show_place:eval(np.is_cur_location),
                     server: server,
-                    rich:ue.getContent(),   //详情页富文本
+                    rich:ue.txt.html(),   //详情页富文本
                     token:token
                 }).then((res) => {
-                    console.log(res.data.Body)
                     alert("保存成功")
                     window.history.go(-1)
                 })

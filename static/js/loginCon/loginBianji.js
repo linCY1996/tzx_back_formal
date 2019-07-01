@@ -1,8 +1,9 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'test'    //体验服
-const server = 'formal'   //正式服
+// const server = 'dev'
+// const server = 'test'
+const server = 'formal'
 window.onload = function () {
     // 1:修改密码
     // 2：添加账号
@@ -136,7 +137,6 @@ window.onload = function () {
             },
             // 修改密码
             updataPwd: function () {
-                console.log(id)
                 if (np.uploadNew_Pwd == np.uploadAgain_Pwd) {
                     axios.post(host + '/user/v1/api/admin/resetPwd', {
                         admin_id: parseInt(id),
@@ -169,6 +169,7 @@ window.onload = function () {
                     np.bianjiNames = res.data.Body.name
                 })
             },
+
             // 重置密码
             chongzhiPwd: function () {
                 if (np.new_Pwd == np.again_Pwd) {

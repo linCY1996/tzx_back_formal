@@ -18,9 +18,20 @@
     margin-left: 10%;
     /* border: 1px solid black; */
 }
-.Nac textarea {
+.nacCh {
+    position: relative;
     width: 100%;
-    height: 100px;
+    height: 40px;
+    margin-top: 10px;
+    line-height: 40px;
+    font-size: 1.2em;
+}
+
+.nacCh input {
+    position: absolute;
+    right: 0px;
+    width: 80%;
+    height: 40px;
     font-size: 1.2em;
 }
 
