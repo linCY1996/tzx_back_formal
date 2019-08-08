@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     var token = location.search.replace('?token=', "")
@@ -23,7 +21,7 @@ window.onload = function () {
             Poi_choose: '',  //选择得Poi得id
             Name:'',   //行程名字
             jump_url:'',  //跳转
-            jump_type: 2,  //跳转类型
+            jump_type: -1,  //跳转类型
             routeName: [],   //渠道下所有routeName
             qudao_Id: '',  //渠道id
             qudao_Name: '',  //渠道名字
@@ -65,13 +63,18 @@ window.onload = function () {
             dujia_lat_leftDown_lat: '',  //地图坐标--左下  lat
             // 新增
             is_cur_location:'',  //是否显示当前位置
+            loadings:false,
             // ue.getContent();   //获取富文本信息
+            DLat:'',   //新增定位lat
+            DLon:'',   //新增定位Lon
 
         },
         methods: {
             // 加载富文本
             showFwb:function () {
-              ue.create()  
+                var that = this
+                that.loadings = true
+              ue.create()
             },
             // 显示所有渠道
             showqudao: function () {
@@ -101,9 +104,8 @@ window.onload = function () {
                 })
             },
 
-            // 上传
+            // 显示Poi列表
             showPoilist:function () {
-               
                 axios.post(host+'/route/v1/api/poi/list',{
                     page:{
                         page_index:1,
@@ -113,53 +115,60 @@ window.onload = function () {
                     server:server,
                     token:token
                 }).then((res) => {
+                    np.loadings = false
                     np.Poilist = res.data.Body.list
                     // console.log("hahahah", res.data.Body.list)
                 })
             },
             posts: function () {
-                // console.log("详情页展示图",np.xiangqing_ShowImg.split(','))
-                if (np.jump_type == 0) {
+                var lat = '{"lon": '+np.DLon+',"lat": '+np.DLat+'}'
+                if(np.jump_type == 0 || np.jump_type == 2) {
                     var current = -1
-                    for(var i = 0;i<np.Poilist.length;i++){
-                        if(np.Poilist[i].poi_id == np.Poi_choose){
+                    for (var i = 0; i < np.Poilist.length; i++) {
+                        if (np.Poilist[i].poi_id == np.Poi_choose) {
                             current = i
                         }
                     }
-                    if (np.yj_choose == 0) {
+                } 
+                switch (parseInt(np.yj_choose)) {
+                    case 0: 
+                        np.jump_type = -1
+                        np.jump_url = ''
+                        break;
+                    case 1:
+                        np.jump_type = 1
+                        break;
+                    case 2:
+                        np.jump_type = 0
                         np.jump_url = '../detail/detail?routeid=' + np.route_id
-                    } else if (np.yj_choose == 1) {
-                        np.jump_url = '../advice/advice' 
-                    } else if (np.yj_choose == 3) {  ///////name    poi的名字
-                        np.jump_url = '../routekabao/routekabao?routeid=' + np.route_id + '&name='+np.Poilist[current].poi_name
-                    } else if (np.yj_choose == 6) {
+                        break;
+                    case 3:
+                        np.jump_type = 0
+                        np.jump_url = '../advice/advice'
+                        break;
+                    case 4:
+                        np.jump_type = 0
                         np.jump_url = '../listshowroute/listshowroute?routeid=' + np.route_id
-                    } else if (np.yj_choose == 9) {  ///poiid   index(表示第几个poi，从0开始)
-                        np.jump_url = '../poidetail/poidetail?poiid='+np.Poi_choose+'&index='+current
-                    } else if (np.yj_choose == 10) {
-                        np.jump_url = '../travelmap/travelmap?routeid=' + np.route_id
-                    } else if (np.yj_choose == 8) {
+                        break;
+                    case 5:
+                        np.jump_type = 0
                         np.jump_url = '../videodetail/videodetail?travelid=' + np.route_id + '&share=no'
-                    }
-                }
-                if (np.jump_type == 2) {
-                    var current = -1
-                    for(var i = 0;i<np.Poilist.length;i++){
-                        if(np.Poilist[i].poi_id == np.Poi_choose){
-                            current = i
-                        }
-                    }
-                    if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
-                        np.jump_url = '../cardpackage/cardpackage?travelid='+np.route_id+'&name='+np.Name+'&current='+current
-                    } else if (np.yj_choose == 4) {
+                        break;
+                    case 6:
+                        np.jump_type = 2
                         np.jump_url = '../journey/journey'
-                    } else if (np.yj_choose == 5) {
-                        np.jump_url = '../listshow/listshow?travelid=' + np.route_id
-                    } else if (np.yj_choose == 7) {
+                        break;
+                    case 7:
+                        np.jump_type = 2
                         np.jump_url = '../memory/memory'
-                    }
+                        break;
+                    case 8:
+                        np.jump_type = 3
+                        np.jump_url = ''
+                        break;
+                    default:
+                        break;
                 }
-
                 var dname = np.dName.split(',')
                 if (np.checkedNames == '' || np.viewCount == '' || np.qudao_Id == '' || np.xianlu_Name == '' || np.City == '' || np.dName == '' || np.Price == '' || np.xianlu_Label == '' || np.zhifu_Img == '' || np.xianlu_Icon == '' || np.dujia_InImg == '' || np.dujia_fengImg == '' || np.dujia_word == '' || np.dujia_showtitle == '' || np.dujia_showPage == '' || np.dujia_btnmsg == '' || np.dujia_Go_imgs == '' || np.dujia_end_img == '' || np.dujia_Mapbg == '' || np.dujia_lat_leftDown_lat == '' || np.dujia_lat_leftDown_lon == '' || np.dujia_lat_leftUp_lat == '' || np.dujia_lat_leftUp_lon == '' || np.dujia_lat_rightDown_lat == '' || np.dujia_lat_rightDown_lon == '' || np.dujia_lat_rightUp_lat == '' || np.dujia_lat_rightUp_lon == '') {
                     alert("不能传入空字段")
@@ -205,7 +214,8 @@ window.onload = function () {
                         show_place:eval(np.is_cur_location),
                         server: server,
                         rich:ue.txt.html(),
-                        token:token
+                        token:token,
+                        local:lat
                     }).then((res) => {
                        
                         // console.log(res.data.Body)

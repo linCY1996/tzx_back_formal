@@ -13,9 +13,9 @@
     <link rel="stylesheet" href="../static/css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="../static/lib/layui/layui.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="../../static/css/fenye.css">
-    <link rel="stylesheet" href="../../static/css/dygl/dygl.css">
-    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <link rel="stylesheet" href="../static/css/fenye.css">
+    <link rel="stylesheet" href="../static/css/dygl/dygl.css">
+    <link rel="stylesheet" href="../static/css/tanchuang.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script type="text/javascript" src="../static/js/xadmin.js"></script>
@@ -78,25 +78,61 @@
                     </a>
                 </li>
                 <li>
-                    <a _href="/qudaogl?token="  v-if="is_super">
+                    <a _href="/qudaogl?token=" v-if="is_super">
                         <i class="iconfont">&#xe811;</i>
                         <cite>渠道管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
                 <li>
-                    <a _href="/banben?token="  v-if="is_super">
+                    <a _href="/banben?token=" v-if="is_super">
                         <i class="iconfont">&#xe724;</i>
                         <cite>版本控制</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
                 </li>
                 <li>
-                    <a _href="/loginCon?token="  v-if="is_super">
+                    <a _href="/kfhuifu?token=" v-if="is_super">
+                        <i class="iconfont">&#xe724;</i>
+                        <cite>客服关键字回复</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                </li>
+                <li>
+                    <a _href="/loginCon?token=" v-if="is_super">
                         <i class="iconfont">&#xe724;</i>
                         <cite>账号管理</cite>
                         <i class="iconfont nav_right">&#xe697;</i>
                     </a>
+                </li>
+                <li>
+                    <a _href="/loginCon?token=" v-if="is_super">
+                        <i class="iconfont">&#xe724;</i>
+                        <cite>用户管理</cite>
+                        <i class="iconfont nav_right">&#xe697;</i>
+                    </a>
+                    <ul class="sub-menu">
+                        <li>
+                            <a _href="/userZhuce?token=">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户注册信息</cite></a>
+                        </li>
+                        <li>
+                            <a _href="/routeData?token=">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户线路日志</cite></a>
+                        </li>
+                        <li>
+                            <a _href="/userFankui?token=">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>用户反馈意见</cite></a>
+                        </li>
+                        <li>
+                            <a _href="/whiteName?token=">
+                                <i class="iconfont">&#xe6a7;</i>
+                                <cite>白名单</cite></a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>
@@ -104,11 +140,14 @@
     <div class="page-content">
         <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
             <ul class="layui-tab-title">
-                <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+                <li class="home">
+                    <img src="../static/images/top1.png" alt="">
+                    首页
+                </li>
             </ul>
             <div class="layui-tab-content">
                 <div class="layui-tab-item layui-show" id="Ifreams" style="overflow:scroll;">
-                    <img src="../static/images/bg1.png" style="margin-left:20%;width: 60%;height:800px;" alt="">
+                    <img src="../static/images/bg.jpg" style="margin-left:20%;width: 60%;height:800px;" alt="">
                     <!-- <iframe src='/dygl?token='+{{token}} frameborder="0" scrolling="yes" class="x-iframe"></iframe> -->
                 </div>
             </div>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/lib/layui/css/layui.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
+    <link rel="stylesheet" href="../../static/css/fenye.css">
+    <link rel="stylesheet" href="../../static/css/POIgl/poigl.css">
+    <link rel="stylesheet" href="../../static/css/whiteName/whitename.css">
+    <link rel="stylesheet" href="../../static/css/whiteName/addWhiteName.css">
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="../../static/js/zhControl/addwhiteName.js"></script>
+</head>
+
+<body>
+    <div id="tall">
+        <div class="TopChoose">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                    <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a></div>
+        </div>
+        <div class="show_Msg">
+            <p class="titles">添加白名单用户</p>
+            <div class="Navs">
+                用户id&nbsp;<input type="text" v-model="uid">
+            </div>
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="posts()">确认添加</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

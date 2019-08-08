@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../../static/css/keyword/bianji.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="../../static/js/keyword/addkeyword.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="tall">
+        <div class="TopChoose" style="left: 1.5%;">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a>
+            </div>
+        </div>
+        <p class="addTouer" style="width: 120px;margin-left:-10px;">添加关键字回复</p>
+        <div class="Msgall">
+            <div class="msgs msgs1">渠道
+                <select name="chooseqd" id="chooseqd" v-model="qudaoId">
+                    <option v-for="item in qudaolist" :value="item.id">{{item.id}}-{{item.name}}</option>
+                </select>
+            </div>
+            <div class="msgs msgs1">关键字<input type="text" v-model="keyword"></div>
+            <div class="msgs msgs1">回复类型
+                <select name="chooseClass" id="chooseClass" v-model="chooseClass">
+                    <option value="text">文字</option>
+                    <option value="image">图片</option>
+                    <option value="link">图文链接</option>
+                    <option value="miniprogrampage">小程序页面</option>
+                </select>
+            </div>
+            <!-- 文字 -->
+            <div class="msgs msgs1" v-show="chooseClass == 'text'">回复内容
+                <textarea name="wenzi" id="wenzi" v-model="text"></textarea>
+            </div>
+            <!-- image -->
+            <div class="msgs msgs1" v-show="chooseClass == 'image'">图片链接
+                <input type="text" name="keyImgs" id="keyImgs" v-model="images">
+            </div>
+            <!-- link -->
+            <div class="msgs" v-show="chooseClass == 'link'">
+                <div class="msgs_ch">
+                    消息标题
+                    <input type="text" name="link_title" id="link_title" v-model="link_title">
+                </div>
+                <div class="msgs_ch">
+                    消息描述
+                    <input type="text" name="link_title" id="link_title"v-model="link_task">
+                </div>
+                <div class="msgs_ch">
+                    图片链接
+                    <input type="text" name="link_title" id="link_title" v-model="link_img">
+                </div>
+                <div class="msgs_ch">
+                    跳转链接
+                    <input type="text" name="link_title" id="link_title"v-model="link_Links">
+                </div>
+            </div>
+            <!-- 小程序页面 -->
+            <div class="msgs" v-show="chooseClass == 'miniprogrampage'">
+                <div class="msgs_ch">
+                    消息标题
+                    <input type="text" name="link_title" id="link_title"v-model="mini_title">
+                </div>
+                <div class="msgs_ch">
+                    页面路径
+                    <input type="text" name="link_title" id="link_title"v-model="mini_pages">
+                </div>
+                <div class="msgs_ch">
+                    图片链接
+                    <input type="text" name="link_title" id="link_title" v-model="mini_link">
+                </div>
+            </div>
+            <!-- 按钮 -->
+            <div class="btn_key">
+                <div class="btn_LeftK" @click="chongzhi()">重置</div>
+                <div class="btn_RightK" @click="saves()">保存</div>
+            </div>
+        </div> 
+    </div>
+</body>
+</html>

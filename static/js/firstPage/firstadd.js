@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     var ids = location.search.replace('?id=', "")
@@ -29,7 +27,7 @@ window.onload = function () {
             routeName: [],   //渠道下所有routeName 
             img_url: '',   //显示图片链接
             sort: '',   //排序
-            jump_type: '',  //跳转类型
+            jump_type: -1,  //跳转类型
             route_id: '',  //跳转的routeid
             Poilist: [],  //对应routeid下得poi列表
             Poi_choose: '',  //选择得Poi得id
@@ -56,46 +54,44 @@ window.onload = function () {
             },
             // 保存
             saves: function () {
-                
-                if (np.jump_type == 0) {
-                    var current = -1
-                    for(var i = 0;i<np.Poilist.length;i++){
-                        if(np.Poilist[i].poi_id == np.Poi_choose){
-                            current = i
-                        }
-                    }
-                    if (np.yj_choose == 0) {
+                switch (parseInt(np.yj_choose)) {
+                    case 0: 
+                        np.jump_type = -1
+                        np.jump_url = ''
+                        break;
+                    case 1:
+                        np.jump_type = 1
+                        break;
+                    case 2:
+                        np.jump_type = 0
                         np.jump_url = '../detail/detail?routeid=' + np.route_id
-                    } else if (np.yj_choose == 1) {
-                        np.jump_url = '../advice/advice' 
-                    } else if (np.yj_choose == 3) {  ///////name    poi的名字
-                        np.jump_url = '../routekabao/routekabao?routeid=' + np.route_id + '&name='+np.Poilist[current].poi_name
-                    } else if (np.yj_choose == 6) {
+                        break;
+                    case 3:
+                        np.jump_type = 0
+                        np.jump_url = '../advice/advice'
+                        break;
+                    case 4:
+                        np.jump_type = 0
                         np.jump_url = '../listshowroute/listshowroute?routeid=' + np.route_id
-                    } else if (np.yj_choose == 9) {  ///poiid   index(表示第几个poi，从0开始)
-                        np.jump_url = '../poidetail/poidetail?poiid='+np.Poi_choose+'&index='+current
-                    } else if (np.yj_choose == 10) {
-                        np.jump_url = '../travelmap/travelmap?routeid=' + np.route_id
-                    } else if (np.yj_choose == 8) {
+                        break;
+                    case 5:
+                        np.jump_type = 0
                         np.jump_url = '../videodetail/videodetail?travelid=' + np.route_id + '&share=no'
-                    }
-                }
-                if (np.jump_type == 2) {
-                    var current = -1
-                    for(var i = 0;i<np.Poilist.length;i++){
-                        if(np.Poilist[i].poi_id == np.Poi_choose){
-                            current = i
-                        }
-                    }
-                    if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
-                        np.jump_url = '../cardpackage/cardpackage?travelid='+np.route_id+'&name='+np.Name+'&current='+current
-                    } else if (np.yj_choose == 4) {
+                        break;
+                    case 6:
+                        np.jump_type = 2
                         np.jump_url = '../journey/journey'
-                    } else if (np.yj_choose == 5) {
-                        np.jump_url = '../listshow/listshow?travelid=' + np.route_id
-                    } else if (np.yj_choose == 7) {
+                        break;
+                    case 7:
+                        np.jump_type = 2
                         np.jump_url = '../memory/memory'
-                    }
+                        break;
+                    case 8:
+                        np.jump_type = 3
+                        np.jump_url = ''
+                        break;
+                    default:
+                        break;
                 }
                  // 判断上传类型 ，添加route_id
                  switch(type) {

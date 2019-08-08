@@ -1,17 +1,27 @@
+body {
+    background: #f6f7fb;
+}
+
 .chaxun {
     width: 1300px;
     height: 60px;
     /* border: 1px solid black; */
-    font-size: .8em;
+    font-size: 14px;
     line-height: 60px;
 }
 
 .chaxun input {
-    width: 170px;
-    height: 30px;
-    line-height: 30px;
+    width: 380px;
+    height: 36px;
+    line-height: 36px;
     border: 1px solid rgb(134, 134, 134);
-    font-size: 1.4em;
+    font-size: 14px;
     
 }
 
+.chaxun img {
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+}

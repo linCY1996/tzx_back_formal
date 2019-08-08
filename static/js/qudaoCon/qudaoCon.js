@@ -1,10 +1,7 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
-// var token = location.search.replace('?token=', "")
 function GetParameters(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
@@ -30,8 +27,18 @@ window.onload = function () {
             qudao: [],  //渠道列表
             checkId:[],  //批量删除
             tan_show_list:false,
+            copy_show: false,   //复制显示
+            current: -1,   //显示对应的hover元素
+            timer:null,
+            loadings:false,
         },
         methods: {
+            showloading:function () {
+                var that = this
+                that.loadings = true  
+                that.tan_show = false
+                that.tan_show_list = false
+            },
             showqudao: function (pindex,psize) {
                 axios.post(host + '/route/v1/api/channel/list', {
                     page: {
@@ -41,6 +48,7 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
+                    np.loadings = false;
                     var qudao = res.data.Body.list
                     if(is_super == true) {
                         np.total = res.data.Body.pager.total
@@ -53,6 +61,22 @@ window.onload = function () {
                         np.all = parseInt(np.total/50)
                     }
                     for(var i = 0;i<qudao.length;i++) {
+                        var replys = JSON.parse(qudao[i].reply).msgtype
+                        var Rep = ''
+                        switch(replys) {
+                            case 'text':
+                                Rep = JSON.parse(qudao[i].reply).text.content
+                                break
+                            case 'image':
+                                Rep =JSON.parse(qudao[i].reply).image.media_id
+                                break
+                            case 'link':
+                                Rep = JSON.parse(qudao[i].reply).link.title
+                                break
+                            case 'miniprogrampage':
+                                Rep = JSON.parse(qudao[i].reply).miniprogrampage.title
+                                break
+                        }
                         np.qudao.push({
                             id:qudao[i].id,
                             name:qudao[i].name,
@@ -63,9 +87,9 @@ window.onload = function () {
                             can_use_guide:JSON.parse(qudao[i].can_use_guide),
                             can_use_poi:JSON.parse(qudao[i].can_use_poi),
                             can_use_route:JSON.parse(qudao[i].can_use_route),
+                            reply:Rep
                         })
                     }
-
                     // np.qudao = res.data.Body.list
                     
                 })
@@ -119,7 +143,7 @@ window.onload = function () {
             // 查询
             chaXun: function () {
                 var qdname = np.q_name
-                window.location.href = '/qudaochaxun?qdname=' + encodeURI(qdname)+'&token='+token
+                window.location.href = '/qudaochaxun?qdname=' + encodeURI(qdname)+'&token='+token+'&is_super='+is_super
             },
             // 批量删除
             delete: function (e) {
@@ -129,7 +153,9 @@ window.onload = function () {
                     server: server,
                     token:token
                 }).then((res) => {
+                    np.qudao = []
                     that.showqudao(1, 50)
+                    // window.location.reload()
                 })
             },
             delAll: function () {
@@ -146,6 +172,45 @@ window.onload = function () {
                     that.delete(np.checkId[i])
                 }
             },
+            // 复制  鼠标移入事件
+            enter: function (index) {
+                np.current = index
+                np.copy_show = true
+            },
+            // 鼠标移出事件
+            leave: function () {
+                if (np.copy_show == true) {
+                    np.timer = setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },1000)
+                }
+            },
+            copy_test: function (params) {
+                axios.post(host + '/route/v1/api/channel/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'test'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            },
+            copy_formal: function (params) {
+                axios.post(host + '/route/v1/api/channel/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'formal'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            }
+        },
+        created () {
+          this.showloading()  
         },
         mounted: function () {
             this.showqudao(1,50);
@@ -178,7 +243,20 @@ window.onload = function () {
         },
         watch: {
             cur: function (oldValue, newValue) {
+            },
+            copy_show:function () {
+                if (np.copy_show == true) {
+                    setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },2000)
+                }
+                clearTimeout()
             }
+        },
+        beforeDestroy () {
+            clearTimeout(np.timer)
+            np.timer = null
         }
     })
 }

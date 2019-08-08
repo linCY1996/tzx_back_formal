@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     // var token = location.search.replace('?token=', "")
@@ -31,8 +29,15 @@ window.onload = function () {
             tan_show: false,   //弹窗
             Id: -1,    //点击删除得Id
             MemberList: [],   //管理人员列表
+            loadings:false,
         },
         methods: {
+            showloading:function () {
+                var that = this
+                that.loadings = true  
+                that.tan_show = false
+                that.tan_show_list = false
+            },
             // 显示账号管理列表
             showdaoyou: function (pindex, psize) {
                 var that = this
@@ -44,6 +49,7 @@ window.onload = function () {
                     server: server,
                     token: token
                 }).then((resp) => {
+                    nm.loadings = false;
                     nm.MemberList = resp.data.Body.list
                     // nm.all = resp.data.Body.pager.pages
                     if(is_super == "true") {
@@ -143,6 +149,9 @@ window.onload = function () {
                 window.location.href = '/loginBianji?id=' + e + '&class=' + encodeURI(4) + '&token=' + token
             },
 
+        },
+        created () {
+          this.showloading()  
         },
         mounted: function () {
             this.showdaoyou(1, 50)

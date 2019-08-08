@@ -12,34 +12,44 @@
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
     <script src="../../static/js/POIgl/bianji.js"></script>
 </head>
 
 <body>
-    <div id="tall">
-        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);text-decoration: none;">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
-                    style="color: rgb(241, 134, 11);text-decoration: none;">刷新</a></div>
+    <div id="tall" style="min-width:1250px;">
+        <div class="TopChoose" style="left: 2%;">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a>
+            </div>
         </div>
         <div class="all_Msgs">
             <div class="Name">编辑任务</div>
             <!-- <div class="Msgs_Show">任务id&nbsp;&nbsp;<input type="text" v-model="workId" name="renwu_id" id="renwu_id"> -->
             <!-- </div> -->
-
-            <div class="Msgs_Show">任务类型&nbsp;&nbsp;<select name="renwu_class" id="renwu_class"
-                    style="border-radius: 10px 10px;" v-model='chooseMsg'>
+            <div class="Msgs_Show">
+                <p class="itemName">任务类型</p>
+                <select name="renwu_class" id="renwu_class" v-model='chooseMsg'>
                     <option value="1-文字说明任务">1-文字说明任务</option>
                     <option value="2-上传图片任务">2-上传图片任务</option>
                     <option value="4-文字选择任务">4-文字选择任务</option>
                     <option value="8-图片选择任务">8-图片选择任务</option>
                     <option value="16-沉浸式任务">16-沉浸式任务</option>
-                </select></div>
-            <div class="Msgs_Show">任务排序&nbsp;&nbsp;<input type="text" v-model="workSort" name="renwu_id" id="renwu_id">
+                </select>
             </div>
-            <div class="Msgs_Show2">任务内容&nbsp;&nbsp;
+            <div class="Msgs_Show">
+                <p class="itemName">任务排序</p>
+                <input type="text" v-model="workSort" name="renwu_id" id="renwu_id">
+            </div>
+            <div class="Msgs_Show2">
+                <p class="itemName">任务内容</p>
                 <div class="fwb">
-                    <div id="editor" style="margin-top: -20px;">
+                    <div id="editor">
                         <p></p>
                     </div>
                 </div>
@@ -48,12 +58,14 @@
             <div style="height: 240px;"></div>
             <!-- 文字说明任务 -->
             <div class="wenzi_shouming" v-if="chooseMsg === '1-文字说明任务'">
-                <div class="Msgs_Show1">任务按钮文字&nbsp;&nbsp;<input type="text" v-model="workBtn" name="renwu_btn"
-                        id="renwu_btn">
+                <div class="Msgs_Show1">
+                    <p class="itemName">任务按钮文字</p>
+                    <input type="text" v-model="workBtn" name="renwu_btn" id="renwu_btn">
                     <span>说明：换行请用\n</span>
                 </div>
-                <div class="Msgs_Show1">任务配图&nbsp;&nbsp;<input type="text" v-model="work_Imgs" name="renwu_btn"
-                        id="renwu_btn">
+                <div class="Msgs_Show1">
+                    <p class="itemName">任务配图</p>
+                    <input type="text" v-model="work_Imgs" name="renwu_btn" id="renwu_btn">
                     <span>说明:添加形式（例：https://xxx.html）</span>
                 </div>
                 <div class="Msgs_Show1">跳转任务id&nbsp;&nbsp;<input type="text" v-model="wenziTaskId" name="renwu_btn"
@@ -80,44 +92,64 @@
             <div class="wenzi_choose" v-if="chooseMsg == '4-文字选择任务'">
                 <div class="choose">
                     <div class="choose_ch1" v-for="(cz,key) in choose_wenzi">
-                        选择文字&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" v-model="cz.ctx"
-                            class="choose_ch_one" name="choose_ch1_wenzi"
-                            id="choose_ch1_wenzi">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳转任务id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
-                            type="text" class="choose_ch_two" v-model="cz.target" name="choose_ch1_jump"
-                            id="choose_ch1_jump">
+                        <div class="choose_ch1_jumps">
+                            <div class="Choose_WZ">
+                                <p class="Cwenzhi">选择文字</p>
+                                <div class="choose_CH1_wz">
+                                    <input type="text" v-model="cz.ctx" class="choose_ch_one" name="choose_ch1_wenzi"
+                                        id="choose_ch1_wenzi">
+                                    <div class="choose_ch1_jumpid">
+                                        跳转任务id<input type="text" class="choose_ch_two" v-model="cz.target"
+                                            name="choose_ch1_jump" id="choose_ch1_jump">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>说明：请顺序填写</span>
-                    <div class="Msgs_Show1">任务配图&nbsp;&nbsp;<input type="text" v-model="work_Imgs" name="renwu_btn"
-                            id="renwu_btn">
-                        <span>说明:添加形式（例：https://xxx.html）</span>
+                    <div class="choose_ch1_jumps" style="margin-top: 22px;">
+                        <div class="choose_Task">说明：请顺序填写</div>
                     </div>
-                    <!-- <div class="choose_ch1">说明：换行请用\n</div> -->
                 </div>
+            </div>
+            <div class="Msgs_Show1" style="width: 80%;margin-left:10%;" v-show="chooseMsg == '4-文字选择任务'">
+                <p class="itemName">任务配图</p>
+                <input type="text" v-model="work_Imgs" name="renwu_btn" id="renwu_btn">
+                <span>说明:添加形式（例：https://xxx.html）</span>
             </div>
             <!-- 图片选择任务 -->
             <div class="wenzi_choose" v-if="chooseMsg == '8-图片选择任务'">
-                <div class="choose">
+                <div class="choose" style="height: 288px;">
                     <div class="choose_ch1" v-for="(ci,key) in choose_Img">
-                        选择图片&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" v-model="ci.ctx"
-                            class="choose_ch_one" name="choose_ch1_wenzi"
-                            id="choose_ch1_tupian">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;跳转任务id&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input
-                            type="text" v-model="ci.target" class="choose_ch_two" name="choose_ch1_jump"
-                            id="choose_ch1_jump_tu">
+                        <div class="choose_ch1_jumps">
+                            <div class="Choose_WZ">
+                                <p class="Cwenzhi">选择图片</p>
+                                <div class="choose_CH1_wz">
+                                    <input type="text" v-model="ci.ctx" class="choose_ch_one" name="choose_ch1_wenzi"
+                                        id="choose_ch1_tupian">
+                                    <div class="choose_ch1_jumpid">
+                                        跳转任务id<input type="text" v-model="ci.target" class="choose_ch_two"
+                                            name="choose_ch1_jump" id="choose_ch1_jump_tu">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>说明：请顺序填写</span>
-                    <!-- <div class="choose_ch1">说明：换行请用\n</div> -->
+                    <div class="choose_ch1_jumps" style="margin-top: 22px;">
+                        <div class="choose_Task">说明：请顺序填写</div>
+                    </div>
                 </div>
             </div>
-            <div class="Msgs_Show1" style="width:80%;margin-left:10%;">任务语音&nbsp;&nbsp;<input type="text"
-                    v-model="workAudio" name="renwu_music" id="renwu_music">
+            <div class="Msgs_Show">任务语音&nbsp;&nbsp;<input type="text" v-model="workAudio" name="renwu_music"
+                    id="renwu_music">
                 <!-- <span>说明：换行请用\n</span> -->
             </div>
             <!-- 沉浸式任务 -->
-            <div class="deep_Show" v-if="chooseMsg == '16-沉浸式任务'" style="background: rgba(197, 197, 197, 0.4);">
+            <div class="deep_Show" v-if="chooseMsg == '16-沉浸式任务'" style="margin-top:30px;width: 74%;background: rgba(197, 197, 197, 0.4);">
                 <div class="chenjin" v-for="item in choose_chenjin"
                     style="margin-top: 30px;border-top:1px dashed rgb(90, 90, 90);">
                     <!-- 选择文字 -->
-                    <div class="deep_Choose" style="display: flex;justify-content: space-between;height: 100px;">
+                    <div class="deep_Choose" style="display: flex;justify-content: space-between;height: 100px;width: 94%;margin-left: 33px;">
                         <div class="deep_ch1">选项文字&nbsp;&nbsp;
                             <div class="deep_nav">
                                 <input type="text" name="deep_choo se" id="deep_choose" v-model="item.ctx">
@@ -149,7 +181,9 @@
                     <div class="deep_Choose">
                         <div class="deep_qian">
                             <div id="deep_Qian" style="height: 40px;line-height: 40px;">前景图链接&nbsp;&nbsp;
-                                <input type="text" v-model="item.fore"><span>(选填)</span></div>
+                                <div class="qian_dd"><input type="text" style="width: 64%;"
+                                        v-model="item.fore"><span>(选填)</span></div>
+                            </div>
                             <br>
                             <div class="deep_Suo_Msg">
                                 <span>尺寸：宽750，高1334以内，居中显示，建议透明度</span>
@@ -182,14 +216,19 @@
                         </div>
                     </div>
                     <!-- 删除 -->
-                    <div class="Delete" v-if="choose_chenjin.length != 1" @click="delChenjin(item.delIndex)" v-model="item.delIndex">
-                        <img src="../../static/images/del.png" alt="">
+                    <div class="Delete" v-if="choose_chenjin.length != 1" @click="delChenjin(item.delIndex)"
+                        v-model="item.delIndex">
+                        <img src="../../static/images/delete.png" alt="" style="margin-left:10px;">
                     </div>
                 </div>
 
-                <div class="chenjin_Add" v-if="Addchenjinshow" @click="addChenjin()">+</div>
+                <div class="chenjin_Add" v-if="Addchenjinshow" @click="addChenjin()">
+                    <div class="chenjin_Nav">
+                        <img src="../../static/images/tianjia.png" alt="">&nbsp;&nbsp;<div class="chenjin_News">新增</div>
+                    </div>
+                </div>
             </div>
-            <div class="btn_All">
+            <div class="btn_All" style="margin-bottom: 20px;">
                 <div class="btn_Left" @click="chongzhi()">重置</div>
                 <div class="btn_Right" @click="saves()">保存</div>
             </div>

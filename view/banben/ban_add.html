@@ -1,29 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../../static/css/banben/ban_add.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script src="../../static/js/banben/ban_add.js"></script>
 </head>
+
 <body>
     <div id="tall">
-            <div class="fanhui"><a href="javascript:history.go(-1)">返回</a></div>
-        <div class="Msg1">&nbsp;&nbsp;版本号
-            <input type="text" name="banben" id="banben" v-model="b_Num">
+        <div class="TopChoose">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                    <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a></div>
         </div>
-        <div class="Msg1">&nbsp;&nbsp; 当前状态
-            <input type="text" name="status" id="status" v-model="b_Status">
-        </div>
-        <div class="btns">
-            <div class="btn_Left" @click="chongzhi()">重置</div>
-            <div class="btn_Right" @click="posts()">保存</div>
+        <p class="addTouer1">添加版本</p>
+        <div class="show_Msg">
+            <div class="Msg1">版本号
+                <input type="text" name="banben" id="banben" v-model="b_Num">
+            </div>
+            <div class="Msg1">当前状态
+                <input type="text" name="status" id="status" v-model="b_Status">
+            </div>
+            <div class="btn_All" style="margin-bottom: 40px;">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="posts()">保存</div>
+            </div>
         </div>
     </div>
 </body>
+
 </html>

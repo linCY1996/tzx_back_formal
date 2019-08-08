@@ -20,88 +20,98 @@
   <link rel="stylesheet" href="../../static/css/dygl/dygl.css">
   <link rel="stylesheet" href="../../static/css/fenye.css">
   <link rel="stylesheet" href="../../static/css/tanchuang.css">
+  <link rel="stylesheet" href="../../static/css/caozuo.css">
+  <link rel="stylesheet" href="../../static/css/topChoose.css">
   <script src="../../static/js/dygl/dygl.js"></script>
 
 </head>
 
 <body>
-  <div class="x-nav">
-    </span>
+  <!-- <div class="x-nav">
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
       href="javascript:location.replace(location.href);" title="刷新">
       <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-  </div>
-  <div class="x-body" id="tall" style="overflow-y:scroll;">
+  </div> -->
+  <div class="x-body" id="tall">
+    <div class="mengban" style="z-index: 1000;" v-show="loadings">
+      <div class="load_Msgs">加载中...</div>
+    </div>
     <div class="chaxun">
-
-      导游名&nbsp;&nbsp;<input type="text" name="dname" v-model="dname" id="dname"> <i v-on:click="looks()"
-        class="iconfont" style=" margin-left:20px; cursor: pointer;">&#xe6ac;</i>
+      导游名&nbsp;&nbsp;<input type="text" name="dname" v-model="dname" id="dname">
+        <img src="../../static/images/sousuo.png" alt="" @click="looks()">
     </div>
 
     <xblock>
-      <button class="layui-btn layui-btn-danger" v-on:click="delAll()"><i class="layui-icon"></i>批量删除</button>
-      <button class="layui-btn" @click="add_touer()"><i class="layui-icon"></i>添加</button>
+      <button class="layui-btn layui-btn-danger" id="delete" v-on:click="delAll()"><i class="layui-icon"></i>批量删除</button>
+      <button class="layui-btn" @click="add_touer()" id="adds"><i class="layui-icon"></i>添加</button>
+      <!-- <div id="kongbai" class="layui-btn"> -->
       <span class="x-right" style="line-height:40px">共有数据： {{total}}条</span>
+      <!-- </div> -->
     </xblock>
-    <table class="layui-table" style="min-width:1000px;">
+    <table class="layui-table">
       <thead>
         <tr>
-          <th>
-            选择
-            <!-- <input type="checkbox" class="checks" value="" v-model="checkId"> -->
-          </th>
-          <th style="width:100px;">操作</th>
-          <th style="width:40px;">id</th>
-          <th style="width:60px;">导游名字(name)</th>
+          <th style="width:40px;text-align: center;">选择</th>
+          <th style="width:100px;text-align: center;">操作</th>
+          <th style="width:40px;text-align: center;">ID</th>
+          <th style="width:120px;">导游名字(name)</th>
           <th>导游头像(img)</th>
           <!-- <th>导游欢迎语(Start)</th>
           <th>导游结束语(End)</th> -->
         </tr>
       </thead>
       <tbody id="tbodys">
-        <tr v-for="dy in daoyou">
-          <td>
-           <input v-if="dy.can_edit" type="checkbox" class="checks" :value="dy.Id" v-model="checkId">
+        <tr v-for="(dy,index) in daoyou">
+          <td style="text-align: center;">
+            <input v-if="dy.can_edit" type="checkbox" class="checks" :value="dy.Id" v-model="checkId">
           </td>
-          <td class="td-manage">
-            <a v-if="dy.can_edit" title="编辑" v-on:click='btn_link(dy.Id)'>
-              <i class="layui-icon">&#xe63c;</i>
-            </a>
-            <a v-if="dy.can_edit" title="删除" v-on:click="del(dy.Id)" href="javascript:;">
-              <i class="layui-icon">&#xe640;</i>
-            </a>
-            <a title="复制到" href="javascript:;">
-              <i class="layui-icon">&#xe744;</i>
-            </a>
+          <td class="td-manage" style="width: 100px;">
+            <div class="funcAbout">
+              <a v-if="dy.can_edit" title="" v-on:click='btn_link(dy.Id)'>
+                <span class="Bian_j">编辑</span>
+              </a>&nbsp;
+              <a v-if="dy.can_edit" title="" v-on:click="del(dy.Id)">
+                <span class="Delete">删除</span>
+              </a>&nbsp;
+              <!-- <a class="copy_Nav" href="javascript:;"> -->
+              <a title="" v-show="dy.is_super" @click="enter(index)">
+                <span class="Copy">复制</span>
+              </a>
+              <div class="copy_where" v-show="copy_show&&index == current">
+                <p class="copy_test" @click="copy_test(dy.Id)">体验服</p>
+                <p class="copy_formal" @click="copy_formal(dy.Id)">正式服</p>
+              </div>
+            </div>
+            <!-- </a> -->
           </td>
-          <td>{{dy.Id}}</td>
+          <td style="text-align: center;">{{dy.Id}}</td>
           <td>{{dy.Name}}</td>
           <td>{{dy.Img}}</td>
           <!-- <td>{{dy.Start}}</td>
           <td>{{dy.End}}</td> -->
-        </tr>  
+        </tr>
       </tbody>
     </table>
     <div class="page-bar">
-        <ul>
-            <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
-            <li v-if="cur==1"><a class="banclick">上一页</a></li>
-            <li v-for="index in indexs"  v-bind:class="{ 'active': cur == index}">
-                <a v-on:click="btnClick(index)">{{ index }}</a>
-            </li>
-            <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
-            <li v-if="cur == all"><a class="banclick">下一页</a></li>
-            <li><a>共<i>{{all}}</i>页</a></li>
-            <!-- <li><select name="pages" id="pages" v-model="pagesNum" v-on:click="chooseNum()">
+      <ul>
+        <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+        <li v-if="cur==1"><a class="banclick">上一页</a></li>
+        <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+          <a v-on:click="btnClick(index)">{{ index }}</a>
+        </li>
+        <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+        <li v-if="cur == all"><a class="banclick">下一页</a></li>
+        <li><a>共<i>{{all}}</i>页</a></li>
+        <!-- <li><select name="pages" id="pages" v-model="pagesNum" v-on:click="chooseNum()">
               <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
               <option value="50">50</option>
             </select></li> -->
-        </ul>
-     
-    </div> 
+      </ul>
 
+    </div>
+    <div class="mengban" v-show="tan_show == true"></div>
     <div class="tanchuang" v-if="tan_show == true">
       <div class="tanMsgs">你确定要删除此内容吗？</div>
       <div class="tanBtns">
@@ -109,6 +119,7 @@
         <div class="Confirms" v-on:click="Confirms()">确定</div>
       </div>
     </div>
+    <div class="mengban" v-show="tan_show_list == true"></div>
     <div class="tanchuang" v-if="tan_show_list == true">
       <div class="tanMsgs">你确定要删除此内容吗？</div>
       <div class="tanBtns">

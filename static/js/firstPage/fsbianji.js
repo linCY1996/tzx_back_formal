@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     // var ids = location.search.replace('?id=', "")
@@ -58,37 +56,29 @@ window.onload = function () {
                 }).then((res) => {
                     np.jump_url = res.data.Body.jump_url
                     var jump_url = res.data.Body.jump_url
-                    np.route_id = jump_url.charAt(jump_url.length - 1)
+                    var reg = /(?<=routeid=).+()/
+                    np.route_id = jump_url.match(reg)[0]
+                    // np.route_id = jump_url.charAt(jump_url.length - 1)
                     var jump_class = jump_url.match(/\/(\S*)\//)[1];   //正则截取
                     np.img_url = res.data.Body.img_url
                     np.sort = res.data.Body.sort
                     np.jump_type = res.data.Body.jump_type
-                    if (np.jump_type == 0) {
+                    if (res.data.Body.jump_type == 0) {
                         if (jump_class == "detail") {
-                            np.yj_choose = 0
+                            np.yj_choose = 2
                         } else if (jump_class == "advice") {
-                            np.yj_choose = 1
-                        } else if (jump_class == "routekabao") {
                             np.yj_choose = 3
                         } else if (jump_class == "listshowroute") {
-                            np.yj_choose = 6
-                        } else if (jump_class == "poidetail") {
-                            np.yj_choose = 9
-                        } else if (jump_class == "travelmap") {
-                            np.yj_choose = 10
+                            np.yj_choose = 4
                         }
                     }
-                    if (np.jump_type == 2) {
-                        if (jump_class == "cardpackage") {
-                            np.yj_choose = 2
-                        } else if (jump_class == "journey") {
-                            np.yj_choose = 4
-                        } else if (jump_class == "listshow") {
-                            np.yj_choose = 5
+                    if (res.data.Body.jump_type == 2) {
+                        if (jump_class == "journey") {
+                            np.yj_choose = 6
                         } else if (jump_class == "memory") {
                             np.yj_choose = 7
                         } else if (jump_class == "videodetail") {
-                            np.yj_choose = 8
+                            np.yj_choose = 5
                         }
                     }
                 })

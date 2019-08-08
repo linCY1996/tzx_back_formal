@@ -2,7 +2,7 @@ package main
 
 import (
 	"net/http"
-	"tzx_back_test/control"
+	"tzx_back/control"
 )
 
 func main() {
@@ -49,8 +49,26 @@ func main() {
 	//账号管理
 	http.HandleFunc(`/loginCon`, control.LoginCon)
 	http.HandleFunc(`/loginBianji`, control.LoginConBianji)
+	//用户管理
+	http.HandleFunc(`/userZhuce`, control.UserControl)
+	http.HandleFunc(`/lookzhuce`, control.LookZhuCe)
+	http.HandleFunc(`/routeData`, control.RouteData)
+	http.HandleFunc(`/lookrouteData`, control.LookRouteData)
+	http.HandleFunc(`/userFankui`, control.UserFankui)
+	http.HandleFunc(`/lookfankui`, control.LookUserFankui)
+	http.HandleFunc(`/whiteName`, control.WhiteName)
+	http.HandleFunc(`/lookWhite`, control.LookWN)
+	http.HandleFunc(`/addwhiteName`, control.Addwhitename)
+
+	//客服关键字回复
+	http.HandleFunc(`/kfhuifu`, control.KFWrite)
+	http.HandleFunc(`/keywordbianji`, control.KFBian)
+	http.HandleFunc(`/addkeyword`, control.AddKeyword)
+	http.HandleFunc(`/keywordchaxun`, control.ChaXunKeyword)
 
 	http.ListenAndServe(`:6933`, nil)
-	//正式服
-
+	//开发服
+	// fmt.Println("123")
+	// http.ListenAndServeTLS(":7788", "cert-1542427206238_www.linchongyang.cn.crt", "cert-1542427206238_www.linchongyang.cn.key", nil)
+	// fmt.Println("456")
 }

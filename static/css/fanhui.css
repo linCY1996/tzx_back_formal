@@ -1,0 +1,179 @@
+body {
+    background: #f6f7fb;
+}
+
+.TopChoose {
+    position: fixed;
+    top: 20px;
+    left: 2%;
+    width: 130px;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1000;
+    /* background-color: rgba(184, 184, 184, 0.4); */
+}
+
+.addTouer {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    letter-spacing: 0;
+    width: 64px;
+    height: 22px;
+    position: relative;
+    left: 50%;
+    font-weight: bold;
+    transform: translateX(-50%);
+    /* top: 30px; */
+    margin-top: 20px;
+}
+
+.addTouer1 {
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #000000;
+    letter-spacing: 0;
+    width: 64px;
+    height: 22px;
+    position: relative;
+    left: 47%;
+    font-weight: bold;
+    transform: translateX(-50%);
+    /* top: 30px; */
+    margin-top: 20px;
+}
+
+a {
+    text-decoration: none;
+    color: #333333;
+}
+
+.fanhui,.reFalsh {
+    position: relative;
+    width: 60px;
+    margin-left: 0px;
+    text-align: center;
+    height: 30px;
+    /* border: 1px solid rgb(131, 131, 131); */
+}
+
+.fanhui img {
+    position: absolute;
+    top: 8.5px;
+    left: 5px;
+    width: 13px;
+    height: 13px;
+}
+
+.reFalsh img {
+    position: absolute;
+    top: 8.5px;
+    left: -1px;
+    width: 13px;
+    height: 13px;
+}
+
+.fanhui a {
+    font-family: PingFangSC-Regular;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    top: 0px;
+    font-size: 14px;
+    left: 28px;
+}
+.reFalsh a{
+    font-family: PingFangSC-Regular;
+    width: 60px;
+    line-height: 30px;
+    height: 30px;
+    font-size: 14px;
+}
+
+
+/* 按钮 */
+.btn_All {
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-top: 50px;
+    width: 420px;
+    height: 40px;
+}
+
+.btn_Left,.btn_Right {
+    cursor: pointer;
+    width: 160px;
+    height: 40px;
+    /* border-radius: 10px 10px; */
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    line-height: 40px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.btn_Left {
+    background: #F4833D;
+}
+
+.btn_Right {
+    background: #00B499;
+}
+
+.leibie {
+    position: relative;
+    top: 20px;
+    /* margin-top: 0px; */
+    display: flex;
+    position: absolute;;
+    left: 50%;
+    transform: translateX(-50%);
+    /* margin-left: 50px; */
+    /* border: 1px solid black; */
+    justify-content: space-between;
+    width: 440px;
+    height: 40px;
+    line-height: 40px;
+
+}
+
+.chooses {
+    display: flex;
+    justify-content: space-between;
+    width: 20%;
+    height: 60px;
+    margin-left: 40%;
+    margin-bottom: 25px;
+    font-size: 1.4em;
+    /* font-weight: bold; */
+    line-height: 60px;
+}
+
+.bianji,.add{
+    width: 200px;
+    /* border-radius: 10px 10px; */
+    /* border: 1px solid rgb(241, 241, 241); */
+    background-color: #666;
+    color: white;
+    /* line-height: 60px; */
+    text-align: center;
+    cursor: pointer;
+}
+
+.Bianji,.Add{
+    width: 200px;
+    /* border-radius: 10px 10px; */
+    /* border: 1px solid rgb(241, 241, 241); */
+    background-color: #E2E2E2;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
+    text-align: center;
+    cursor: pointer;
+}

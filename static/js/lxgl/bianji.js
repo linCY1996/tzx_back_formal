@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     // var ids = location.search.replace('?id=', "")
@@ -35,7 +33,7 @@ window.onload = function () {
             Poi_choose: '',  //选择得Poi得id
             Name: '',   //行程名字
             jump_url: '',  //跳转
-            jump_type: 2,  //跳转类型
+            jump_type: -1,  //跳转类型
             routeName: [],   //渠道下所有routeName
             qudao_Id: '',  //渠道id
             qudao_Name: '',  //渠道名字
@@ -54,7 +52,7 @@ window.onload = function () {
             dujia_InImg: '',   //独家回忆入口图
             dujia_fengImg: '',   //独家回忆封面图
             // *********新增
-            viewCount:'',  //热度值
+            viewCount: '',  //热度值
             dujia_word: '',  //独家回忆引导文案
             dujia_showtitle: '',  //独家回忆分享标题
             dujia_showPage: '',  //独家回忆分享图片
@@ -76,23 +74,29 @@ window.onload = function () {
             dujia_lat_leftDown_lon: '',  //地图坐标--左下  lon
             dujia_lat_leftDown_lat: '',  //地图坐标--左下  lat
             // 新增
-            is_cur_location:'',   //是否显示当前位置
-            can_edit:true,   //是否具有编辑权限
-
+            is_cur_location: '',   //是否显示当前位置
+            can_edit: true,   //是否具有编辑权限
+            loadings:false,
+            DLat:'',   //新增定位lat
+            DLon:'',   //新增定位Lon
 
         },
         methods: {
+            showloading:function () {
+              var that = this
+              that.loadings = true  
+            },
             bianjishow: function () {
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(ids),
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     ue.create()
                     // console.log(res.data.Body)
-                    if(can_edit == null) {
+                    if (can_edit == null) {
                         np.can_edit = true
-                    }else {
+                    } else {
                         np.can_edit = eval(can_edit)
                     }
                     np.qudao_Id = res.data.Body.ChannelId
@@ -113,7 +117,7 @@ window.onload = function () {
                     np.xianlu_Label = JSON.parse(res.data.Body.Label)
                     np.zhifu_Img = res.data.Body.pay_url
                     var xiangzhan = JSON.stringify(res.data.Body.jump_url)
-                    np.xiangqing_ShowImg = xiangzhan.substring(1,xiangzhan.length-1)  ////////////////////// 详情页展示图：根据route@tzx_route表中的id关联img_jump@tzx_route表中的route_id，查询img_jump@tzx_route表中type为空的img_url
+                    np.xiangqing_ShowImg = xiangzhan.substring(1, xiangzhan.length - 1)  ////////////////////// 详情页展示图：根据route@tzx_route表中的id关联img_jump@tzx_route表中的route_id，查询img_jump@tzx_route表中type为空的img_url
                     np.xianlu_Icon = JSON.parse(res.data.Body.Honor)
                     np.xingcheng_End = res.data.Body.end_words
                     np.dujia_InImg = res.data.Body.MemInlet
@@ -121,7 +125,7 @@ window.onload = function () {
                     np.dujia_word = res.data.Body.MemMsg
                     np.dujia_showtitle = res.data.Body.MemTitle
                     var dujia_IMGs = res.data.Body.MemImgs
-                    np.dujia_showPage = dujia_IMGs.substring(1,dujia_IMGs.length-1) /// 
+                    np.dujia_showPage = dujia_IMGs.substring(1, dujia_IMGs.length - 1) /// 
                     np.dujia_btnmsg = res.data.Body.PriceText
                     var Go_Start = JSON.parse(res.data.Body.Start)
                     // console.log(Go_Start)
@@ -153,12 +157,15 @@ window.onload = function () {
                     ue.txt.html(detail_multi);
                     // ue.setContent();   //显示富文本信息
                     // ue.getContent();    //获取富文本信息
+                    var latitude = JSON.parse(res.data.Body.local)
+                    np.DLat = latitude.lat
+                    np.DLon = latitude.lon
 
                     // 获取所有的routeName
                     axios.post(host + '/route/v1/api/channel/routeList', {
                         channel_id: parseInt(np.qudao_Id),
                         server: server,
-                        token:token
+                        token: token
                     }).then((res) => {
                         //   console.log("sd==",res.data.Body)
                         np.routeName = res.data.Body
@@ -173,8 +180,9 @@ window.onload = function () {
                     },
                     type: -1,
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
+                    np.loadings = false
                     np.Poilist = res.data.Body.list
                     // console.log("hahahah", res.data.Body.list)
 
@@ -185,10 +193,10 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/channel/list', {
                     page: {
                         page_index: 1,
-                        page_size: 50
+                        page_size: 1000
                     },
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     np.qudao = res.data.Body.list
                 })
@@ -202,7 +210,7 @@ window.onload = function () {
                         page_size: 1000
                     },
                     server: server,
-                    token:token
+                    token: token
 
                 }).then((resp) => {
                     np.daoyouname = resp.data.Body.list
@@ -210,47 +218,95 @@ window.onload = function () {
             },
             // 保存
             saves: function () {
+                var lat = '{"lon": '+np.DLon+',"lat": '+np.DLat+'}'
                 // console.log("==详情==",'['+np.xiangqing_ShowImg+']')
-                if (np.jump_type == 0) {
+                if(np.jump_type == 0 || np.jump_type == 2) {
                     var current = -1
                     for (var i = 0; i < np.Poilist.length; i++) {
                         if (np.Poilist[i].poi_id == np.Poi_choose) {
                             current = i
                         }
                     }
-                    if (np.yj_choose == 0) {
+                } 
+                switch (parseInt(np.yj_choose)) {
+                    case 0: 
+                        np.jump_type = -1
+                        np.jump_url = ''
+                        break;
+                    case 1:
+                        np.jump_type = 1
+                        break;
+                    case 2:
+                        np.jump_type = 0
                         np.jump_url = '../detail/detail?routeid=' + np.route_id
-                    } else if (np.yj_choose == 1) {
+                        break;
+                    case 3:
+                        np.jump_type = 0
                         np.jump_url = '../advice/advice'
-                    } else if (np.yj_choose == 3) {  ///////name    poi的名字
-                        np.jump_url = '../routekabao/routekabao?routeid=' + np.route_id + '&name=' + np.Poilist[current].poi_name
-                    } else if (np.yj_choose == 6) {
+                        break;
+                    case 4:
+                        np.jump_type = 0
                         np.jump_url = '../listshowroute/listshowroute?routeid=' + np.route_id
-                    } else if (np.yj_choose == 9) {  ///poiid   index(表示第几个poi，从0开始)
-                        np.jump_url = '../poidetail/poidetail?poiid=' + np.Poi_choose + '&index=' + current
-                    } else if (np.yj_choose == 10) {
-                        np.jump_url = '../travelmap/travelmap?routeid=' + np.route_id
-                    } else if (np.yj_choose == 8) {
+                        break;
+                    case 5:
+                        np.jump_type = 0
                         np.jump_url = '../videodetail/videodetail?travelid=' + np.route_id + '&share=no'
-                    }
-                }
-                if (np.jump_type == 2) {
-                    var current = -1
-                    for (var i = 0; i < np.Poilist.length; i++) {
-                        if (np.Poilist[i].poi_id == np.Poi_choose) {
-                            current = i
-                        }
-                    }
-                    if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
-                        np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
-                    } else if (np.yj_choose == 4) {
+                        break;
+                    case 6:
+                        np.jump_type = 2
                         np.jump_url = '../journey/journey'
-                    } else if (np.yj_choose == 5) {
-                        np.jump_url = '../listshow/listshow?travelid=' + np.route_id
-                    } else if (np.yj_choose == 7) {
+                        break;
+                    case 7:
+                        np.jump_type = 2
                         np.jump_url = '../memory/memory'
-                    }
+                        break;
+                    case 8:
+                        np.jump_type = 3
+                        np.jump_url = ''
+                        break;
+                    default:
+                        break;
                 }
+                // if (np.jump_type == 0) {
+                //     var current = -1
+                //     for (var i = 0; i < np.Poilist.length; i++) {
+                //         if (np.Poilist[i].poi_id == np.Poi_choose) {
+                //             current = i
+                //         }
+                //     }
+                //     if (np.yj_choose == 0) {
+                //         np.jump_url = '../detail/detail?routeid=' + np.route_id
+                //     } else if (np.yj_choose == 1) {
+                //         np.jump_url = '../advice/advice'
+                //     } else if (np.yj_choose == 3) {  ///////name    poi的名字
+                //         np.jump_url = '../routekabao/routekabao?routeid=' + np.route_id + '&name=' + np.Poilist[current].poi_name
+                //     } else if (np.yj_choose == 6) {
+                //         np.jump_url = '../listshowroute/listshowroute?routeid=' + np.route_id
+                //     } else if (np.yj_choose == 9) {  ///poiid   index(表示第几个poi，从0开始)
+                //         np.jump_url = '../poidetail/poidetail?poiid=' + np.Poi_choose + '&index=' + current
+                //     } else if (np.yj_choose == 10) {
+                //         np.jump_url = '../travelmap/travelmap?routeid=' + np.route_id
+                //     } else if (np.yj_choose == 8) {
+                //         np.jump_url = '../videodetail/videodetail?travelid=' + np.route_id + '&share=no'
+                //     }
+                // }
+                // if (np.jump_type == 2) {
+                //     var current = -1
+                //     for (var i = 0; i < np.Poilist.length; i++) {
+                //         if (np.Poilist[i].poi_id == np.Poi_choose) {
+                //             current = i
+                //         }
+                //     }
+                //     if (np.yj_choose == 2) {   //指定个人卡包   ///////current  第几个poi
+                //         np.jump_url = '../cardpackage/cardpackage?travelid=' + np.route_id + '&name=' + np.Name + '&current=' + current
+                //     } else if (np.yj_choose == 4) {
+                //         np.jump_url = '../journey/journey'
+                //     } else if (np.yj_choose == 5) {
+                //         np.jump_url = '../listshow/listshow?travelid=' + np.route_id
+                //     } else if (np.yj_choose == 7) {
+                //         np.jump_url = '../memory/memory'
+                //     }
+                // }
                 var dname = np.dNames.split(',')
                 var imgsOne = 'http://imgs1.tuzuu.com/12_zhifu.jpg'
                 var imgsAll = '["' + imgsOne + '","' + np.zhifu_Img + '","' + np.dujia_InImg + '","' + np.dujia_fengImg + '"]'   //拼接imgs
@@ -264,7 +320,6 @@ window.onload = function () {
                         poi_name: np.checkedNames[i].split(',')[1]
                     })
                 }
-
                 // 更新独家回忆展示图
                 var dujia_Imgs = '["' + np.dujia_InImg + '","' + np.dujia_fengImg + '"]'
                 if (dujia_Imgs == '') {
@@ -274,30 +329,30 @@ window.onload = function () {
                         banner: JSON.parse(dujia_Imgs),
                         route_id: parseInt(ids),
                         server: server
-                    }).then((res) => {})
+                    }).then((res) => { })
                 }
                 // 线路标签
                 var lx_Lable = []
-                if(typeof np.xianlu_Label == 'string') {
+                if (typeof np.xianlu_Label == 'string') {
                     lx_Lable = np.xianlu_Label.split(',')
-                }else if(typeof np.xianlu_Label == 'object') {
+                } else if (typeof np.xianlu_Label == 'object') {
                     var xianlu = ''
-                    for(var i = 0;i<np.xianlu_Label.length;i++) {
-                        xianlu += np.xianlu_Label[i]+','
+                    for (var i = 0; i < np.xianlu_Label.length; i++) {
+                        xianlu += np.xianlu_Label[i] + ','
                     }
-                    var xianlu_La = xianlu.substring(0,xianlu.length-1)
+                    var xianlu_La = xianlu.substring(0, xianlu.length - 1)
                     lx_Lable = xianlu_La.split(',')
                 }
                 // 线路盖章图
                 var Icons = []
-                if(typeof np.xianlu_Icon == 'string') {
+                if (typeof np.xianlu_Icon == 'string') {
                     Icons = np.xianlu_Icon.split(',')
-                } else if(typeof np.xianlu_Icon == 'object') {
+                } else if (typeof np.xianlu_Icon == 'object') {
                     var icon = ''
-                    for(var j = 0;j<np.xianlu_Icon.length;j++) {
-                        icon += np.xianlu_Icon[j]+','
+                    for (var j = 0; j < np.xianlu_Icon.length; j++) {
+                        icon += np.xianlu_Icon[j] + ','
                     }
-                    var xianluIcon = icon.substring(0,icon.length-1)
+                    var xianluIcon = icon.substring(0, icon.length - 1)
                     Icons = xianluIcon.split(',')
                 }
                 axios.post(host + '/route/v1/api/route/update', {
@@ -312,22 +367,23 @@ window.onload = function () {
                     label: JSON.stringify(lx_Lable),
                     honor: JSON.stringify(Icons),
                     imgs: imgsAll,
-                    memInlet:np.dujia_InImg,    //独家回忆入口图
-                    memCover:np.dujia_fengImg,   //独家回忆封面图
-                    pay_url:np.zhifu_Img,   //支付页图片
-                    viewCount:parseInt(np.viewCount),
+                    memInlet: np.dujia_InImg,    //独家回忆入口图
+                    memCover: np.dujia_fengImg,   //独家回忆封面图
+                    pay_url: np.zhifu_Img,   //支付页图片
+                    viewCount: parseInt(np.viewCount),
                     memMsg: np.dujia_word,
                     priceText: np.dujia_btnmsg,
                     memTitle: np.dujia_showtitle,
                     memImgs: '[' + np.dujia_showPage + ']',
-                    jump_url:[],
+                    jump_url: [],
                     start: Start,
                     finish: Finish,
                     entity: Entity,
-                    show_place:eval(np.is_cur_location),
+                    show_place: eval(np.is_cur_location),
                     server: server,
-                    rich:ue.txt.html(),   //详情页富文本
-                    token:token
+                    rich: ue.txt.html(),   //详情页富文本
+                    token: token,
+                    local:lat
                 }).then((res) => {
                     alert("保存成功")
                     window.history.go(-1)
@@ -341,7 +397,7 @@ window.onload = function () {
             // 编辑
             bianji: function () {
                 np.bianji_show = true
-                    np.add_show = false
+                np.add_show = false
             },
             // 添加
             add: function () {
@@ -350,6 +406,7 @@ window.onload = function () {
             }
         },
         mounted: function () {
+            this.showloading();
             this.bianjishow();
             this.showqudao();
             this.showdaoyouname();
@@ -362,7 +419,7 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/route/get', {
                     id: parseInt(np.route_id),
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     // console.log("=====", res.data.Body)
                     np.Poilist = res.data.Body.poi_ids

@@ -3,6 +3,11 @@
     padding: 0px;
 }
 
+body {
+    background: #f6f7fb;
+}
+
+
 #talls {
    
     width: 100%;
@@ -15,7 +20,9 @@
 .select_Msgs {
     width: 70%;
     height: 300px;
+    font-size: 16px;
     margin-left: 15%;
+    margin-top: 50px;
     /* border: 1px solid black; */
    
 }
@@ -23,7 +30,7 @@
 .Name {
     width: 50%;
     height: 50px;
-    font-size: 1.2em;
+    font-size: 14px;
     font-weight: bold;
     text-align: center;
     line-height: 50px;
@@ -35,6 +42,7 @@
     position: relative;
     width: 80%;
     height: 40px;
+    font-size: 14px;
     margin-top: 20px;
     margin-left: 10%;
     line-height: 40px;
@@ -44,6 +52,7 @@
     position: relative;
     width: 80%;
     height: 40px;
+    font-size: 14px;
     margin-top: 20px;
     margin-left: 10%;
     line-height: 40px;
@@ -52,27 +61,29 @@
 .jump_Msgs {
     position: absolute;
     top: 0px;
-    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    width: 80%;
     right: 10px;
 }
 
 .msgs input {
     position: absolute;
     right: 10px;
-    width: 70%;
+    width: 80%;
     height: 40px;
     line-height: 40px;
-    font-size: 1.4em;
+    font-size: 14px;
     border: 1px solid rgb(97, 97, 97);
 }
 
 .msgs select {
     position: absolute;
     right: 10px;
-    width: 70%;
+    width: 80%;
     height: 40px;
     line-height: 40px;
-    font-size: 1.4em;
+    font-size: 14px;
     border: 1px solid rgb(97, 97, 97);
 }
 
@@ -81,7 +92,7 @@
     margin-top: 5px;
     border: 1px solid rgb(95, 95, 95);
     line-height: 30px;
-    font-size: 1.1em;
+    font-size: 14px;
 
 }
 

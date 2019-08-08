@@ -9,21 +9,29 @@
     <link rel="stylesheet" href="../static/css/login.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
     <script src="../static/js/login.js"></script>
 </head>
 
 <body>
-    <div id="tall">
-        <p class="titles">土著行后台管理系统</p>
-        <div id="name">
-            <div class="names">用户名</div>
-            <input type="text" name="name" v-model="name" id="names">
+    <div class="navAll">
+        <img class="bgs" src="../static/images/bg.png" alt="">
+        <div id="tall">
+            <img class="logos" src="../static/images/login/logo.png" alt="">
+            <div class="titles">土著行后台管理系统</div>
+            <div id="name">
+                <!-- <div class="names">用户名</div> -->
+                <i class="icons_user"></i>
+                <input type="text" name="name" v-model="name" id="names" placeholder="用户名">
+            </div>
+            <div id="name1">
+                <!-- <div class="names">密码</div> -->
+                <i class="icons_psd"></i>
+                <input type="password" name="name" v-model="passNum" id="psd" placeholder="密码">
+            </div>
+            <!-- <div id="btn" @click='logins()' @keyup.enter="submit">点击登录</div> -->
+            <input type="text" id="btn" @click='logins()'  @keyup.enter="submit" placeholder="点击登录">
         </div>
-        <div id="name">
-            <div class="names">密码</div>
-            <input type="password" name="name" v-model="passNum" id="psd">
-        </div>
-        <div id="btn" @click='logins()'>点击登录</div>
     </div>
 </body>
 

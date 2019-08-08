@@ -1,0 +1,69 @@
+
+.Bian_j {
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #3064D2;
+    letter-spacing: 0;
+    line-height: 14px;
+    cursor: pointer;
+}
+
+.Delete,.Deletes{
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #E47901;
+    letter-spacing: 0;
+    line-height: 14px;
+    cursor: pointer;
+}
+
+.funcAbout{
+    position: relative;
+    width: 162%;
+    height: 20px;
+    /* display: flex; */
+    /* justify-content: space-between; */
+}
+
+.funcAboutQD{
+    position: relative;
+    width: 184%;
+    height: 20px;
+    /* display: flex; */
+    /* justify-content: space-between; */
+}
+
+.Copy{
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #3064D2;
+    letter-spacing: 0;
+    line-height: 14px;
+    cursor: pointer;
+}
+
+.copy_where {
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    right: -43px;
+    margin-top: 0px;
+    margin-right: 0px;
+    width: 94px;
+    height: 73px;
+    background: #EEEEEE;
+    border: 1px solid #CCCCCC;
+    font-family: PingFangSC-Regular;
+    font-size: 14px;
+    color: #666666;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.copy_test,.copy_formal {
+    width: 100%;
+    height: 36.5px;
+    cursor: pointer;
+    border-bottom: 1px solid #CCCCCC;
+    line-height: 36.5px;
+}

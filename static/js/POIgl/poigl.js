@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     // var token = location.search.replace('?token=', "")
@@ -18,6 +16,7 @@ window.onload = function () {
     }
     var token = GetParameters('token')    
     var is_super = GetParameters('is_super')
+    var channel_id = GetParameters('channel_id')
     var np = new Vue({
         el: '#tall',
         data: {
@@ -32,8 +31,19 @@ window.onload = function () {
             poi_label:'',
             checkId:[],  //批量删除
             tan_show_list:false,
+            copy_show: false,   //复制显示
+            current: -1,   //显示对应的hover元素
+            timer:null,
+            loadings:false,
+            is_super:true,
         },
         methods: {
+            showloading:function () {
+                var that = this
+                that.loadings = true  
+                that.tan_show = false
+                that.tan_show_list = false
+            },
             // 无权限点击查看
             looks:function (e,e1) {
                 window.location.href = '/poiadd1?id='+e+'&token='+token+'&can_edit='+e1
@@ -48,7 +58,9 @@ window.onload = function () {
                     server:server,
                     token:token
                 }).then((res) => {
-                    console.log(res.data.Body)
+                    // console.log(res.data.Body.list)
+                    np.loadings = false
+                    np.is_super = eval(is_super)
                     np.Poilist = res.data.Body.list
                     if(is_super == "true") {
                         np.total = res.data.Body.pager.total
@@ -77,6 +89,23 @@ window.onload = function () {
                         }else if(poilist[i].Type == 6) {
                             np.Poilist[i].Type = '6-娱'
                         }
+                        if(poilist[i].class == 1) {
+                            np.Poilist[i].class = '1-有故事有任务'
+                        }else if(poilist[i].class == 2) {
+                            np.Poilist[i].class = '2-有故事无任务'
+                        }else if(poilist[i].class == 4) {
+                            np.Poilist[i].class = '4-无故事无任务'
+                        }else if(poilist[i].class == 8) {
+                            np.Poilist[i].class = '8-场景POI'
+                        }
+                        if(poilist[i].Manual == true) {
+                            np.Poilist[i].Manual = '是'
+                        }else if(poilist[i].Manual == false) {
+                            np.Poilist[i].Manual = '否'
+                        }
+                        if(poilist[i].scale == 1) {
+                            np.Poilist[i].scale = '1.00'
+                        }
                     }
                 })
             },
@@ -84,7 +113,7 @@ window.onload = function () {
                 var pname = np.poi_name
                 var pclass = np.poi_class
                 var plabel = np.poi_label
-                window.location.href = '/poichaxun?pname='+encodeURI(pname)+'&pclass='+encodeURI(pclass)+'&plabel='+encodeURI(plabel)+'&token='+token
+                window.location.href = '/poichaxun?pname='+encodeURI(pname)+'&pclass='+encodeURI(pclass)+'&plabel='+encodeURI(plabel)+'&token='+token+'&is_super='+is_super
             },
             //页码点击事件
             btnClick: function (e) {
@@ -100,7 +129,7 @@ window.onload = function () {
             },
             // 点击编辑页面
             bian_link: function (e) {
-                window.location.href = '/poiadd1?id='+e+'&token='+token
+                window.location.href = '/poiadd1?id='+e+'&token='+token+'&channel_id='+channel_id 
             },
             // 删除导游
             del: function (e) {
@@ -109,7 +138,7 @@ window.onload = function () {
                 np.tan_show = true
             },
             add_link:function () {
-              window.location.href = '/poinowadd1?token='+token  
+              window.location.href = '/poinowadd1?token='+token+'&channel_id='+channel_id 
             },
             // 点击取消
             Cancels:function () {
@@ -154,6 +183,45 @@ window.onload = function () {
                 }
                 // window.location.reload()
             },
+            // 复制  鼠标移入事件
+            enter: function (index) {
+                np.current = index
+                np.copy_show = true
+            },
+            // 鼠标移出事件
+            leave: function () {
+                if (np.copy_show == true) {
+                    np.timer = setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },1000)
+                }
+            },
+            copy_test: function (params) {
+                axios.post(host + '/route/v1/api/poi/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'test'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            },
+            copy_formal: function (params) {
+                axios.post(host + '/route/v1/api/poi/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'formal'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            }
+        },
+        created () {
+          this.showloading()  
         },
         mounted: function () {
             this.showPoilist(1, 50);
@@ -186,7 +254,20 @@ window.onload = function () {
         },
         watch: {
             cur: function (oldValue, newValue) {
+            },
+            copy_show:function () {
+                if (np.copy_show == true) {
+                    setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },2000)
+                }
+                clearTimeout()
             }
+        },
+        beforeDestroy () {
+            clearTimeout(np.timer)
+            np.timer = null
         }
     })
 }

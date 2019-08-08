@@ -19,71 +19,91 @@
   <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
   <link rel="stylesheet" href="../../static/css/fenye.css">
   <link rel="stylesheet" href="../../static/css/tanchuang.css">
+  <link rel="stylesheet" href="../../static/css/caozuo.css">
+  <link rel="stylesheet" href="../../static/css/topChoose.css">
   <script src="../../static/js/qudaoCon/qudaoCon.js"></script>
 </head>
 
 <body>
-  <div class="x-nav">
-
-    </span>
+  <!-- <div class="x-nav">
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
       href="javascript:location.replace(location.href);" title="刷新">
       <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-  </div>
+  </div> -->
   <div class="x-body" id="tall" style="overflow-y:scroll;">
+    <div class="mengban" style="z-index: 1000;" v-show="loadings">
+      <div class="load_Msgs">加载中...</div>
+    </div>
     <div class="chaxun">
 
       渠道名称&nbsp;<input type="text" v-model="q_name" name="poiname" id="poiname">&nbsp;&nbsp;
       <i class="iconfont" @click="chaXun()" style=" margin-left:20px; cursor: pointer;">&#xe6ac;</i>
     </div>
     <xblock>
-      <button class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
-      <button class="layui-btn" @click="addQudao"><i class="layui-icon"></i>添加</button>
-      <span class="x-right" style="line-height:40px">共有数据：{{qudao.length}} 条</span>
+      <button id="delete" class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
+      <button id="adds" class="layui-btn" @click="addQudao"><i class="layui-icon"></i>添加</button>
+      <span class="x-right" style="line-height:40px">共有数据：{{total}} 条</span>
     </xblock>
     <table class="layui-table">
       <thead>
         <tr>
-          <th>
-              选择
-          </th>
-          <th>操作</th>
+          <th style="width: 30px;text-align:center;">选择</th>
+          <th style="text-align: center;">操作</th>
           <th style="width: 20px;">渠道id</th>
-          <th style="width: 40px;">渠道名称</th>
-          <th>渠道首页入口</th>
+          <th style="width: 60px;">渠道名称</th>
+          <th style="width: 85px;">客服默认回复</th>
           <th>可用导游</th>
           <th>可编辑导游</th>
           <th>可用poi</th>
           <th>可编辑poi</th>
-          <th>可用线路</th>
-          <th>可编辑线路</th>
+          <th style="width: 110px;">可用线路</th>
+          <th style="width:120px;">可编辑线路</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(qd,index) in qudao" :key="index">
-          <td>
+          <td style="text-align: center;">
             <input type="checkbox" class="checks" :value="qd.id" v-model="checkId">
           </td>
-          <td class="td-manage">
-            <a title="编辑" @click="bian_link(qd.id)">
-              <i class="layui-icon">&#xe63c;</i>
-            </a>
-            <a title="删除" @click="del(qd.id)">
-              <i class="layui-icon">&#xe640;</i>
-            </a>
-            <a title="复制到" href="javascript:;">
-              <i class="layui-icon">&#xe744;</i>
-            </a>
+          <td class="td-manage" style="width:100px;">
+            <div class="funcAboutQD">
+              <a title="编辑" @click="bian_link(qd.id)">
+                <span class="Bian_j">编辑</span>
+              </a>&nbsp;
+              <a title="删除" @click="del(qd.id)">
+                <span class="Delete">删除</span>
+              </a>&nbsp;
+              <a title="" @click="enter(index)">
+                <span class="Copy">复制</span>
+              </a>
+              <div class="copy_where" style="right:0px;" v-show="copy_show&&index == current">
+                <p class="copy_test" @click="copy_test(qd.id)">体验服</p>
+                <p class="copy_formal" @click="copy_formal(qd.id)">正式服</p>
+              </div>
+            </div>
           </td>
-          <td>{{qd.id}}</td>
+          <td style="width: 40px;">{{qd.id}}</td>
           <td>{{qd.name}}</td>
-          <td>..pages/index/index?channel={{qd.id}}</td>
-          <td><div v-for="(item,ind) in qd.can_use_guide">{{item.id}}-{{item.name}}<br></div></td>
-          <td><div v-for="(item,ind) in qd.can_edit_guide">{{item.id}}-{{item.name}}<br></div></td>
-          <td><div v-for="(item,ind) in qd.can_use_poi">{{item.id}}-{{item.name}}<br></div></td>
-          <td><div v-for="(item,ind) in qd.can_edit_poi">{{item.id}}-{{item.name}}<br></div></td>
-          <td><div v-for="(item,ind) in qd.can_use_route">{{item.id}}-{{item.name}}<br></div></td>
-          <td><div v-for="(item,ind) in qd.can_edit_route">{{item.id}}-{{item.name}}<br></div></td>
+          <!-- 客服默认回复 -->
+          <td>{{qd.reply}}</td>  
+          <td>
+            <div v-for="(item,ind) in qd.can_use_guide">{{item.id}}-{{item.name}}<br></div>
+          </td>
+          <td>
+            <div v-for="(item,ind) in qd.can_edit_guide">{{item.id}}-{{item.name}}<br></div>
+          </td>
+          <td>
+            <div v-for="(item,ind) in qd.can_use_poi">{{item.id}}-{{item.name}}<br></div>
+          </td>
+          <td>
+            <div v-for="(item,ind) in qd.can_edit_poi">{{item.id}}-{{item.name}}<br></div>
+          </td>
+          <td>
+            <div v-for="(item,ind) in qd.can_use_route">{{item.id}}-{{item.name}}<br></div>
+          </td>
+          <td>
+            <div v-for="(item,ind) in qd.can_edit_route">{{item.id}}-{{item.name}}<br></div>
+          </td>
         </tr>
 
       </tbody>
@@ -101,7 +121,7 @@
       </ul>
 
     </div>
-
+    <div class="mengban" v-show="tan_show == true"></div>
     <div class="tanchuang" v-if="tan_show">
       <div class="tanMsgs">你确定要删除此内容吗？</div>
       <div class="tanBtns">
@@ -109,6 +129,7 @@
         <div class="Confirms" v-on:click="Confirms()">确定</div>
       </div>
     </div>
+    <div class="mengban" v-show="tan_show_list == true"></div>
     <div class="tanchuang" v-if="tan_show_list == true">
       <div class="tanMsgs">你确定要删除此内容吗？</div>
       <div class="tanBtns">

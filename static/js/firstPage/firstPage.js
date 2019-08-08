@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     // var token = location.search.replace('?token=', "")
@@ -31,8 +29,19 @@ window.onload = function () {
             lx_name: '',
             checkId: [],  //批量删除
             tan_show_list: false,
+            copy_show: false,   //复制显示
+            current: -1,   //显示对应的hover元素
+            timer:null,   //定时器名称
+            loadings:false,
+            is_super:true,
         },
         methods: {
+            showloading:function () {
+                var that = this
+                that.loadings = true  
+                that.tan_show = false
+                that.tan_show_list = false
+            },
             showlist: function (pindex, psize) {
                 axios.post(host + '/route/v1/api/channel/list', {
                     page: {
@@ -42,7 +51,9 @@ window.onload = function () {
                     server: server,
                     token: token
                 }).then((res) => {
-                    console.log(res.data.Body)
+                    // console.log(res.data.Body.list)
+                    np.loadings = false
+                    np.is_super = eval(is_super)
                     np.first_list = res.data.Body.list
                     if (is_super == "true") {
                         np.total = res.data.Body.pager.total
@@ -59,7 +70,7 @@ window.onload = function () {
             chaXun: function () {
                 var qdname = np.qd_name
                 var lxname = np.lx_name
-                window.location.href = '/firchaxun?qdname=' + encodeURI(qdname) + '&lxname=' + encodeURI(lxname) + '&token=' + token
+                window.location.href = '/firchaxun?qdname=' + encodeURI(qdname) + '&lxname=' + encodeURI(lxname) + '&token=' + token+'&is_super='+is_super
             },
             //页码点击事件
             btnClick: function (e) {
@@ -137,6 +148,47 @@ window.onload = function () {
                 }
                 // window.location.reload()
             },
+            // 复制  鼠标移入事件
+            enter: function (index) {
+                np.current = index
+                np.copy_show = true
+            },
+            // 鼠标移出事件
+            leave: function () {
+                if (np.copy_show == true) {
+                    np.timer = setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },1000)
+                }
+            },
+            copy_test: function (params) {
+                axios.post(host + '/route/v1/api/homePage/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    is_keep_on:eval(true),
+                    to_server: 'test'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            },
+            copy_formal: function (params) {
+                axios.post(host + '/route/v1/api/homePage/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    is_keep_on:eval(true),
+                    to_server: 'formal'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            }
+        },
+        created () {
+          this.showloading()  
         },
         mounted: function () {
             this.showlist(1, 50);
@@ -169,7 +221,20 @@ window.onload = function () {
         },
         watch: {
             cur: function (oldValue, newValue) {
+            },
+            copy_show:function () {
+                if (np.copy_show == true) {
+                    setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },2000)
+                }
+                clearTimeout()
             }
+        },
+        beforeDestroy () {
+            clearTimeout(np.timer)
+            np.timer = null
         }
     })
 }

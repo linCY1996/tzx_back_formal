@@ -15,6 +15,7 @@
   <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="../../static/js/xadmin.js"></script>
   <link rel="stylesheet" href="../../static/css/POIgl/poigl.css">
+  <link rel="stylesheet" href="../../static/css/caozuo.css">
   <script type="text/javascript" src="../../static/js/xadmin.js"></script>
   <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
   <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
@@ -24,62 +25,74 @@
 </head>
 
 <body>
-  <div class="x-nav">
+  <!-- <div class="x-nav">
    
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
       href="javascript:location.replace(location.href);" title="刷新">
       <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-  </div>
+  </div> -->
   <div class="x-body" id="tall" style="overflow-y: scroll;">
+    <div class="mengban" style="z-index: 1000;" v-show="loadings">
+      <div class="load_Msgs">加载中...</div>
+    </div>
     <div class="fanhui" style="position: absolute;;top:20px;left:25px;z-index: 100;width: 80px;margin-top:20px;"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
     <xblock style="margin-top:60px;">
       <button class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
       <!-- <button class="layui-btn" @click="add_link()"><i class="layui-icon"></i>添加</button> -->
       <span class="x-right" style="line-height:40px">共有数据：{{total}} 条</span>
     </xblock>
-    <table class="layui-table" style="min-width:2700px;">
+    <table class="layui-table">
       <thead style="height:50px;width:auto;">
         <tr>
-          <th>
-              选择
-          </th>
-          <th>操作</th>
-          <th>id</th>
-          <th>POI名称</th>
+          <th style="text-align: center;">选择</th>
+          <th style="text-align: center;">操作</th>
+          <th>ID</th>
+          <th>POI名字</th>
+          <th>POI性质</th>
           <th>POI类型</th>
-          <th>默认对话</th>
           <th>POI标签</th>
           <th>触发范围</th>
-          <th>详情</th>
-
+          <th>手动触发</th>
+          <th>显示比例</th>
         </tr>
       </thead>
       <tbody style="width:auto;">
-        <tr v-for="plist in Poilist">
-          <td>
-              <input type="checkbox" class="checks" :value="plist.Id" v-model="checkId">
+        <tr v-for="(plist,index) in Poilist">
+          <td style="text-align: center;">
+            <input v-if="plist.can_edit" type="checkbox" class="checks" :value="plist.Id" v-model="checkId">
           </td>
-          <td class="td-manage">
-            <a title="编辑/添加" @click="bian_link(plist.Id)">
-              <i class="layui-icon">&#xe63c;</i>
-            </a>
-            <a title="删除" @click="del(plist.Id)" href="javascript:;">
-              <i class="layui-icon">&#xe640;</i>
-            </a>
-            <a title="复制到" href="javascript:;">
-              <i class="layui-icon">&#xe744;</i>
-            </a>
+          <td class="td-manage" style="width: 100px;">
+            <div class="funcAbout">
+              <a v-show="plist.can_edit" title="编辑" @click="bian_link(plist.Id)">
+                <span class="Bian_j">编辑</span>
+              </a>&nbsp;
+              <a v-show="plist.can_edit" title="删除" @click="del(plist.Id)" href="javascript:;">
+                <span class="Delete">删除</span>
+              </a>
+              <a v-show="!plist.can_edit" title="查看" @click="looks(plist.Id,plist.can_edit)">
+                <img src="../../static/images/look.png" alt="" class="layui-icon"
+                  style="width:16px;height:17px;cursor: pointer;margin-top: -3px;">
+              </a>&nbsp;
+              <a title="" v-show="is_super" @click="enter(index)">
+                <span class="Copy">复制</span>
+              </a>
+              <div class="copy_where" v-show="copy_show&&index == current">
+                <p class="copy_test" @click="copy_test(plist.Id)">体验服</p>
+                <p class="copy_formal" @click="copy_formal(plist.Id)">正式服</p>
+              </div>
+            </div>
           </td>
           <td>{{plist.Id}}</td>
           <td>{{plist.Name}}</td>
           <td>{{plist.Type}}</td>
-          <td>{{plist.Introduction}}</td>
+          <td>{{plist.class}}</td>
           <td>{{plist.Label}}</td>
           <td>{{plist.Region}}</td>
-          <td><a @click="bian_link(plist.Id)" style="cursor: pointer;color:rgb(4, 72, 173);">查看</a></td>
-
+          <td>{{plist.Manual}}</td>
+          <td>{{plist.scale}}</td>
+          <!-- <a @click="bian_link(plist.Id)" v-if="plist.can_edit"
+          style="cursor: pointer;color:rgb(4, 72, 173);">查看</a> -->
         </tr>
-
       </tbody>
     </table>
     <div class="page-bar">

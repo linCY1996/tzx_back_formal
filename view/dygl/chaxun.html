@@ -16,18 +16,19 @@
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <link rel="stylesheet" href="../../static/css/dygl/dygl.css">
     <link rel="stylesheet" href="../../static/css/fenye.css">
+    <link rel="stylesheet" href="../../static/css/topChoose.css">
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
     <script src="../../static/js/dygl/chaxun.js"></script>
 </head>
 
 <body>
         
-    <div class="x-nav">
+    <!-- <div class="x-nav">
         </span>
         <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
             href="javascript:location.replace(location.href);" title="刷新">
             <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-    </div>
+    </div> -->
     <div class="x-body" id="tall" style="overflow-y:scroll;" >
         <!-- <div class="chaxun">
 
@@ -36,7 +37,7 @@
         </div> -->
         <div class="fanhui" style="position: absolute;;top:20px;left:25px;z-index: 100;width: 80px;margin-top:20px;"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
         <xblock  style="margin-top:60px;">
-            <button class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
+            <button class="layui-btn layui-btn-danger" id="delete" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
             <!-- <button class="layui-btn" onclick="x_admin_show('添加用户','/dygladd')"><i class="layui-icon"></i>添加</button> -->
             <span class="x-right" style="line-height:40px">共有数据： {{total}}条</span>
         </xblock>

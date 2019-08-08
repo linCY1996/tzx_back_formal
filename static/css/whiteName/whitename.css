@@ -1,0 +1,14 @@
+.btns {
+    width: 100px;
+    height: 30px;
+    background: rgb(67, 178, 241);
+    color: white;
+    line-height: 30px;
+    text-align: center;
+    font-size: 1.1em;
+    border: none;
+    cursor: pointer;
+}
+body {
+    background: #f6f7fb;
+}

@@ -1,16 +1,12 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
 
-    $("#colla-titles").click(function () {
-        $("#colla-contents").toggle();
-    });
-
-
+    // $("#colla-titles").click(function () {
+    //     $("#colla-contents").toggle();
+    // });
     var ids = location.search.replace('?id=', "")
     // var ue = UE.getEditor('editor')   //编辑故事详情
     var E = window.wangEditor
@@ -168,7 +164,6 @@ window.onload = function () {
                             }
                         }
                     }
-
                     for (var j = 0; j < arr.length; j++) {
                         for (var i = 0; i < plist.length; i++) {
                             if (arr[j] == plist[i].RouteId) {
@@ -287,7 +282,6 @@ window.onload = function () {
                     banner: JSON.stringify(banner),
                     route_id: parseInt(np.XQRouteId)
                 }).then((res) => {
-                    console.log(res.data.Body)
                     np.tan_shows = false
                     that.firListshow()
                     that.showfirstImgs()
@@ -313,9 +307,10 @@ window.onload = function () {
                 var type = "detail"
                 window.location.href = '/firstPageadd?type=' + encodeURI(type) + '&channel_id=' + ids + '&routeid=' + e + '&token=' + token
             },
-
+          
             // 首页信息显示
             shou_show: function () {
+                // console.log("1111")
                 np.first_page_show = true
                 np.xiangqing_page_show = false
             },

@@ -11,6 +11,7 @@
   <!-- <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /> -->
   <link rel="stylesheet" href="../../static/css/font.css">
   <link rel="stylesheet" href="../../static/css/xadmin.css">
+  <link rel="stylesheet" href="../../static/css/caozuo.css">
   <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
   <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
   <script type="text/javascript" src="../../static/js/xadmin.js"></script>
@@ -23,68 +24,88 @@
 </head>
 
 <body>
-  <div class="x-nav">
-
-    </span>
+  <!-- <div class="x-nav">
     <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
       href="javascript:location.replace(location.href);" title="刷新">
       <i class="layui-icon" style="line-height:30px">ဂ</i></a>
-  </div>
+  </div> -->
   <div class="x-body" id="tall" style="overflow-y:scroll;">
+    <div class="mengban" style="z-index: 1000;" v-show="loadings">
+      <div class="load_Msgs">加载中...</div>
+    </div>
     <div class="fanhui" style="position: absolute;;top:20px;left:25px;z-index: 100;width: 80px;margin-top:20px;"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-    <xblock style="margin-top:60px;">
-      <button class="layui-btn layui-btn-danger" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
-      <!-- <button class="layui-btn" @click="add_link()"><i class="layui-icon"></i>添加</button> -->
+    <!-- <div class="chaxun" style="display:flex;justify-content: space-between; width: 1000px;">
+
+      线路名称&nbsp;<input type="text" name="poiname" style="width: 200px;height:36px;" v-model="lx_name"
+        id="poiname">&nbsp;&nbsp;
+      线路城市&nbsp;<input type="text" name="poicity" style="width: 160px;height:36px;" v-model="lx_city" id="poicity">
+      渠道&nbsp;
+      <select name="poiclass" style="width:380px;height:36px;" id="poiclass" v-model="poi_class">
+        <option v-for="qd in qudao" :value="qd.id">{{qd.id}}&nbsp;&nbsp;{{qd.name}}</option>
+      </select>&nbsp;&nbsp;
+      <i class="iconfont" style=" margin-left:20px; cursor: pointer;" @click="chaXun()">&#xe6ac;</i>
+    </div> -->
+    <xblock>
+      <button class="layui-btn layui-btn-danger" id="delete" @click="delAll()"><i class="layui-icon"></i>批量删除</button>
+      <!-- <button class="layui-btn" id="adds" @click="add_link()"><i class="layui-icon"></i>添加</button> -->
       <span class="x-right" style="line-height:40px">共有数据：{{total}} 条</span>
     </xblock>
-    <table class="layui-table" style="min-width:2000px;">
+    <table class="layui-table">
       <thead>
         <tr>
-          <th>
-            
-          </th>
-          <th>操作</th>
-          <th>渠道id</th>
-          <th>线路id</th>
+          <th style="width: 40px;text-align:center;">选择</th>
+          <th style="text-align: center;">操作</th>
+          <th>渠道ID</th>
+          <th style="width: 45px;">线路ID</th>
           <th>线路名称</th>
           <th>城市</th>
-          <th>导游名字</th>
-          <th>线路POI</th>
-          <th>价格(分)</th>
+          <th style="width: 90px;">导游名字</th>
+          <th style="width: 110px;">线路POI</th>
+          <th style="width:40px;">价格</th>
           <th>线路标签</th>
-          <th>详情页目录</th>
-          <th>详情</th>
-
+          <th>是否显示当前位置</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for='lx in luxian'>
-          <td>
-            <!-- <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i
-                class="layui-icon">&#xe605;</i></div> -->
-                <input type="checkbox" class="checks" :value="lx.Id" v-model="checkId">
+        <tr v-for='(lx,index) in luxian'>
+          <td style="text-align: center;">
+            <input v-if="lx.can_edit" v-if="dy.can_edit" type="checkbox" class="checks" :value="lx.Id"
+              v-model="checkId">
           </td>
-          <td class="td-manage">
-            <a title="编辑/添加" v-on:click='btn_link(lx.Id)'>
-              <i class="layui-icon">&#xe63c;</i>
-            </a>
-            <a title="删除" v-on:click="del(lx.Id)">
-              <i class="layui-icon">&#xe640;</i>
-            </a>
-            <a title="复制到" href="javascript:;">
-              <i class="layui-icon">&#xe744;</i>
-            </a>
+          <td class="td-manage" style="width: 100px;">
+            <div class="funcAbout">
+              <a v-if="lx.can_edit" title="编辑" v-on:click='btn_link(lx.Id)'>
+                <span class="Bian_j">编辑</span>
+              </a>&nbsp;
+              <a v-if="lx.can_edit" title="删除" v-on:click="del(lx.Id)">
+                <span class="Delete">删除</span>
+              </a>&nbsp;
+              <a v-if="!lx.can_edit" title="查看" @click="looks(lx.Id,lx.can_edit)">
+                <img src="../../static/images/look.png" alt="" class="layui-icon"
+                  style="width:16px;height:17px;cursor: pointer;margin-top: -3px;">
+              </a>
+              <a title="" v-show="is_super" @click="enter(index)">
+                <span class="Copy">复制</span>
+              </a>
+              <div class="copy_where" v-show="copy_show&&index == current">
+                <p class="copy_test" @click="copy_test(lx.Id)">体验服</p>
+                <p class="copy_formal" @click="copy_formal(lx.Id)">正式服</p>
+              </div>
+            </div>
           </td>
-          <td>{{lx.ChannelId}}</td>
+          <td>{{lx.ChannelId}}-{{lx.ChannelName}}</td>
           <td>{{lx.Id}}</td>
           <td>{{lx.Name}}</td>
           <td>{{lx.City}}</td>
           <td>{{lx.GuideId}}-{{lx.guide_name}}</td>
-          <td>{{lx.poi_ids}}</td>
+          <td>
+            <div v-for="item in lx.poi_ids">{{item.id}}-{{item.name}}</div>
+          </td>
           <td>{{lx.Price}}</td>
           <td>{{lx.Label}}</td>
-          <td>../detail/detail?routeid={{lx.Id}}&channel={{lx.ChannelId}}</td>
-          <td><a @click="goDetail(lx.Id)" style="cursor: pointer; color:rgb(6, 67, 158);">详情</a></td>
+          <td>{{lx.show_place}}</td>
+          <!-- <td>../detail/detail?routeid={{lx.Id}}&channel={{lx.ChannelId}}</td> -->
+          <!-- <td><a @click="goDetail(lx.Id)" v-if="lx.can_edit" style="cursor: pointer; color:rgb(6, 67, 158);">详情</a></td> -->
 
 
         </tr>
@@ -104,6 +125,7 @@
       </ul>
 
     </div>
+    <div class="mengban" v-show="tan_show == true"></div>
     <div class="tanchuang" v-if="tan_show">
       <div class="tanMsgs">你确定要删除此内容吗？</div>
       <div class="tanBtns">
@@ -111,13 +133,14 @@
         <div class="Confirms" v-on:click="Confirms()">确定</div>
       </div>
     </div>
+    <div class="mengban" v-show="tan_show_list == true"></div>
     <div class="tanchuang" v-if="tan_show_list == true">
-        <div class="tanMsgs">你确定要删除此内容吗？</div>
-        <div class="tanBtns">
-          <div class="Cancel" v-on:click="Refuse()">取消</div>
-          <div class="Confirms" v-on:click="Delete()">确定</div>
-        </div>
+      <div class="tanMsgs">你确定要删除此内容吗？</div>
+      <div class="tanBtns">
+        <div class="Cancel" v-on:click="Refuse()">取消</div>
+        <div class="Confirms" v-on:click="Delete()">确定</div>
       </div>
+    </div>
   </div>
 
 </body>

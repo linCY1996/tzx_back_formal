@@ -1,5 +1,5 @@
 .tanchuang{
-    z-index: 100;
+    z-index: 995;
     position: fixed;
     top: 50%;
     transform: translateX(-50%);
@@ -7,9 +7,9 @@
     transform: translateY(-50%);
     width: 400px;
     height: 250px;
-    background-color: rgba(148, 146, 146,.9);
+    background-color: rgb(255, 255, 255);
     color: black;
-    border-radius: 12px 12px;
+    /* border-radius: 12px 12px;     */
     overflow: hidden;
 }
 
@@ -19,9 +19,11 @@
     margin-left: 15%;
     line-height: 60px;
     text-align: center;
-    font-size: 1.3em;
-    margin-top: 50px;
-    color: white;
+    margin-top: 77px;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #333333;
+    letter-spacing: 0;
 
 }
 
@@ -33,37 +35,64 @@
     height: 60px;
     bottom: 0px;
     /* border: 1px solid rgb(0, 0, 0); */
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
+    /* border-top-left-radius: 12px; */
+    /* border-top-right-radius: 12px; */
     overflow: hidden;
+}
+
+.mengban {
+    z-index: 990;
+    position: fixed;
+    top: 0px;
+    left: 0px;  
+    width: 1920px;
+    height: 926px;
+    line-height: 926px;
+    background-color: #000000;
+    opacity: 0.6;
+    color:white;
+}
+
+.load_Msgs {
+    width: 120px;
+    height: 40px;
+    position: fixed;
+    left: 600px;
+    /* transform: translateX(-280%); */
+    top: -117px;
+    font-size: 20px;
 }
 
 .Cancel, .Confirms {
     width: 50%;
-    background-color: rgb(218, 218, 218);
+    background-color: rgb(253, 253, 253);
+    border-top: 1px solid #D8D8D8;
     cursor: pointer;
     line-height: 60px;
     text-align: center;
-    font-size: 1.3em;
-    font-weight: bold;
+    font-family: PingFangSC-Regular;
+    font-size: 16px;
+    color: #666666;
+    letter-spacing: 0;
 }
 
 .Cancel {
-    border-right: 1px solid black;
+    color: #666666;
+    border-right: 1px solid #D8D8D8;
 }
 
 .Confirms {
-    color: rgb(236, 145, 8);
+    color: #333333;
 }
 
-.fanhui {
+/* .fanhui {
     cursor: pointer;
     width: 60px;
     height: 60px;
     line-height: 60px;
     margin-left: 50px;
     font-size: 1.2em;
-}
+} */
 
 .chooses {
     display: flex;

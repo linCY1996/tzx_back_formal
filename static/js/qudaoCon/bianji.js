@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     var ids = location.search.replace('?id=', "")
@@ -32,9 +30,21 @@ window.onload = function () {
             bianjiPoi: [],  //可编辑Poi
             chooseLuxian: [],   //选择可用路线
             bianjiLuxian: [],   //可编辑路线
+            chooseClass: '',   //选择回复类型
+            mr_Text: '',   //1
+            mr_Link: '',   //2
+            mr_MsgTitle: '',  //3
+            mr_MsgTalk: '',
+            mr_Image: '',
+            mr_ImageLink: '',
+            mr_mn_title: '',   //4
+            mr_page: '',
+            mr_mn_ImgsLink: '',
+            DLat:'',   //新增定位lat
+            DLon:'',   //新增定位lon
         },
         methods: {
-         
+
             // 先显示对应渠道id下边的信息
             showFirMsgs: function () {
                 axios.post(host + '/route/v1/api/channel/get', {
@@ -42,49 +52,74 @@ window.onload = function () {
                     server: server,
                     token: token
                 }).then((res) => {
+                    console.log(res.data.Body)
                     var can_use_guide = []
                     var cName = JSON.parse(res.data.Body.can_use_guide)
                     for (var i = 0; i < cName.length; i++) {
-                        can_use_guide[i] = cName[i].id+','+cName[i].name
+                        can_use_guide[i] = cName[i].id + ',' + cName[i].name
                     }
                     np.chooseTouer = can_use_guide
 
                     var can_edit_guide = []
                     var cEditguide = JSON.parse(res.data.Body.can_edit_guide)
                     for (var i = 0; i < cEditguide.length; i++) {
-                        can_edit_guide[i] = cEditguide[i].id+','+cEditguide[i].name
+                        can_edit_guide[i] = cEditguide[i].id + ',' + cEditguide[i].name
                     }
                     np.bianjiTouer = can_edit_guide
 
                     var can_use_poi = []
                     var cPoi = JSON.parse(res.data.Body.can_use_poi)
                     for (var i = 0; i < cPoi.length; i++) {
-                        can_use_poi[i] = cPoi[i].id+','+cPoi[i].name
+                        can_use_poi[i] = cPoi[i].id + ',' + cPoi[i].name
                     }
                     np.choosePoi = can_use_poi
-                    
+
                     var can_edit_poi = []
                     var cEditPoi = JSON.parse(res.data.Body.can_edit_poi)
                     for (var i = 0; i < cEditPoi.length; i++) {
-                        can_edit_poi[i] = cEditPoi[i].id+','+cEditPoi[i].name
+                        can_edit_poi[i] = cEditPoi[i].id + ',' + cEditPoi[i].name
                     }
                     np.bianjiPoi = can_edit_poi
 
                     var can_use_route = []
                     var cRoute = JSON.parse(res.data.Body.can_use_route)
                     for (var i = 0; i < cRoute.length; i++) {
-                        can_use_route[i] = cRoute[i].id+','+cRoute[i].name
+                        can_use_route[i] = cRoute[i].id + ',' + cRoute[i].name
                     }
                     np.chooseLuxian = can_use_route
 
                     var can_edit_route = []
                     var cEditRoute = JSON.parse(res.data.Body.can_edit_route)
                     for (var i = 0; i < cEditRoute.length; i++) {
-                        can_edit_route[i] = cEditRoute[i].id+','+cEditRoute[i].name
+                        can_edit_route[i] = cEditRoute[i].id + ',' + cEditRoute[i].name
                     }
                     np.bianjiLuxian = can_edit_route
-
                     np.qudaoName = res.data.Body.name
+                    // 默认回复
+                    var moren = JSON.parse(res.data.Body.reply)
+                    np.chooseClass = moren.msgtype
+                    switch (np.chooseClass) {
+                        case "text":
+                            np.mr_Text = moren.text.content
+                            break
+                        case "image":
+                            np.mr_Link = moren.image.media_id
+                            break
+                        case "link":
+                            np.mr_MsgTitle = moren.link.title
+                            np.mr_MsgTalk = moren.link.description
+                            np.mr_Image = moren.link.url
+                            np.mr_ImageLink = moren.link.thumb_url
+                            break
+                        case "miniprogrampage":
+                            np.mr_mn_title = moren.miniprogrampage.title
+                            np.mr_page = moren.miniprogrampage.pagepath
+                            np.mr_mn_ImgsLink = moren.miniprogrampage.thumb_media_id
+                            break
+                    }
+                    var latitude = JSON.parse(res.data.Body.local)
+                    np.DLat = latitude.lat
+                    np.DLon = latitude.lon
                 })
             },
             // 显示路线列表
@@ -221,7 +256,23 @@ window.onload = function () {
                         name: np.bianjiLuxian[i].split(',')[1]
                     })
                 }
-                // console.log("bianjiLuxian", bianjiLuxian)
+                // 默认回复
+                var reply = ''
+                switch (np.chooseClass) {
+                    case "text":
+                        reply = '{"msgtype":"text","text":{"content":"' + np.mr_Text + '"}}'
+                        break
+                    case "image":
+                        reply = '{"msgtype":"image","image":{"media_id":"' + np.mr_Link + '"}}'
+                        break
+                    case "link":
+                        reply = '{"msgtype":"link","link":{"title":"' + np.mr_MsgTitle + '","description":"' + np.mr_MsgTalk + '","url":"' + np.mr_Image + '","thumb_url":"' + np.mr_ImageLink + '"}}'
+                        break
+                    case "miniprogrampage":
+                        reply = '{"msgtype":"miniprogrampage","miniprogrampage":{"title":"' + np.mr_mn_title + '","pagepath":"' + np.mr_page + '","thumb_media_id":"' + np.mr_mn_ImgsLink + '"}}'
+                        break
+                }
+                var lat = '{"lon": '+np.DLon+',"lat": '+np.DLat+'}'
                 axios.post(host + '/route/v1/api/channel/update', {
                     id: parseInt(ids),
                     can_edit_guide: bianjiTouer,
@@ -232,8 +283,10 @@ window.onload = function () {
                     can_use_route: chooseLuxian,
                     page_url: '..pages/index/index?channel=' + ids,
                     name: np.qudaoName,
+                    reply: reply,
                     server: server,
-                    token: token
+                    token: token,
+                    local:lat
                 }).then((res) => {
                     alert("修改成功")
                     window.history.go(-1)

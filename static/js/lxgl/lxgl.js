@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     // var token = location.search.replace('?token=', "")
@@ -34,8 +32,18 @@ window.onload = function () {
             poi_class:'',
             checkId:[],  //批量删除
             tan_show_list:false,
+            copy_show: false,   //复制显示
+            current: -1,   //显示对应的hover元素
+            timer:null,  
+            loadings:false,
         },
         methods: {
+            showloading:function () {
+                var that = this
+                that.loadings = true  
+                that.tan_show = false
+                that.tan_show_list = false
+            },
             // 无权限点击查看
             looks:function (e,e1) {
                 window.location.href = '/lxbianji?id='+e+'&token='+token+'&can_edit='+e1
@@ -49,8 +57,10 @@ window.onload = function () {
                     server:server,
                     token:token
                 }).then((res) => {
+                    // console.log(res.data.Body.list)
+                    np.loadings = false
+                    np.is_super = eval(is_super)
                     np.luxian = res.data.Body.list
-                    // np.all = res.data.Body.pager.pages
                     if(is_super == "true") {
                         np.total = res.data.Body.pager.total
                     }else {
@@ -60,6 +70,14 @@ window.onload = function () {
                         np.all = parseInt(np.total/50)+1
                     }else {
                         np.all = parseInt(np.total/50)
+                    }
+                    var lxian = np.luxian
+                    for(var i = 0;i<lxian.length;i++) {
+                        if(lxian[i].show_place == 1) {
+                            np.luxian[i].show_place = '是'
+                        }else if(lxian[i].show_place == 0) {
+                            np.luxian[i].show_place = '否'
+                        }
                     }
                 })
             },
@@ -79,7 +97,7 @@ window.onload = function () {
                 var lxname = np.lx_name
                 var lxcity = np.lx_city
                 var pclass = np.poi_class
-                window.location.href = '/lxchaxun?lxname='+encodeURI(lxname)+'&lxcity='+encodeURI(lxcity)+'&pclass='+encodeURI(pclass)+'&token='+token
+                window.location.href = '/lxchaxun?lxname='+encodeURI(lxname)+'&lxcity='+encodeURI(lxcity)+'&pclass='+encodeURI(pclass)+'&token='+token+'&is_super='+is_super
             },
             //页码点击事件
             btnClick: function (e) {
@@ -154,6 +172,45 @@ window.onload = function () {
                 }
                 // window.location.reload()
             },
+            // 复制  鼠标移入事件
+            enter: function (index) {
+                np.current = index
+                np.copy_show = true
+            },
+            // 鼠标移出事件
+            leave: function () {
+                if (np.copy_show == true) {
+                    np.timer = setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },1000)
+                }
+            },
+            copy_test: function (params) {
+                axios.post(host + '/route/v1/api/route/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'test'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            },
+            copy_formal: function (params) {
+                axios.post(host + '/route/v1/api/route/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'formal'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            }
+        },
+        created () {
+          this.showloading()  
         },
         mounted: function () {
             this.showluxian(1,50)
@@ -187,7 +244,20 @@ window.onload = function () {
         },
         watch: {
             cur: function (oldValue, newValue) {
+            },
+            copy_show:function () {
+                if (np.copy_show == true) {
+                    setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    },2000)
+                }
+                clearTimeout()
             }
+        },
+        beforeDestroy () {
+            clearTimeout(np.timer)
+            np.timer = null
         }
     })
 }

@@ -9,47 +9,74 @@
     <link rel="stylesheet" href="../../static/css/xadmin.css">
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
-    <script src="../../static/kindeditor/kindeditor-all.js"></script>
-    <script src="../../static/kindeditor/lang/zh-CN.js"></script>
     <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
     <link rel="stylesheet" href="../../static/css/POIgl/poi_add1.css">
+    <link rel="stylesheet" href="../../static/css/dygl/bianji.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script src="../../static/wangEditor-3.1.1/release/wangEditor.min.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
     <script src="../../static/js/POIgl/poi_add_now.js"></script>
 </head>
 
 <body>
     <div id="tall">
-        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
-                    style="color: rgb(241, 134, 11);">刷新</a></div>
+        <div class="TopChoose" style="left:2%;">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a></div>
         </div>
 
         <!-- 添加 -->
-        <div class="Names">第一步 添加POI</div>
-        <div class="all_Msgs">
+        <div class="Nav_Title">
+            <div :class="first_page_show?'names1':'Names1'" @click="shou_show()">第一步 编辑POI</div>
+            <div :class="xiangqing_page_show?'names1':'Names1'" @click="detail_show()">第二步 编辑POI故事</div>
+            <div :class="xiangqing_page_show_bianji?'names1':'Names1'" @click="bian_show()">第三步 编辑POI任务</div>
+            <!-- <div class="Names">第三步 编辑POI任务</div> -->
+        </div>
+        <div class="all_Msgs" v-show="first_page_show">
 
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th style="min-width:40px;">类目</th>
+                        <th style="width:175px;">类目</th>
                         <th style="width: 700px;">填写</th>
                         <th>备注</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
+                        <td>POI性质</td>
+                        <td><select name="daoname" id="daoname" v-model="poiClass">
+                                <option value="1">1-有故事有任务</option>
+                                <option value="2">2-有故事无任务</option>
+                                <option value="4">4-无故事无任务</option>
+                                <option value="8">8-场景POI</option>
+                            </select></td>
+                        <td style="color: red;">不超过8个字</td>
+                    </tr>
+                    <tr>
                         <td>POI名字</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Name" cols="30" rows="4"></textarea></td>
                         <td style="color: red;">不超过8个字</td>
-
+                    </tr>
+                    <tr v-show="poiClass != 8">
+                        <td>上级Poi</td>
+                        <td>
+                            <select name="b_Type" id="b_Type" id="daoname" v-model="pid">
+                                <option :value="item.id" v-for="item in Chan">{{item.id}}-{{item.name}}</option>
+                            </select>
+                        </td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>POI类型</td>
-                        <td><select style="color:black;width:500px;" v-model="a_Type" name="daoname" id="daoname">
+                        <td><select v-model="a_Type" name="daoname" id="daoname">
                                 <option value="0">0&nbsp;景</option>
                                 <option value="1">1&nbsp;人</option>
                                 <option value="2">2&nbsp;文</option>
@@ -64,7 +91,7 @@
                     <tr>
                         <td>默认对话</td>
                         <td>
-                            <div id='editor4'></div>
+                            <div id='editor4' style="width: 699px;"></div>
                             <!-- <textarea id="editor_id" name="content" style="width:700px;height:300px;">
                                 &lt;strong&gt;HTML内容&lt;/strong&gt;
                                 </textarea> -->
@@ -77,13 +104,11 @@
                         <td><textarea name="daoname" id="daoname" v-model="a_Dubbing_video" cols="30"
                                 rows="4"></textarea></td>
                         <td>请输入音频链接</td>
-
                     </tr>
                     <tr>
                         <td>POI头像</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Image" cols="30" rows="4"></textarea></td>
                         <td>请输入头像图片链接，<span style="color: red;">图片尺寸：120*120px</span></td>
-
                     </tr>
                     <tr>
                         <td>POI介绍图</td>
@@ -96,7 +121,10 @@
                                         src="../../static/images/delete.png" alt="">
                                 </div>
                             </div>
-                            <div class="AddImgs" @click="AddImgs">+</div>
+                            <div class="AddImgs" @click="AddImgs">
+                                <img src="../../static/images/tianjia2.png" alt="">
+                                <span>新增</span>
+                            </div>
                         </td>
                         <td>请输入图片链接，<span style="color:red;">图片尺寸：650*350</span>。填写内容全部是英文字符，必须按照如下格式填写(,,)
                             <br>例如：http://imgs1.tuzuu.com/tuzhuxingzhe.png,http://imgs1.tuzuu.com/tuzhuxingzhe.png</td>
@@ -104,16 +132,14 @@
                     <tr>
                         <td>详情页简介</td>
                         <td>
-                            <div id="editor"></div>
+                            <div id="editor" style="width: 699px;"></div>
                         </td>
                         <td></td>
-
                     </tr>
                     <tr>
                         <td>POI标签</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Label" cols="30" rows="4"></textarea></td>
                         <td style="color: red;">10个字以内</td>
-
                     </tr>
                     <tr>
                         <td>纬度</td>
@@ -128,16 +154,14 @@
                         <td>请在<a href="https://lbs.qq.com/tool/getpoint/index.html" target="_blank"
                                 style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中选择POI的经纬度，<span
                                 style="color: red;">一定要精确</span></td>
-
                     </tr>
-                    <tr>
+                    <tr v-show='closePoiGuanlian'>
                         <td>建议游玩时间(分钟)</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_PlayTime" cols="30" rows="4"></textarea>
                         </td>
                         <td></td>
-
                     </tr>
-                    <tr>
+                    <tr v-show='closePoiGuanlian'>
                         <td>费用</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Price" cols="30" rows="4"></textarea></td>
                         <td></td>
@@ -149,28 +173,26 @@
                         <td></td>
 
                     </tr>
-                    <tr>
+                    <tr v-show='closePoiGuanlian'>
                         <td>营业时间</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_ShopHours" cols="30" rows="4"></textarea>
                         </td>
                         <td></td>
-
                     </tr>
                     <tr>
                         <td>POI弹窗介绍</td>
-                        <td><textarea name="daoname" id="daoname" v-model="a_MultiIntro" cols="30" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="a_MultiIntro"
+                                style="height: 100px;"></textarea>
                             <br>
                             <span>换行用\n</span>
                         </td>
                         <td></td>
-
                     </tr>
                     <tr>
                         <td>POI图标-未游玩</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Poi_One_link" cols="30"
                                 rows="4"></textarea></td>
                         <td>输入图片链接</td>
-
                     </tr>
                     <tr>
                         <td>POI图标-未游玩尺寸(像素)</td>
@@ -180,7 +202,6 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>在地图中展示的尺寸宽高</td>
-
                     </tr>
                     <tr>
                         <td>POI图标-未游玩位置(像素)</td>
@@ -190,16 +211,14 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>POI图标的中点距离地图的最左边和最上边距离</td>
-
                     </tr>
-                    <tr>
+                    <tr v-if="showClass4">
                         <td>POI图标-已游玩</td>
                         <td><textarea name="daoname" id="daoname" v-model="a_Poi_Two_link" cols="30"
                                 rows="4"></textarea></td>
                         <td>输入图片链接</td>
-
                     </tr>
-                    <tr>
+                    <tr v-if="showClass4">
                         <td>POI图标-已游玩尺寸(像素)</td>
                         <td>
                             <div class="chicun">宽&nbsp;<input type="number" v-model="a_Poi_Two_width" name="num1"
@@ -207,9 +226,8 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>在地图中展示的尺寸宽高</td>
-
                     </tr>
-                    <tr>
+                    <tr v-if="showClass4">
                         <td>POI图标-已游玩位置(像素)</td>
                         <td>
                             <div class="chicun">左&nbsp;<input type="number" v-model="a_Poi_Two_left" name="num1"
@@ -217,16 +235,14 @@
                                     name="num2" id="num1"></div>
                         </td>
                         <td>POI图标的中点距离地图的最左边和最上边距离</td>
-
                     </tr>
-                    <tr>
+                    <tr v-if="showClass4">
                         <td>是否可手动触发</td>
                         <td><select name="manual" id="daoname" v-model="a_manual">
                                 <option value="true">是</option>
                                 <option value="false">否</option>
                             </select></textarea></td>
                         <td>选是，表示用户可在未到达POI触发范围即可游玩POI；选否，表示用户必须到达POI所在坐标的触发范围才可游玩</td>
-
                     </tr>
                     <tr>
                         <td>显示时，地图得缩放比例</td>
@@ -234,7 +250,54 @@
                             <textarea name="daoname" id="daoname" v-model="map_scale" cols="30" rows="4"></textarea>
                         </td>
                         <td>默认是1.00</td>
-
+                    </tr>
+                    <!-- 新增小地图 -->
+                    <tr v-show="showClass8">
+                        <td>地图背景</td>
+                        <td><textarea name="daoname" v-model="dujia_Mapbg" id="daoname"></textarea>
+                        </td>
+                        <td><span style="color: red;">图片尺寸：750*1334，命名：bg_渠道全拼_第几条线路</span>
+                            (例如：bg_guanfang_1.jpg)</td>
+                    </tr>
+                    <tr v-show="showClass8">
+                        <td>推荐路线</td>
+                        <td><textarea name="daoname" v-model="dujia_niceroad" id="daoname" cols="90"
+                                rows="4"></textarea>
+                        </td>
+                        <td>除了推荐路线区域，其他用透明，<span style="color: red;">图片尺寸：750*1334，命名：tjlx_渠道全拼_第几条线路</span>
+                            (例如：tjlx_guanfang_1.png)</td>
+                    </tr>
+                    <tr v-show="showClass8">
+                        <td>地图坐标</td>
+                        <td>
+                            <div class="road_lat">
+                                左上&nbsp;<input type="text" v-model="dujia_lat_leftUp_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_leftUp_lat" name="leftup" id="leftup">
+                                右上&nbsp;<input type="text" v-model="dujia_lat_rightUp_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_rightUp_lat" name="leftup" id="leftup">
+                            </div>
+                            <div class="road_lat">
+                                右下&nbsp;<input type="text" v-model="dujia_lat_rightDown_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_rightDown_lat" name="leftup" id="leftup">
+                                左上&nbsp;<input type="text" v-model="dujia_lat_leftDown_lon" name="leftup" id="leftup">
+                                &nbsp;<input type="text" v-model="dujia_lat_leftDown_lat" name="leftup" id="leftup">
+                            </div>
+                        </td>
+                        <td>地图背景图对应的真实地图的四个点的坐标，坐标点请在请在<a href="https://lbs.qq.com/tool/getpoint/index.html"
+                                target="_blank"
+                                style="color: rgb(23, 94, 226);">https://lbs.qq.com/tool/getpoint/index.html</a>中查找，<span
+                                style="color:red;">请准确填写</span>
+                        </td>
+                    </tr>
+                    <tr v-show="show_cur_location">
+                        <td>是否显示当前位置</td>
+                        <td>
+                            <select name="nowLoaction" id="nowLoaction" v-model="is_cur_location">
+                                <option value="true">是</option>
+                                <option value="false">否</option>
+                            </select>
+                        </td>
+                        <td></td>
                     </tr>
                 </tbody>
             </table>
@@ -244,37 +307,35 @@
                 <div class="btn_Right" id="btn_R" style="width:100px;" @click="posts()">保存并继续</div>
             </div> -->
         </div>
-        <div style="height:2200px;"></div>
-
         <!-- 添加 -->
-        <div class="Names">第二步 添加POI故事</div>
-        <div class="all_Msgs">
+        <!-- <div class="Names" v-show="showClass4">第二步 添加POI故事</div> -->
+        <div class="all_Msgs" v-show="!first_page_show">
 
             <table class="layui-table">
                 <thead>
                     <tr>
 
-                        <th style="min-width:40px;">类目</th>
+                        <th style="width:175px;">类目</th>
                         <th style="width: 700px;">填写</th>
                         <th>备注</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
+                    <tr v-if="showClass2">
                         <td>POI故事标题</td>
                         <td><textarea name="daoname" v-model="a_cardtitle" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td style="color: red;">18个字以内</td>
 
                     </tr>
-                    <tr>
+                    <tr v-if="showClass2">
                         <td>故事卡片-未获得</td>
                         <td><textarea name="daoname" v-model="a_cardImg1" id="daoname" cols="30" rows="4"></textarea>
                         </td>
                         <td>输入图片链接，建议图片加上灰色滤镜，<span style="color: red;">图片尺寸：580*544</span></td>
 
                     </tr>
-                    <tr>
+                    <tr v-if="showClass2">
                         <td>故事卡片-已获得</td>
                         <td><textarea name="daoname" v-model="a_cardImg2" id="daoname" cols="30" rows="4"></textarea>
                         </td>
@@ -295,28 +356,32 @@
                         <td></td>
 
                     </tr>
-                    <tr>
+                    <tr v-show="showClass2">
                         <td>故事详情</td>
                         <td>
                             <div id="editor1"></div>
                         </td>
                         <td></td>
-
                     </tr>
-
-
                 </tbody>
             </table>
 
             <!-- <div class="fuWenBen">
                 <script id="editor1" type="text/plain" style="max-height:400px;overflow-y: scroll;"></script>
             </div> -->
-            <div class="btn_All">
-                <div class="btn_Left" id="btn_L" @click="chongzhi()">重置</div>
-                <div class="btn_Right" id="btn_R" style="width:100px;" @click="posts()">保存并继续</div>
-            </div>
+        </div>
+        <div class="btn_All" style="margin-bottom: 40px;">
+            <div class="btn_Left" id="btn_L" v-on:click="chongzhi()">重置</div>
+            <div class="btn_Right" id="btn_R" v-show="poiClass == 1&&first_page_show&&pid != 0" @click="GotoTask()">保存</div>
+            <div class="btn_Right" id="btn_R"
+                v-show="poiClass == 1&&first_page_show&&pid == 0 || poiClass == 2&&first_page_show || poiClass == 8&&first_page_show"
+                @click="detail_show()">保存并继续</div>
+            <div class="btn_Right" id="btn_R"
+                v-show="poiClass == 4 || poiClass == 1&&!first_page_show || poiClass == 2&&!first_page_show || poiClass == 8&&!first_page_show"
+                @click="posts()">保存</div>
         </div>
     </div>
+    <!-- <div style="margin-top: 40px;width: 1px;height: 1px;"></div> -->
 </body>
 
 </html>

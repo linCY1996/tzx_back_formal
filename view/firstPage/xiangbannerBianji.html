@@ -1,34 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="../../static/css/firstPage/xiangbannerBianji.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script src="../../static/js/firstPage/xiangbannerBianji.js"></script>
 </head>
+
 <body>
     <div id="tall">
-        <div style="width: 140px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);text-decoration: none;">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);text-decoration: none;">刷新</a></div>
-        </div>
-        <div class="Nac">
-            <div class="nacCh">
-                图片链接:<input name="banner" id="banner" v-model="banner">
+        <div class="TopChoose" style="left: 1.5%;">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
             </div>
-            <br>
-            <div class="nacCh">
-                排序:<input type="text" name="sort" id="sort" v-model="sort">
-            </div>
+            <div class="reFalsh">
+                    <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a></div>
         </div>
-        <div class="btn">
-            <div class="btnLeft" @click="chongzhi()">重置</div>
-            <div class="btnRight" @click="saves()">保存</div>
+        <p class="addTouer" style="left:47%;">编辑图片</p>
+        <div class="show_Msgs">
+            <div class="Nac">
+                <div class="nacCh">
+                    图片链接:<input name="banner" id="banner" v-model="banner">
+                </div>
+                <br>
+                <div class="nacCh">
+                    排序:<input type="text" name="sort" id="sort" v-model="sort">
+                </div>
+            </div>
+            <div class="btn_All">
+                <div class="btn_Left" @click="chongzhi()">重置</div>
+                <div class="btn_Right" @click="saves()">保存</div>
+            </div>
         </div>
     </div>
 </body>
+
 </html>

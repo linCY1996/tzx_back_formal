@@ -12,87 +12,100 @@
     <link rel="stylesheet" href="../../static/css/POIgl/bianji.css">
     <script type="text/javascript" src="../../static/js/xadmin.js"></script>
     <link rel="stylesheet" href="../../static/css/POIgl/poi_add1.css">
+    <link rel="stylesheet" href="../../static/css/topChoose.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
+    <link rel="stylesheet" href="../../static/css/fenye.css">
+    <link rel="stylesheet" href="../../static/css/caozuo.css">
     <script src="../../static/js/POIgl/poi_add3.js"></script>
 </head>
 
 <body>
-    <div id="tall" style="overflow-y:scroll;">
-        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-2)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+    <div id="tall">
+        <div class="TopChoose" style="left: 2%;">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-2)">返回</a>
+            </div>
+            <div class="reFalsh">
+                    <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a></div>
         </div>
         <!-- <div class="chooses">
             <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
             <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
         </div> -->
+        <div class="Nav_Title">
+            <div :class="first_page_show?'names1':'Names1'" @click="shou_show()">第一步 编辑POI</div>
+            <div :class="xiangqing_page_show?'names1':'Names1'" @click="detail_show()">第二步 编辑POI故事</div>
+            <div :class="xiangqing_page_show_bianji?'names1':'Names1'" @click="bian_show()">第三步 编辑POI任务</div>
+        </div>
         <!-- 编辑 -->
-        <div class="Names">第三步 编辑POI任务</div>
-        <div class="all_Msgs" style="min-width:1300px;">
+        <!-- <div class="Names">第三步 编辑POI任务</div> -->
+        <!-- style="min-width:1300px;" -->
+        <div class="all_Msgs">
             <xblock>
-                <button class="layui-btn layui-btn-danger" v-on:click="delAll()"><i
+                <button class="layui-btn layui-btn-danger" id="delete" v-on:click="delAll()"><i
                         class="layui-icon"></i>批量删除</button>
-                <button class="layui-btn" @click="add()"><i class="layui-icon"></i>添加</button>
+                <button class="layui-btn" id="adds" @click="add()"><i class="layui-icon"></i>添加</button>
                 <span class="x-right" style="line-height:40px">共有数据： {{work.length}}条</span>
             </xblock>
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th>
-                            <!-- <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i
-                                    class="layui-icon">&#xe605;</i>
-                            </div> -->
-                        </th>
-                        <th>操作</th>
-                        <th>任务id</th>
+                        <th style="width: 40px;text-align:center;">选择</th>
+                        <th style="width: 40px;text-align:center;">操作</th>
+                        <th style="width: 50px;">任务ID</th>
                         <th>任务类型</th>
-                        <th>任务排序</th>
-                        <th>任务内容</th>
-                        <th>任务配图</th>
-                        <th>任务按钮文字</th>
-                        <th>任务语音</th>
+                        <th style="width: 80px;">任务排序</th>
+                        <th style="width: 90px;">跳转任务ID</th>
+                        <th>默认对话</th>
+                        <th style="width: 90px;">任务按钮文字</th>
 
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="w in work">
                         <td>
-                            <input type="checkbox" class="checks" :value="w.Id" style="width:18px;height:18px;" v-model="checkId">
+                            <input type="checkbox" class="checks" :value="w.Id" style="width:18px;height:18px;"
+                                v-model="checkId">
                         </td>
                         <td class="td-manage">
-                            <a title="编辑任务" @click="bian_link(w.Id)">
-                                <i class="layui-icon">&#xe63c;</i>
-                            </a>
-                            <a title="删除" @click="del(w.Id)">
-                                <i class="layui-icon">&#xe640;</i>
-                            </a>
+                            <div class="funcAbouts" style="width: 70px;">
+                                <a title="" @click="bian_link(w.Id)">
+                                    <span class="Bian_j">编辑</span>
+                                </a>&nbsp;
+                                <a title="" @click="del(w.Id)">
+                                    <span class="Deletes">删除</span>
+                                </a>
+                            </div>
                         </td>
                         <td>{{w.Id}}</td>
                         <td>{{w.Class}}</td>
                         <td>{{w.Sort}}</td>
-                        <td v-html="w.TaskCopy[0].text" style="max-width: 6 00px;"></td>
-                        <td>{{w.ImgArr}}</td>
+                        <td>{{w.OptArr[0].target}}</td>
+                        <td v-html="w.TaskCopy[0].text" style="max-width: 600px;"></td>
                         <td>{{w.ButtonCopy}}</td>
-                        <td>{{w.TaskCopyStruct[0].audio}}</td>
-
                     </tr>
-
-
                 </tbody>
             </table>
         </div>
+        <div class="mengban" style="z-index: 1000;" v-show="mengban">
+                <div class="load_Msgs">加载中...</div>
+              </div>
         <!-- 添加 -->
-
-        <div class="tanchuang" v-if="tan_show == true">
+        <div class="mengban" v-show="tan_show"></div>
+        <div class="tanchuang" v-if="tan_show">
             <div class="tanMsgs">你确定要删除此内容吗？</div>
             <div class="tanBtns">
                 <div class="Cancel" v-on:click="Cancels()">取消</div>
                 <div class="Confirms" v-on:click="Confirms()">确定</div>
             </div>
         </div>
-        <div class="tanchuang" v-if="tan_show_list == true">
+        <div class="mengban" v-show="tan_show_list"></div>
+        <div class="tanchuang" v-if="tan_show_list">
             <div class="tanMsgs">你确定要删除此内容吗？</div>
             <div class="tanBtns">
                 <div class="Cancel" v-on:click="Refuse()">取消</div>

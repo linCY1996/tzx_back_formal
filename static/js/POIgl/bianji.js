@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
 
@@ -58,7 +56,7 @@ window.onload = function () {
             show_wenzi_choose: false,
             show_tupian_choose: false,
             workId: '',   //任务ID
-            chooseMsg: '',   //任务选择类型
+            chooseMsg: '4-文字选择任务',   //任务选择类型
             workSort: '',  //任务排序
             work_Msg: '',  //任务内容
             workBtn: '', //任务按钮文字

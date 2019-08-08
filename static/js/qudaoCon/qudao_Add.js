@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     var token = location.search.replace('?token=', "")
@@ -21,6 +19,18 @@ window.onload = function () {
             bianjiPoi:[],  //可编辑Poi
             chooseLuxian:[],   //选择可用路线
             bianjiLuxian:[],   //可编辑路线
+            chooseClass:0,   //选择回复类型
+            mr_Text:'',   //1
+            mr_Link:'',   //2
+            mr_MsgTitle:'',  //3
+            mr_MsgTalk:'',
+            mr_Image:'',
+            mr_ImageLink:'',  
+            mr_mn_title:'',   //4
+            mr_page:'',
+            mr_mn_ImgsLink:'',
+            DLat:'',   //新增定位lat
+            DLon:'',   //新增定位lon
         },
         methods: {
             // 显示路线列表
@@ -63,7 +73,7 @@ window.onload = function () {
             //     }).then((res) => {
             //         np.qudao = res.data.Body.list
             //     })
-            // },
+            // },   
             // 显示所有poi
             showPoilist: function () {
                 axios.post(host + '/route/v1/api/poi/list', {
@@ -153,7 +163,23 @@ window.onload = function () {
                         name:np.bianjiLuxian[i].split(',')[1]
                     })
                 }
-                // console.log("bianjiLuxian",bianjiLuxian)
+                // 默认回复
+                var reply = ''
+                switch(np.chooseClass) {
+                    case "text":
+                        reply = '{"msgtype":"text","text":{"content":"'+np.mr_Text+'"}}'
+                        break
+                    case "image":
+                        reply = '{"msgtype":"image","image":{"media_id":"'+np.mr_Link+'"}}'
+                        break
+                    case "link":
+                        reply = '{"msgtype":"link","link":{"title":"'+np.mr_MsgTitle+'","description":"'+np.mr_MsgTalk+'","url":"'+np.mr_Image+'","thumb_url":"'+np.mr_ImageLink+'"}}'
+                        break
+                    case "miniprogrampage":
+                        reply = '{"msgtype":"miniprogrampage","miniprogrampage":{"title":"'+np.mr_mn_title+'","pagepath":"'+np.mr_page+'","thumb_media_id":"'+np.mr_mn_ImgsLink+'"}}'
+                        break
+                }
+                var lat = '{"lon": '+np.DLon+',"lat": '+np.DLat+'}'
                 axios.post(host + '/route/v1/api/channel/create', {
                     can_edit_guide:bianjiTouer,
                     can_edit_poi:bianjiPoi,
@@ -164,7 +190,9 @@ window.onload = function () {
                     page_url:'..pages/index/index?channel='+np.qudao_Id,
                     name: np.qudaoName,
                     server: server,
-                    token:token
+                    reply:reply,
+                    token:token,
+                    local:lat
                 }).then((res) => {
                     alert("添加成功")
                     window.history.go(-1)

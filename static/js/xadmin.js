@@ -1,12 +1,22 @@
-var token = location.search.replace('?token=', "")
+// var token = location.search.replace('?token=', "")
+function GetParameters(name) {
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) {
+        return decodeURI(r[2]);//解决中文乱码
+
+    } else {
+        return null;
+    }
+}
+var token = GetParameters('token')
+var channel_id = GetParameters('channel_id')
 var is_super = ''
 
 $(function () {
     // const host = 'https://tzx-admin.tuzuu.com'    //开发服
     // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
     const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-    // const server = 'dev'
-    // const server = 'test'
     const server = 'formal'
     //加载弹出层
     layui.use(['form', 'element'],
@@ -53,7 +63,7 @@ $(function () {
         },
         methods: {
             showNames: function () {
-                if (token == '') {
+                if (token == null) {
                     window.location.href = '/login'
                 }
                 axios.post(host + '/user/v1/api/admin/getByToken', {
@@ -197,7 +207,7 @@ $(function () {
             }
         } else {
 
-            var url = $(this).children('a').attr('_href') + token + '&is_super=' + is_super;
+            var url = $(this).children('a').attr('_href') + token + '&is_super=' + is_super + '&channel_id=' + channel_id;
             var title = $(this).find('cite').html();
             var index = $('.left-nav #nav li').index($(this));
             for (var i = 0; i < $('.x-iframe').length; i++) {

@@ -1,8 +1,6 @@
 // const host = 'https://tzx-admin.tuzuu.com'    //开发服
 // const host = 'https://tzx-admin-test.tuzuu.com'   //体验服
 const host = 'https://tzx-admin-formal.tuzuu.com'   //正式服
-// const server = 'dev'
-// const server = 'test'
 const server = 'formal'
 window.onload = function () {
     var token = location.search.replace('?token=', "")
@@ -17,8 +15,18 @@ window.onload = function () {
             checkId: [],  //选择
             tan_show: false,   //弹窗
             Id: -1,    //点击删除得Id
+            copy_show: false,   //复制显示
+            current: -1,   //显示对应的hover元素
+            timer: null,   //定时器名称
+            loadings: false,  //加载
         },
         methods: {
+            showloading: function () {
+                var that = this
+                that.loadings = true
+                that.tan_show = false
+                that.tan_show_list = false
+            },
             viewbanben: function () {
                 var that = this
                 axios.post(host + '/route/v1/api/version/list', {
@@ -27,16 +35,17 @@ window.onload = function () {
                         page_size: 50
                     },
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
+                    np.loadings = false
                     np.total = res.data.Body.pager.total
                     var ban = res.data.Body.list
-                    for(var i = 0;i<np.total;i++) {
+                    for (var i = 0; i < np.total; i++) {
                         np.banben.push({
-                            id:ban[i].Id,
-                            num:ban[i].V,
-                            status:ban[i].S,
-                            update_time:that.format(ban[i].T,'yyyy-MM-dd HH:mm:ss')
+                            id: ban[i].Id,
+                            num: ban[i].V,
+                            status: ban[i].S,
+                            update_time: that.format(ban[i].T, 'yyyy-MM-dd HH:mm:ss')
                         })
                     }
                     // console.log("===",np.banben)
@@ -44,11 +53,11 @@ window.onload = function () {
             },
             // 添加版本
             add_banben: function () {
-                window.location.href = '/banbenadd?token='+token
+                window.location.href = '/banbenadd?token=' + token
             },
             // 编辑版本
             bianji: function (e) {
-                window.location.href = '/banbenbianji?id=' + e+'&token='+token
+                window.location.href = '/banbenbianji?id=' + e + '&token=' + token
             },
             //页码点击事件
             btnClick: function (e) {
@@ -78,7 +87,7 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/version/del', {
                     id: parseInt(np.Id),
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     window.location.reload()
                     np.tan_show = false
@@ -90,7 +99,7 @@ window.onload = function () {
                 axios.post(host + '/route/v1/api/version/del', {
                     id: parseInt(e),
                     server: server,
-                    token:token
+                    token: token
                 }).then((res) => {
                     window.location.reload()
 
@@ -112,10 +121,10 @@ window.onload = function () {
             },
 
             // 格式时间
-            getLocalTime:function (nS) {     
-                return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/,' ');     
-             },
-             format: function (time, format) {
+            getLocalTime: function (nS) {
+                return new Date(parseInt(nS) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+            },
+            format: function (time, format) {
                 var t = new Date(time);
                 var tf = function (i) {
                     return (i < 10 ? '0' : '') + i
@@ -142,7 +151,47 @@ window.onload = function () {
                             break;
                     }
                 })
+            },
+            // 复制  鼠标移入事件
+            enter: function (index) {
+                np.current = index
+                np.copy_show = true
+            },
+            // 鼠标移出事件
+            leave: function () {
+                if (np.copy_show == true) {
+                    np.timer = setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    }, 1000)
+                }
+                clearTimeout()
+            },
+            copy_test: function (params) {
+                axios.post(host + '/route/v1/api/guide/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'test'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
+            },
+            copy_formal: function (params) {
+                axios.post(host + '/route/v1/api/guide/copy', {
+                    from_server: server,
+                    id: parseInt(params),
+                    to_server: 'formal'
+                }).then((res) => {
+                    if(res.data.Body == 'ok') {
+                        alert("复制成功")
+                    }
+                })
             }
+        },
+        created() {
+            this.showloading()
         },
         mounted: function () {
             this.viewbanben()
@@ -175,7 +224,20 @@ window.onload = function () {
         },
         watch: {
             cur: function (oldValue, newValue) {
+            },
+            copy_show:function () {
+                if (np.copy_show == true) {
+                    setTimeout(() => {
+                        np.copy_show = false
+                        np.current = null
+                    }, 2000)
+                }
+                clearTimeout()
             }
-        }
+        },
+        // beforeDestroy() {
+        //     clearTimeout(np.timer)
+        //     np.timer = null
+        // }
     })
 }

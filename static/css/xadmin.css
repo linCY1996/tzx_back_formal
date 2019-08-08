@@ -16,6 +16,7 @@ html{
 }
 body{
     width: 100%;
+    background: #f6f7fb;
     min-height: 100%;
 }
 .login-bg{

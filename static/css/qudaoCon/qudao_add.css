@@ -3,6 +3,10 @@
     padding: 0px;
 }
 
+body {
+    background: #f6f7fb;
+}
+
 #talls {
     width: 50%;
     height: 300px;

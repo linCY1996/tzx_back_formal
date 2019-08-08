@@ -3,6 +3,10 @@
     padding: 0px;
 }
 
+body {
+    background: #f6f7fb;
+}
+
 #tall {
     width: 100%;
     height: 100%;
@@ -11,9 +15,9 @@
 }
 
 .all_Msgs {
-    width: 92%;
-    margin-left: 4%;
-    margin-top: 50rpx;
+    width: 95%;
+    margin-left: 2.5%;
+    margin-top: 30rpx;
 }
 .shouye_Id,.shouye_Img {
     position: relative;
@@ -28,9 +32,9 @@
 .shouye_Id input {
     position: absolute;
     right: 10px;
-    font-size: .9em;
-    line-height: 40px;
-    height: 40px;
+    font-size: 14px;
+    line-height: 50px;
+    height: 50px;
     border: 1px solid rgb(146, 146, 146);
     width: 90%;
     color: rgb(161, 161, 161);
@@ -47,30 +51,78 @@
     color: rgb(107, 107, 107);
 }
 
-.btn_All {
+.poi_Ch_Msg input[type=checkbox]{
+    position: relative;
+    width: 17px;
+    height: 17px;
+    background: #fff;
+    margin-right: 5px;
+}
+
+.poi_Ch_Msg input[type=checkbox]::before {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 17px;
+    height: 17px;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+    background: #fff;
+    border: 1px solid rgb(153, 153, 153);
+}
+
+.poi_Ch_Msg input[type=checkbox]:checked::before {
+    content: '✔';
+    color: white;
+    line-height: 17px;
+    background: #26d09f;
+}
+
+td textarea,td select,td input {
+    width: 694px;
+    height: 50px;
+    font-size: 14px;
+    background: #FFFFFF;
+    border: 1px solid #979797;
+}
+
+.poiMsgsAll {
+    /* height: 800px; */
+    font-size: 14px;
+    color:rgb(97, 97, 97);
+    font-size: 14px; 
+    height: 950px;
+    border: 1px solid rgb(151, 151, 151);
+}
+
+.poi_Ch_Msg {
+    width: 140px;
+    float:left;
+}
+
+.tiaozhuan {
+    position: absolute;
+    top: 17px;
+    left: 0px;
+}
+
+.lianjie {
+    position: absolute;
+    top: 17px;
+    left: 0px;
+}
+
+.dingwei {
+    height: 50px;
+    line-height: 50px;
+    width: 699px;
     display: flex;
     justify-content: space-between;
-    height: 40px;
-    width: 100%;
-    margin-top: 20px;
 }
 
-.btn_Left,.btn_Right {
-    cursor: pointer;
-    width: 70px;
-    height: 40px;
-    border-radius: 10px 10px;
-    color: white;
-    font-size: .9em;
-    line-height: 40px;
-    text-align: center;
-}
-
-.btn_Left {
-    background-color: #e08e0b;
-
-}
-
-.btn_Right {
-    background-color: #00acd6;
+.dingwei input {
+    width: 300px;
+    height: 50px;
 }

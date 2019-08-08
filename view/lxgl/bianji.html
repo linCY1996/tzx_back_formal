@@ -14,6 +14,8 @@
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
+    <link rel="stylesheet" href="../../static/css/lxgl/bianji.css">
     <!-- <script charset="utf-8" src="../../static/utf8-jsp/ueditor.config.js"></script> -->
     <!-- <script charset="utf-8" src="../../static/utf8-jsp/ueditor.all.min.js"></script> -->
     <!-- <script charset="utf-8" src="../../static/utf8-jsp/lang/zh-cn/zh-cn.js"></script> -->
@@ -25,11 +27,19 @@
 
 <body>
     <div id="tall">
-        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()"
-                    style="color: rgb(241, 134, 11);">刷新</a></div>
+        <div class="mengban" style="z-index: 1000;" v-show="loadings">
+            <div class="load_Msgs">加载中...</div>
         </div>
+        <div class="TopChoose" style="left: 2%;">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a></div>
+        </div>
+        <p class="addTouer">编辑线路</p>
         <!-- <div class="chooses">
             <div :class="bianji_show?'Bianji':'bianji'" v-on:click="bianji()">编辑</div>
             <div :class="add_show?'Add':'add'" v-on:click="add()">添加</div>
@@ -39,15 +49,15 @@
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th style="width:40px;">类目</th>
-                        <th style="min-width:60px;">填写</th>
+                        <th style="width:145px;">类目</th>
+                        <th style="width:764px;">填写</th>
                         <th>备注</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>渠道id</td>
-                        <td><select style="color:black;width:663.6px;" name="qudaoId" id="qudaoId" v-model="qudao_Id">
+                        <td><select name="qudaoId" id="qudaoId" v-model="qudao_Id">
                                 <option v-for="qd in qudao" :value="qd.id">{{qd.id}}&nbsp;{{qd.name}}</option>
                             </select></td>
                         <td></td>
@@ -55,21 +65,21 @@
                     </tr>
                     <tr>
                         <td>线路名称</td>
-                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Name" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Name"></textarea>
                         </td>
                         <td style="color: red;">20个字以内</td>
 
                     </tr>
                     <tr>
                         <td>城市</td>
-                        <td><textarea name="daoname" id="daoname" v-model="City" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="City"></textarea>
                         </td>
                         <td></td>
 
                     </tr>
                     <tr>
                         <td>导游名字</td>
-                        <td><select name="dName" id="dName" v-model="dNames" style="width:663.6px;color: black;">
+                        <td><select name="dName" id="dName" v-model="dNames">
                                 <option v-for="dm in daoyouname" :value="dm.Name+','+dm.Id">{{dm.Name}}</option>
                             </select></td>
                         <td></td>
@@ -78,17 +88,17 @@
                     <tr>
                         <td>线路POI</td>
                         <td>
-                            <div class="poiMsgsAll"
-                                style="width: 700px;font-size: .9em;color:rgb(97, 97, 97); height: 380px;">
-                                <div class="poi_Ch_Msg" style="width: 140px;float:left;" v-for="pl in Poilist">
-                                    <input style="width: 18px;height:18px;" type="checkbox" :id="pl.Id"
-                                        :value="pl.Id+','+pl.Name" v-model="checkedNames">
+                            <div class="poiMsgsAll">
+                                <div class="poi_Ch_Msg" v-for="pl in Poilist">
+                                    <input
+                                        style="width: 16px;height:16px;margin-top: 10px;margin-left: 10px;font-size: 14px;"
+                                        type="checkbox" :id="pl.Id" :value="pl.Id+','+pl.Name" v-model="checkedNames">
                                     <label :for="pl.Name">{{pl.Id}}-{{pl.Name}}</label>
                                 </div>
                                 <br>
                                 <br><br>
                             </div>
-                            <div style="position:absolute;bottom:0px;left:15px;">选择Poi_id: {{ checkedNames }}</div>
+                            <div style="margin-top: 10px;margin-left: 10px;">选择Poi_id: {{ checkedNames }}</div>
 
                         </td>
                         <td></td>
@@ -96,28 +106,28 @@
                     </tr>
                     <tr>
                         <td>价格(分)</td>
-                        <td><textarea name="daoname" id="daoname" v-model="Price" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="Price"></textarea>
                         </td>
                         <td></td>
 
                     </tr>
                     <tr>
                         <td>线路标签</td>
-                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Label" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Label"></textarea>
                         </td>
                         <td>每个标签最多6个字，最多4个标签，每个标签之间使用英文,间隔(例如：标签1,标签2,标签3)</td>
 
                     </tr>
                     <tr>
                         <td>热度值</td>
-                        <td><textarea name="daoname" id="daoname" v-model="viewCount" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="viewCount"></textarea>
                         </td>
                         <td>你希望该条线路从多少热度值开始显示，用户浏览会自动增加热度值</td>
 
                     </tr>
                     <tr>
                         <td>支付页图片</td>
-                        <td><textarea name="daoname" id="daoname" v-model="zhifu_Img" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="zhifu_Img"></textarea>
                         </td>
                         <td>输入图片链接，用于支付页的图片展示，<span
                                 style="color: red;">图片尺寸：610*406，命名：zhifu_渠道名全拼_第几条线路</span>(例如：zhifu_guanfang_1.jpg)
@@ -127,7 +137,7 @@
 
                     <tr>
                         <td>线路盖章图</td>
-                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Icon" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="xianlu_Icon"></textarea>
                         </td>
                         <td>输入图片链接，印章颜色推荐#000000，非印章区域为透明，<span style="color: red;">图片尺寸：220*174</span></td>
 
@@ -135,7 +145,7 @@
 
                     <tr>
                         <td>独家回忆入口图</td>
-                        <td><textarea name="daoname" id="daoname" v-model="dujia_InImg" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="dujia_InImg"></textarea>
                         </td>
                         <td>输入图片链接，<span
                                 style="color: red;">图片尺寸：650*350；图片命名：mem_inlet_渠道名全拼_第几条线路</span>(例如：mem_inlet_guanfang_1.png)
@@ -144,7 +154,7 @@
                     </tr>
                     <tr>
                         <td>独家回忆封面图</td>
-                        <td><textarea name="daoname" id="daoname" v-model="dujia_fengImg" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" id="daoname" v-model="dujia_fengImg"></textarea>
                         </td>
                         <td>输入图片链接，<span
                                 style="color: red;">图片尺寸：650*610；图片命名：mem_cover_渠道名全拼_第几条线路</span>(例如：mem_cover_guanfang_1.jpg)
@@ -154,7 +164,7 @@
                     <!-- 新增 -->
                     <tr>
                         <td>独家回忆客服引导文案</td>
-                        <td><textarea name="daoname" v-model="dujia_word" id="daoname" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" v-model="dujia_word" id="daoname"></textarea>
                         </td>
                         <td></td>
 
@@ -178,7 +188,7 @@
                     </tr>
                     <tr>
                         <td>体验按钮文案</td>
-                        <td><textarea name="daoname" v-model="dujia_btnmsg" id="daoname" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" v-model="dujia_btnmsg" id="daoname"></textarea>
                         </td>
                         <td></td>
 
@@ -202,50 +212,50 @@
                             </div>
                             <div class="road_end_msg">音频&nbsp;<input type="text" v-model="dujia_end_audio"
                                     id="road_end"></div>
-                            <div class="road_end_msg">
+                            <!-- <div class="road_end_msg">
                                 跳转类型 <select name="jumps" v-model="jump_type" id="jumps">
                                     <option value="-1">不跳转</option>
                                     <option value="0">跳转目录，不需要登录</option>
                                     <option value="1">跳转链接</option>
                                     <option value="2">跳转目录，需要登录</optio n>
                                 </select>
-                            </div>
-
-                            <div class="msgs1" v-show="jump_type == 0 || jump_type == 2" style="position: relative;">
-                                跳转&nbsp;&nbsp;
+                            </div> -->
+                            <!-- v-show="jump_type == 0 || jump_type == 2"  -->
+                            <div class="msgs1" style="position: relative;">
+                                <div class="tiaozhuan">跳转</div>
                                 <div class="jump_Msgs"
-                                    style="width: 554px;height:40px;position: absolute; top: 0px; left: 110px;">
+                                    style="width: 500px;height:40px;position: absolute; top: 0px; left: 76px;">
                                     <select name="jump1" id="jump1" v-model="yj_choose"
                                         style="width: 150px;position: absolute;top: 0px;left: 0px;">
-                                        <option value="0" v-show="jump_type == 0">详情页</option>
-                                        <option value="1" v-show="jump_type == 0">反馈建议</option>
-                                        <!-- <option value="2" v-show="jump_type == 2">指定个人卡包</option> -->
-                                        <!-- <option value="3" v-show="jump_type == 0">指定线路卡包</option> -->
-                                        <option value="4" v-show="jump_type == 2">个人全部行程页</option>
-                                        <!-- <option value="5" v-show="jump_type == 2">指定线路的个人行程浏览列表</option> -->
-                                        <option value="6" v-show="jump_type == 0">指定线路的浏览列表</option>
-                                        <option value="7" v-show="jump_type == 2">所有独家回忆</option>
-                                        <!-- <option value="8" v-show="jump_type == 0">指定独家回忆视频</option> -->
-                                        <!-- <option value="9" v-show="jump_type == 0">指定个人行程的POI详情页</option> -->
-                                        <option value="10" v-show="jump_type == 0">指定线路地图预览页</option>
+                                        <option value="0">不跳转</option>
+                                        <option value="1">跳转链接</option>
+                                        <option value="2">详情页</option>
+                                        <option value="3">反馈建议</option>
+                                        <option value="4">route的浏览列表</option>
+                                        <option value="5">地图预览页</option>
+                                        <option value="6">个人所有行程</option>
+                                        <option value="7">所有独家回忆</option>
+                                        <option value="8">当前行程卡包</option>
                                     </select>
                                     <!-- </div> -->
                                     <!-- <div class="jump_Msg_Ch" style="width: 200px;height: 40px;"> -->
                                     <select name="jump2" id="jump2" v-model="route_id"
                                         style="width:150px;position: absolute;top: 0px;left: 175px;"
-                                        v-show="yj_choose == 0 || yj_choose == 2 || yj_choose == 3 || yj_choose == 5 || yj_choose == 6 || yj_choose == 8 || yj_choose == 9 || yj_choose == 10">
+                                        v-show="yj_choose == 2 || yj_choose == 4 || yj_choose == 5">
                                         <option v-for="rn in routeName" :value="rn.Id">{{rn.Id}}-{{rn.Name}}</option>
                                     </select>
-                                    <select name="jump2" id="jump2" v-model="Poi_choose"
+                                    <!-- <select name="jump2" id="jump2" v-model="Poi_choose"
                                         style="width:150px;position: absolute;top: 0px;left: 350px;"
                                         v-show="yj_choose == 2 || yj_choose == 3 || yj_choose == 9">
                                         <option v-for="pls in Poilist" :value="pls.poi_id">
                                             {{pls.poi_id}}-{{pls.poi_name}}</option>
-                                    </select>
+                                    </select> -->
                                 </div>
                             </div>
-                            <div class="road_end_msg" v-show="jump_type == 1">跳转链接&nbsp;&nbsp;<input
-                                    style="width: 554px;height:40px;font-size:1.2em;color:rgb(92, 92, 92);background-color: white;border: 1px solid rgb(105, 105, 105);position: absolute;right: 0px;top: 0px;"
+                            <div class="road_end_msg road_msgs_links" v-show="yj_choose == 1">
+                                <div class="lianjie">跳转链接</div>
+                                <input
+                                    style="width: 422px;height:40px;font-size:1.2em;color:rgb(92, 92, 92);background-color: white;border: 1px solid rgb(136, 136, 136);position: absolute;right: 0px;top: 17px;"
                                     v-model="jump_url" type="text" name="jump_link" id="jump_link">
                             </div>
                         </td>
@@ -257,7 +267,7 @@
                     </tr>
                     <tr>
                         <td>地图背景</td>
-                        <td><textarea name="daoname" v-model="dujia_Mapbg" id="daoname" cols="90" rows="4"></textarea>
+                        <td><textarea name="daoname" v-model="dujia_Mapbg" id="daoname"></textarea>
                         </td>
                         <td><span style="color: red;">图片尺寸：750*1334，命名：bg_渠道全拼_第几条线路</span>
                             (例如：bg_guanfang_1.jpg)</td>
@@ -296,7 +306,7 @@
                     <tr>
                         <td>是否显示当前位置</td>
                         <td>
-                            <select name="nowLoaction" id="nowLoaction" v-model="is_cur_location" style="width:663.6px;color: black;">
+                            <select name="nowLoaction" id="nowLoaction" v-model="is_cur_location">
                                 <option value="true">是</option>
                                 <option value="false">否</option>
                             </select>
@@ -306,15 +316,24 @@
                     <tr>
                         <td>详情页富文本</td>
                         <td>
-                            <div id='editor'></div>
+                            <div id='editor' style="width: 699px;"></div>
                         </td>
                         <td></td>
                     </tr>
-
+                    <!-- 新增定位 -->
+                    <tr>
+                        <td>定位</td>
+                        <td>
+                            <div class="dingwei">
+                                纬度 <input type="number" v-model="DLat">  经度 <input type="number" v-model="DLon">
+                            </div>
+                        </td>
+                        <td></td>
+                    </tr>
                 </tbody>
             </table>
 
-            <div class="btn_All" v-if="can_edit">
+            <div class="btn_All" v-if="can_edit" style="margin-bottom: 20px;">
                 <div class="btn_Left" @click="chongzhi()">重置</div>
                 <div class="btn_Right" @click="saves()">保存</div>
             </div>

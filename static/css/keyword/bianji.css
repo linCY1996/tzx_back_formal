@@ -1,0 +1,89 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background: #f6f7fb;
+}
+
+#tall {
+    width: 100%;
+    height: 100%;
+}
+
+.Msgall {
+    width: 60%;
+    height: auto;
+    margin-top: 30px;
+    /* border: 1px solid black; */
+    margin-left: 16%;
+
+}
+
+.msgs {
+    width: 100%;
+    height: auto;
+    font-size: 14px;
+    line-height: 40px;
+    margin-top: 30px;
+}
+
+.msgs1 {
+    display: flex;
+    justify-content: space-between;
+}
+
+.msgs_ch {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 40px;
+    font-size: 14px;
+    margin-top: 30px;
+}
+
+.msgs select,.msgs option,.msgs input,.msgs textarea {
+    width: 87%;
+    height: 40px;
+    font-size: 14px;
+    border: 1px solid rgb(129, 129, 129);
+}
+
+.msgs textarea {
+    height: 80px;
+}
+
+.btn_key {
+    display: flex;
+    justify-content: space-between;
+    /* left: 50%; */
+    /* transform: translateX(-62%); */
+    margin-top: 33px;
+    width: 50%;
+    margin-left: 25%;
+    height: 40px;
+}
+
+.btn_LeftK,.btn_RightK {
+    cursor: pointer;
+    width: 160px;
+    height: 40px;
+    /* border-radius: 10px 10px; */
+    font-family: PingFangSC-Medium;
+    font-size: 16px;
+    line-height: 40px;
+    color: #FFFFFF;
+    letter-spacing: 0;
+    text-align: center;
+}
+
+.btn_LeftK {
+    background: #F4833D;
+}
+
+.btn_RightK {
+    background: #00B499;
+}

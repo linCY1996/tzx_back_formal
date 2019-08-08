@@ -8,6 +8,7 @@
     <title>Document</title>
     <link rel="stylesheet" href="../../static/css/dygl/bianji.css">
     <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/css/fanhui.css">
     <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
     <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
     <script src="../../static/js/dygl/bianji.js"></script>
@@ -15,43 +16,45 @@
 
 <body>
     <div id="tall">
-
-        <div style="width: 180px;height:60px;display: flex;justify-content: space-between;">
-            <div class="fanhui"><a href="javascript:history.go(-1)" style="color: rgb(241, 134, 11);">返回</a></div>
-            <div class="fanhui"><a href="javascript:void(0)" onclick="location.reload()" style="color: rgb(241, 134, 11);">刷新</a></div>
+        <div class="TopChoose">
+            <div class="fanhui">
+                <img src="../../static/images/fanhui.png" alt="">
+                <a href="javascript:history.go(-1)">返回</a>
+            </div>
+            <div class="reFalsh">
+                <img src="../../static/images/shuaxin.png" alt="">
+                <a href="javascript:void(0)" onclick="location.reload()">刷新</a>
+            </div>
         </div>
-      
+        <p class="addTouer">编辑导游</p>
         <!-- 编辑 -->
         <div class="all_Msgs1">
             <table class="layui-table">
                 <thead>
                     <tr>
-                        <th style="width:40px;">类目</th>
+                        <th style="width:140px;">类目</th>
                         <th style="min-width:60px;">填写</th>
                         <th>示例</th>
                         <th>备注</th>
-                        <th>说明</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>导游名字</td>
-                        <td><textarea name="daoname" id="daoname" v-model="d_Name" cols="30" rows="4"></textarea></td>
+                        <td><textarea name="daoname" id="daoname" v-model="d_Name" style="width: 331px;height:50px;"></textarea></td>
                         <td>刘三妹</td>
                         <td style="color: red;">不超过8个字</td>
-                        <td>字符串</td>
                     </tr>
                     <tr>
                         <td>导游头像</td>
-                        <td><textarea name="daoname" id="daoname" v-model="d_Imgs" cols="30" rows="4"></textarea></td>
+                        <td><textarea name="daoname" id="daoname" v-model="d_Imgs" style="width: 331px;height:50px;"></textarea></td>
                         <td>http://imgs1.tuzuu.com/ketingxiaoting_1.png</td>
                         <td>尺寸：100*100, 命名规则：导游名字的英文全拼</td>
-                        <td></td>
                     </tr>
                 </tbody>
             </table>
 
-            <div class="btn_All">
+            <div class="btn_All" style="margin-bottom: 20px;">
                 <div class="btn_Left" @click="chongzhi()">重置</div>
                 <div class="btn_Right" @click="saves()">保存</div>
             </div>

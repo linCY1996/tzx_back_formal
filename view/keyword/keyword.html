@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../static/css/font.css">
+    <link rel="stylesheet" href="../../static/css/xadmin.css">
+    <link rel="stylesheet" href="../../static/lib/layui/css/layui.css">
+    <script type="text/javascript" src="../../static/lib/layui/layui.js" charset="utf-8"></script>
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/js/xadmin.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.17-beta.0/vue.min.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.16.1/axios.js"></script>
+    <link rel="stylesheet" href="../../static/css/dygl/dygl.css">
+    <link rel="stylesheet" href="../../static/css/fenye.css">
+    <link rel="stylesheet" href="../../static/css/tanchuang.css">
+    <link rel="stylesheet" href="../../static/css/caozuo.css">
+    <link rel="stylesheet" href="../../static/css/topChoose.css">
+    <script src="../../static/js/keyword/keyword.js"></script>
+</head>
+
+<body>
+    <div class="x-body" id="tall">
+        <div class="mengban" style="z-index: 1000;" v-show="loadings">
+            <div class="load_Msgs">加载中...</div>
+        </div>
+        <div class="chaxun">
+            关键字&nbsp;&nbsp;<input type="text" name="dname" id="dname" v-model="keyword">
+            <img src="../../static/images/sousuo.png" alt="" @click="chaxun()">
+        </div>
+
+        <xblock>
+            <button class="layui-btn layui-btn-danger" id="delete" v-on:click="delAll()"><i
+                    class="layui-icon"></i>批量删除</button>
+            <button class="layui-btn" @click="add_keyword()" id="adds"><i class="layui-icon"></i>添加</button>
+            <!-- <div id="kongbai" class="layui-btn"> -->
+            <span class="x-right" style="line-height:40px">共有数据： {{total}}条</span>
+            <!-- </div> -->
+        </xblock>
+        <table class="layui-table">
+            <thead>
+                <tr>
+                    <th style="width:40px;text-align: center;">选择</th>
+                    <th style="width:100px;text-align: center;">操作</th>
+                    <th style="min-width:80px;text-align: center;">渠道</th>
+                    <th style="width:120px;">关键字</th>
+                    <th>回复类型</th>
+                    <th>回复内容</th>
+                    <th>添加时间</th>
+                </tr>
+            </thead>
+            <tbody id="tbodys" v-for="(item,index) in list" :key="index">
+                <tr>
+                    <td style="text-align: center;">
+                        <input type="checkbox" class="checks" v-model="checkId" :value="item.Id">
+                    </td>
+                    <td class="td-manage" style="width: 100px;">
+                        <div class="funcAbout">
+                            <a title="" v-on:click='btn_link(item.Id)'>
+                                <span class="Bian_j">编辑</span>
+                            </a>&nbsp;
+                            <a title="" v-on:click="del(item.Id)">
+                                <span class="Delete">删除</span>
+                            </a>&nbsp;
+                            <!-- <a class="copy_Nav" href="javascript:;"> -->
+                            <a title="" @click="enter(index)">
+                                <span class="Copy">复制</span>
+                            </a>
+                            <div class="copy_where" v-show="copy_show&&index == current">
+                                <p class="copy_test" @click="copy_test(item.Id)">体验服</p>
+                                <p class="copy_formal" @click="copy_formal(item.Id)">正式服</p>
+                            </div>
+                        </div>
+                        <!-- </a> -->
+                    </td>
+                    <td style="text-align: center;">{{item.channelId}}-{{item.channel_name}}</td>
+                    <td>{{item.Key}}</td>
+                    <td v-show="item.reply.msgtype == 'text'">文字</td>
+                    <td v-show="item.reply.msgtype == 'image'">图片</td>
+                    <td v-show="item.reply.msgtype == 'link'">图文链接</td>
+                    <td v-show="item.reply.msgtype == 'miniprogrampage'">小程序卡片</td>
+                    <td v-if="item.reply.msgtype == 'text'">{{item.reply.text.content}}</td>
+                    <td v-if="item.reply.msgtype == 'image'">{{item.reply.image.media_id}}</td>
+                    <td v-if="item.reply.msgtype == 'link'">标题:{{item.reply.link.title}}
+                        <!-- <br>
+                        <p style="color:rgb(39, 124, 236);">详情</p> -->
+                    </td>
+                    <td v-if="item.reply.msgtype == 'miniprogrampage'">标题:{{item.reply.miniprogrampage.title}}
+                        <!-- <br>
+                        <p style="color:rgb(39, 124, 236);">详情</p> -->
+                    </td>
+                    <td>{{item.time}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="page-bar">
+            <ul>
+                <li v-if="cur>1"><a v-on:click="cur--,pageClick()">上一页</a></li>
+                <li v-if="cur==1"><a class="banclick">上一页</a></li>
+                <li v-for="index in indexs" v-bind:class="{ 'active': cur == index}">
+                    <a v-on:click="btnClick(index)">{{ index }}</a>
+                </li>
+                <li v-if="cur!=all"><a v-on:click="cur++,pageClick()">下一页</a></li>
+                <li v-if="cur == all"><a class="banclick">下一页</a></li>
+                <li><a>共<i>{{all}}</i>页</a></li>
+                <!-- <li><select name="pages" id="pages" v-model="pagesNum" v-on:click="chooseNum()">
+                          <option value="10">10</option>
+                          <option value="20">20</option>
+                          <option value="30">30</option>
+                          <option value="50">50</option>
+                        </select></li> -->
+            </ul>
+
+        </div>
+        <div class="mengban" v-show="tan_show == true"></div>
+        <div class="tanchuang" v-if="tan_show == true">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+                <div class="Cancel" v-on:click="Cancels()">取消</div>
+                <div class="Confirms" v-on:click="Confirms()">确定</div>
+            </div>
+        </div>
+        <div class="mengban" v-show="tan_show_list == true"></div>
+        <div class="tanchuang" v-if="tan_show_list == true">
+            <div class="tanMsgs">你确定要删除此内容吗？</div>
+            <div class="tanBtns">
+                <div class="Cancel" v-on:click="Refuse()">取消</div>
+                <div class="Confirms" v-on:click="Delete()">确定</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

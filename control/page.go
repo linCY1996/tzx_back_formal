@@ -179,3 +179,71 @@ func LoginConBianji(w http.ResponseWriter, r *http.Request) {
 	buf, _ := ioutil.ReadFile(`view/loginCon/loginBianji.html`)
 	w.Write(buf)
 }
+
+//用户管理
+func UserControl(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/zhuce.html`)
+	w.Write(buf)
+}
+
+func LookZhuCe(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/lookZC.html`)
+	w.Write(buf)
+}
+
+func RouteData(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/route_Data.html`)
+	w.Write(buf)
+}
+
+func LookRouteData(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/lookRouteData.html`)
+	w.Write(buf)
+}
+
+func UserFankui(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/fankui.html`)
+	w.Write(buf)
+}
+
+func LookUserFankui(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/lookFK.html`)
+	w.Write(buf)
+}
+
+//白名单
+func WhiteName(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/whiteName.html`)
+	w.Write(buf)
+}
+
+func Addwhitename(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/addWhiteName.html`)
+	w.Write(buf)
+}
+
+func LookWN(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/zhControl/lookW.html`)
+	w.Write(buf)
+}
+
+//客服关键字回复
+func KFWrite(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/keyword/keyword.html`)
+	w.Write(buf)
+}
+
+func KFBian(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/keyword/bianji.html`)
+	w.Write(buf)
+}
+
+func AddKeyword(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/keyword/addKeyword.html`)
+	w.Write(buf)
+}
+
+func ChaXunKeyword(w http.ResponseWriter, r *http.Request) {
+	buf, _ := ioutil.ReadFile(`view/keyword/chaxun.html`)
+	w.Write(buf)
+}
